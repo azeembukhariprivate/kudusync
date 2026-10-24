@@ -537,6 +537,7 @@ namespace Kudusync.Views
         /// <summary>Saves the pairs, sets up the pair's schedule and starts the tray if the pair needs it.</summary>
         internal void AfterSave(FolderPair pair)
         {
+            _selected = pair;
             SavePairs();
             var problem = Schedules.Apply(pair);
             if (problem != null) Dialogs.Error(this, "The pair was saved, but its schedule couldn't be set up.\n\n" + problem);
