@@ -240,8 +240,17 @@ namespace Kudusync.Tests
             File.Move(Path.Combine(l, "a.bin"), Path.Combine(l, "c.bin"));
             File.Move(Path.Combine(l, "b.bin"), Path.Combine(l, "d.bin"));
             var plan = PlanOnly(pair);
-            Equal(0, plan.Renamed, "ambiguous renames aren't guessed");
-            Equal(2, plan.NewFiles, "copied instead");
+            if (Paths.IsWindows)
+            {
+                // NTFS file IDs tell the two files apart, so both renames are certain.
+                Equal(2, plan.Renamed, "renames proven by file ID");
+                Check(plan.Actions.Any(a => a.Kind == ActionKind.Rename && a.From == "a.bin" && a.Path == "c.bin"), "matched to the right file");
+            }
+            else
+            {
+                Equal(0, plan.Renamed, "ambiguous renames aren't guessed");
+                Equal(2, plan.NewFiles, "copied instead");
+            }
         }
 
         private static void TestCaseOnlyRename()
