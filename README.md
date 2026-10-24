@@ -6,6 +6,12 @@
 
 <p align="center">Keep folders in step on Windows: backups, mirrors and two-way sync between folders, drives, USB drives and network shares. A replacement for Microsoft SyncToy.</p>
 
+<p align="center">
+  <a href="https://github.com/azeembukhariprivate/kudusync/releases/latest/download/KUDUSYNC-setup.exe"><img src="https://img.shields.io/badge/Download-KUDUSYNC%20for%20Windows-2ea44f?style=for-the-badge" alt="Download KUDUSYNC for Windows"></a>
+  <br>
+  <sub>The installer for Windows 10 and 11, always the latest version · <a href="https://github.com/azeembukhariprivate/kudusync/releases/latest">portable zip and what's new</a></sub>
+</p>
+
 ---
 
 ## Features
@@ -39,7 +45,7 @@ Files are compared by size and modified time (allowing for the 2-second precisio
 
 ## Download
 
-Get the latest version from the [Releases](../../releases/latest) page:
+**[Download the installer](https://github.com/azeembukhariprivate/kudusync/releases/latest/download/KUDUSYNC-setup.exe)** (`KUDUSYNC-setup.exe`, always the latest version), or get any of these from the [Releases page](https://github.com/azeembukhariprivate/kudusync/releases/latest):
 
 - `KUDUSYNC-x.y.z-setup.exe` installs KUDUSYNC for your Windows account (no administrator rights needed).
 - `KUDUSYNC-x.y.z-portable.zip` runs without installing: unzip it anywhere and open `KUDUSYNC.exe`. The portable copy keeps its pairs and logs in a `Data` folder beside it.
