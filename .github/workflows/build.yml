@@ -1,0 +1,100 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Work out the version
+        id: ver
+        shell: pwsh
+        run: |
+          $version = ([xml](Get-Content src/KUDUSYNC/KUDUSYNC.csproj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+          if ("${{ github.ref_type }}" -eq "tag") { $version = "${{ github.ref_name }}".TrimStart('v', 'V') }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Version: $version"
+
+      - name: Is this a new version?
+        id: rel
+        shell: pwsh
+        run: |
+          # A push to main whose version has no tag yet gets a release of its own.
+          $new = "false"
+          if ("${{ github.event_name }}" -eq "push" -and "${{ github.ref }}" -eq "refs/heads/main") {
+            git ls-remote --exit-code --tags origin "refs/tags/v${{ steps.ver.outputs.version }}" | Out-Null
+            if ($LASTEXITCODE -eq 2) { $new = "true" }
+            elseif ($LASTEXITCODE -ne 0) { Write-Host "Couldn't check the tags (exit code $LASTEXITCODE); no release this time." }
+          }
+          "new=$new" >> $env:GITHUB_OUTPUT
+          Write-Host "New release: $new"
+          $global:LASTEXITCODE = 0
+
+      - name: Test the core logic
+        shell: pwsh
+        run: dotnet run --project tests/KUDUSYNC.Tests -c Release
+
+      - name: Build
+        shell: pwsh
+        run: dotnet build src/KUDUSYNC/KUDUSYNC.csproj -c Release "-p:Version=${{ steps.ver.outputs.version }}" -o out/KUDUSYNC
+
+      - name: Self-test the app (real syncs, virtual USB drives, a share, Task Scheduler, the tray, every screen)
+        shell: pwsh
+        timeout-minutes: 16
+        run: |
+          $p = Start-Process -FilePath out/KUDUSYNC/KUDUSYNC.exe -ArgumentList '--self-test' -PassThru
+          if (-not $p.WaitForExit(840000)) { $p.Kill(); Write-Host "Self-test timed out"; exit 1 }
+          Get-Content out/KUDUSYNC/self-test.log -ErrorAction SilentlyContinue
+          Remove-Item out/KUDUSYNC/self-test.log -ErrorAction SilentlyContinue
+          if ($p.ExitCode -ne 0) { Write-Host "Self-test failed with exit code $($p.ExitCode)"; exit 1 }
+
+      - name: Show build output
+        shell: pwsh
+        run: Get-ChildItem -Recurse out/KUDUSYNC | Select-Object FullName, Length | Format-Table -AutoSize
+
+      - name: Make portable zip
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          # The marker file makes the portable copy keep its pairs and logs in a Data folder beside it.
+          Copy-Item -Recurse out/KUDUSYNC out/portable
+          Set-Content out/portable/KUDUSYNC.portable "KUDUSYNC keeps its pairs and logs in the Data folder next to it. Delete this file to use %LOCALAPPDATA%\KUDUSYNC instead."
+          Compress-Archive -Path out/portable/* -DestinationPath "artifacts/KUDUSYNC-${{ steps.ver.outputs.version }}-portable.zip"
+
+      - name: Make installer
+        shell: pwsh
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y --no-progress | Out-Null
+          }
+          & $iscc "/DMyAppVersion=${{ steps.ver.outputs.version }}" "/DSourceDir=$PWD\out\KUDUSYNC" "/O$PWD\artifacts" installer\KUDUSYNC.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: KUDUSYNC-${{ steps.ver.outputs.version }}
+          path: artifacts/*
+
+      - name: Publish GitHub release
+        if: github.ref_type == 'tag' || steps.rel.outputs.new == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: KUDUSYNC ${{ steps.ver.outputs.version }}
+          files: artifacts/*
+          generate_release_notes: true

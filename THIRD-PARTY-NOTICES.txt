@@ -1,0 +1,22 @@
+KUDUSYNC - third-party notices
+==============================
+
+KUDUSYNC is released under the MIT License (see LICENSE.txt).
+It does not include any third-party code or files. Its sync engine, and the
+reader it uses to import folder pairs from Microsoft SyncToy (which follows
+Microsoft's publicly documented [MS-NRBF] format), are its own code.
+
+It uses the following parts of Windows, which are NOT included with KUDUSYNC:
+
+1. Microsoft .NET Framework 4.8
+-------------------------------
+KUDUSYNC runs on the .NET Framework 4.8, which is part of Windows 10 and 11
+and is not redistributed with KUDUSYNC.
+
+2. Windows Task Scheduler and Credential Manager
+------------------------------------------------
+Schedules are Windows Task Scheduler tasks, and network logins are kept in
+Windows Credential Manager.
+
+KUDUSYNC is not affiliated with, sponsored or endorsed by Microsoft.
+Windows, SyncToy and NTFS are names of Microsoft Corporation.

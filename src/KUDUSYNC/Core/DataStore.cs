@@ -68,9 +68,10 @@ namespace Kudusync.Core
         // ------------------------------------------------------------------ helpers
 
         /// <summary>A lock shared by every KUDUSYNC process of this user (the app, scheduled runs and the tray).</summary>
-        public static IDisposable Lock(string name, int timeoutMs = 10000) => new NamedLock("KUDUSYNC-" + name + "-" + Hash(Folder), timeoutMs);
+        public static IDisposable Lock(string name, int timeoutMs = 10000) => new NamedLock("KUDUSYNC-" + name + "-" + StableHash(Folder), timeoutMs);
 
-        private static string Hash(string text)
+        /// <summary>A short hash that's the same in every process (string.GetHashCode isn't guaranteed to be).</summary>
+        public static string StableHash(string text)
         {
             unchecked
             {

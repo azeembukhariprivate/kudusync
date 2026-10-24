@@ -60,9 +60,13 @@ namespace Kudusync.Core
                    "<RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable><IdleSettings><StopOnIdleEnd>false</StopOnIdleEnd><RestartOnIdle>false</RestartOnIdle></IdleSettings>" +
                    "<AllowStartOnDemand>true</AllowStartOnDemand><Enabled>true</Enabled><Hidden>false</Hidden><RunOnlyIfIdle>false</RunOnlyIfIdle><WakeToRun>false</WakeToRun>" +
                    "<ExecutionTimeLimit>PT72H</ExecutionTimeLimit><Priority>7</Priority></Settings>" +
-                   "<Actions Context=\"Author\"><Exec><Command>" + Escape(exe) + "</Command><Arguments>" + Escape("--run-scheduled " + pair.Id) + "</Arguments></Exec></Actions>" +
+                   "<Actions Context=\"Author\"><Exec><Command>" + Escape(exe) + "</Command><Arguments>" + Escape(Arguments(pair)) + "</Arguments></Exec></Actions>" +
                    "</Task>";
         }
+
+        /// <summary>The command line a task runs (a scratch data folder is passed on, for the self-test).</summary>
+        public static string Arguments(FolderPair pair) =>
+            "--run-scheduled " + pair.Id + (string.IsNullOrEmpty(DataStore.OverrideFolder) ? string.Empty : " --data " + Args.Quote(DataStore.OverrideFolder));
 
         private static string Escape(string text) => SecurityElement.Escape(text ?? string.Empty);
 
