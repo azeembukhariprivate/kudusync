@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Checks KUDUSYNC's sync engine (planning every mode, carrying plans out on real folders, records, filters,
+       SyncToy import). Runs on any OS with: dotnet run, project tests/KUDUSYNC.Tests -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);CA1416;SYSLIB0011;SYSLIB0021</NoWarn>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\KUDUSYNC\Core\*.cs" Exclude="..\..\src\KUDUSYNC\Core\ThemeManager.cs" LinkBase="Core" />
+  </ItemGroup>
+
+</Project>
