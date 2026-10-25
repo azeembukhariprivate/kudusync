@@ -626,7 +626,7 @@ namespace Kudusync.Views
             Pump();
             window.Close();
             var pair = SyncToyImport.ToPair(found[0]);
-            Expect(pair.Filters.Include == "*.jpg; *.png" && pair.Filters.SkipHidden && pair.Verify, "settings carried over");
+            Expect(pair.Filters.Include == "*.jpg; *.png" && pair.Filters.SkipHidden && pair.CompareContents && !pair.Verify, "settings carried over");
         }
 
         // ================================================================== the window

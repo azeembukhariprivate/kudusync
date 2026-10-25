@@ -265,6 +265,86 @@ namespace Kudusync.Tests
             Equal("photo.jpg", plan.Actions[0].From, "from");
         }
 
+        private static void TestClockChangeOnFatDrives()
+        {
+            var hour = TimeSpan.TicksPerHour;
+            var two = TimeSpan.FromSeconds(2).Ticks;
+            Check(Planner.TimesMatch(1000, 1000 + hour, two, true), "exactly an hour apart, on FAT");
+            Check(Planner.TimesMatch(1000, 1000 + hour + two, two, true), "an hour and two seconds (FAT's 2-second steps)");
+            Check(!Planner.TimesMatch(1000, 1000 + hour, two, false), "an hour apart elsewhere is a change");
+            Check(!Planner.TimesMatch(1000, 1000 + 2 * hour, two, true), "two hours apart is a change");
+            Check(!Planner.TimesMatch(1000, 1000 + 30 * TimeSpan.TicksPerMinute, two, true), "half an hour apart is a change");
+
+            // After the clocks change, every file on a FAT drive looks an hour off: nothing is copied again.
+            var left = new Tree();
+            var right = new Tree();
+            for (var i = 0; i < 5; i++)
+            {
+                left.Add(new Entry { Path = $"photo{i}.jpg", Size = 5000 + i, Mtime = Base.Ticks });
+                right.Add(new Entry { Path = $"photo{i}.jpg", Size = 5000 + i, Mtime = Base.Ticks + hour });
+            }
+            right.Add(new Entry { Path = "edited.jpg", Size = 7, Mtime = Base.Ticks + hour });
+            left.Add(new Entry { Path = "edited.jpg", Size = 8, Mtime = Base.Ticks + 2 * hour }); // really changed: different size
+            Equal(6, Planner.Build(left, right, null, new PlanOptions { Mode = SyncMode.Mirror }).ChangedFiles, "without the allowance every file is copied");
+            var plan = Planner.Build(left, right, null, new PlanOptions { Mode = SyncMode.Mirror, HourShift = true });
+            Equal(1, plan.ChangedFiles, "with the allowance only the edited file is copied");
+            Equal("edited.jpg", plan.Actions.Single(a => a.Kind == ActionKind.Update).Path, "the edited file");
+
+            // Two-way: the record was made before the clocks changed; both sides shifted, nothing changed.
+            var record = RecordOfPhotos(left, hour);
+            var twoWay = Planner.Build(Shift(left, hour), Shift(right, hour), record, new PlanOptions { Mode = SyncMode.TwoWay, HourShift = true });
+            Equal(0, twoWay.Actions.Count(a => a.Path.StartsWith("photo")), "two-way leaves shifted files alone");
+        }
+
+        private static void TestCompareContents()
+        {
+            var l = NewDir("l");
+            var r = NewDir("r");
+            Put(l, "same.txt", "hello", 0);
+            Put(r, "same.txt", "hello", 0);
+            Put(l, "sneaky.txt", "AAAA", 0); // same size and time, different bytes
+            Put(r, "sneaky.txt", "BBBB", 0);
+
+            var pair = Pair(l, r, SyncMode.Mirror);
+            Equal(0, PlanOnly(pair).ChangedFiles, "size and time alone see no change");
+            pair.CompareContents = true;
+            var result = Run(pair, plan =>
+            {
+                Equal(1, plan.ChangedFiles, "contents compared");
+                Equal("sneaky.txt", plan.Actions.Single(a => a.Kind == ActionKind.Update).Path, "the changed file");
+            });
+            Equal(RunStatus.Ok, result.Status, "status");
+            Equal("AAAA", Read(r, "sneaky.txt"), "copied");
+
+            // Two-way: neither side can be said to be the changed one, so both copies are kept.
+            var l2 = NewDir("l");
+            var r2 = NewDir("r");
+            Put(l2, "notes.txt", "left", 0);
+            Put(r2, "notes.txt", "rite", 0);
+            var two = Pair(l2, r2, SyncMode.TwoWay);
+            two.CompareContents = true;
+            Equal(1, PlanOnly(two).Conflicts, "two-way keeps both");
+
+            Check(Paths.SameContents(Path.Combine(l, "same.txt"), Path.Combine(r, "same.txt")), "same bytes");
+            Check(!Paths.SameContents(Path.Combine(l, "same.txt"), Path.Combine(l, "sneaky.txt")), "different sizes");
+        }
+
+        private static Tree Shift(Tree tree, long by)
+        {
+            var copy = new Tree();
+            foreach (var e in tree.Items.Values) copy.Add(new Entry { Path = e.Path, Size = e.Size, Mtime = e.Mtime + by, IsDir = e.IsDir });
+            return copy;
+        }
+
+        private static SyncRecord RecordOfPhotos(Tree left, long hour)
+        {
+            // A record of the photos as both sides were at the last sync (the right side an hour ahead, as above).
+            var record = new SyncRecord();
+            foreach (var e in left.Items.Values.Where(e => e.Path.StartsWith("photo")))
+                record.Items[e.Path] = new RecordEntry { Path = e.Path, Size = e.Size, LeftMtime = e.Mtime, RightMtime = e.Mtime + hour };
+            return record;
+        }
+
         // ================================================================== Two-way
 
         private static void TestTwoWayFirstRunMerges()
@@ -626,7 +706,7 @@ namespace Kudusync.Tests
             Equal(@"E:\Backup\Pictures", found[0].Right, "right");
             Equal("*.jpg", photos.Filters.Include, "include");
             Check(photos.Filters.Exclude.Contains("*.tmp"), "exclude");
-            Check(photos.Filters.SkipHidden && photos.Verify, "attributes and check contents");
+            Check(photos.Filters.SkipHidden && photos.CompareContents && !photos.Verify, "attributes, and \"check file contents\" compares contents");
             Check(found[1].ExcludedFolders.Contains(@"C:\Docs\Temp"), "excluded folders");
 
             try

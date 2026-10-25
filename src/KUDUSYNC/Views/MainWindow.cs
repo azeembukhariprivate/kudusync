@@ -417,6 +417,7 @@ namespace Kudusync.Views
             Row("Replaced and deleted files", keep);
             var checks = new List<string>();
             if (pair.Verify) checks.Add("every copy is checked against the original");
+            if (pair.CompareContents) checks.Add("files are compared by contents, not just size and date");
             if (pair.DetectRenames) checks.Add("renamed files are renamed, not copied again");
             if (!pair.InRunAll) checks.Add("not included in \"Sync all\"");
             if (checks.Count > 0) Row("Also", Ui.Text(char.ToUpper(checks[0][0]) + string.Join("; ", checks).Substring(1), 12.5, wrap: true));

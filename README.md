@@ -28,10 +28,11 @@
 - **Renamed and moved files are renamed**, not copied again (exact on NTFS, using the file's ID; elsewhere by size and time, only when there's exactly one match).
 - **USB drives are recognised by the drive itself**, not by its letter: a pair keeps working when Windows gives the drive another letter, and never syncs into a different drive that got the old letter.
 - **Network shares** that need a login: it's saved in Windows Credential Manager (never by KUDUSYNC itself) and used for scheduled syncs too. A share that's asleep is retried before giving up.
-- **Schedules** (every day, certain days, every few hours, or when you sign in) are Windows Task Scheduler tasks, so they run even when KUDUSYNC is closed, without administrator rights, and missed runs happen as soon as the PC is back on.
+- **Schedules** (every day, certain days, every few hours, or when you sign in) are Windows Task Scheduler tasks, so they run even when KUDUSYNC is closed, without administrator rights, and missed runs happen as soon as the PC is back on. They run while you're signed in to Windows (a locked screen is fine); a run missed while you were signed out happens when you sign in again.
 - **In the notification area** (optional): **live sync** keeps a pair in step a short while after files change, and a **notification when a pair's USB drive is plugged in** lets you sync it with one click.
 - **Right-click a folder** in File Explorer: *Sync with KUDUSYNC* runs the pairs that use it; *Back up this folder with KUDUSYNC…* creates a new pair (optional, chosen when installing or in Settings).
-- **Import from SyncToy**: SyncToy 2.x's folder pairs are read straight from its settings and brought across, with their filters.
+- **Import from SyncToy**: SyncToy 2.x's folder pairs are read straight from its settings and brought across, with their filters and "Check file contents".
+- **Compare file contents** (optional, per pair): files with the same size and date are also compared byte by byte, to catch changes those don't show. Slower, since the files are read on both sides.
 - **Filters**: include and leave out files by name pattern, leave out folders, skip hidden and system files. Office lock files (`~$*`), `*.tmp` and `Thumbs.db` are left out by default.
 - **Careful copying**: copies are written to a temporary file and only get their real name when complete; files that change while being copied are tried again next time; files in use are skipped and retried; dates and attributes are kept; paths longer than 260 characters work; optional **checking of every copy** against the original.
 - **History of every run** (from the window, a schedule, live sync or a notification) with a full text log, plus Windows notifications for scheduled and automatic syncs.
@@ -41,7 +42,7 @@
 
 Each pair keeps a small record of what both folders looked like after its last sync. It's kept on this PC only (in `%LOCALAPPDATA%\KUDUSYNC`), so nothing is written into your folders except the `_KUDUSYNC History` folder. Two-way sync needs the record to tell a file that's new on one side from one that was deleted on the other; all modes use it to recognise renamed files. If the record is lost, the next run is treated as a first run, which never deletes anything.
 
-Files are compared by size and modified time (allowing for the 2-second precision of FAT drives).
+Files are compared by size and modified time (allowing for the 2-second precision of FAT drives). FAT and exFAT drives (most USB sticks and memory cards) store local time, so when the clocks change every file's time moves by exactly an hour; on those drives a one-hour difference counts as the same, so nothing is copied again.
 
 ## Download
 

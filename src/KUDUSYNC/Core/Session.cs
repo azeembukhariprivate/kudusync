@@ -44,6 +44,9 @@ namespace Kudusync.Core
 
         public long Tolerance { get; set; } = TimeSpan.FromSeconds(2).Ticks;
 
+        /// <summary>A side is a FAT or exFAT drive: a file time exactly an hour off (the clocks changed) still counts as the same.</summary>
+        public bool HourShift => (Left?.Volume?.StoresLocalTime ?? false) || (Right?.Volume?.StoresLocalTime ?? false);
+
         private SyncSession(FolderPair pair, string trigger, IDisposable runLock)
         {
             Pair = pair;
@@ -116,10 +119,28 @@ namespace Kudusync.Core
         /// <summary>Lists both folders. <paramref name="progress"/> gets the number of items looked at so far.</summary>
         public void Scan(Action<int> progress = null, CancellationToken token = default)
         {
+            _scanToken = token;
             Started = DateTime.Now;
             var leftCount = 0;
             LeftTree = ScanSide(Left, Side.Left, n => progress?.Invoke(leftCount = n), token);
             RightTree = ScanSide(Right, Side.Right, n => progress?.Invoke(leftCount + n), token);
+        }
+
+        private CancellationToken _scanToken;
+
+        /// <summary>Compares a file's two copies byte by byte (for <see cref="FolderPair.CompareContents"/>).</summary>
+        private bool ContentsDiffer(string relative)
+        {
+            _scanToken.ThrowIfCancellationRequested();
+            try
+            {
+                return !Paths.SameContents(Paths.Full(Left.Root, relative), Paths.Full(Right.Root, relative), _scanToken);
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+                Notes.Add($"Couldn't compare the contents of {relative}: {ex.Message}");
+                return false;
+            }
         }
 
         private Tree ScanSide(ResolvedLocation location, Side side, Action<int> progress, CancellationToken token)
@@ -143,6 +164,8 @@ namespace Kudusync.Core
                 Mode = Pair.Mode,
                 DetectRenames = Pair.DetectRenames,
                 Tolerance = Tolerance,
+                HourShift = HourShift,
+                ContentsDiffer = Pair.CompareContents ? ContentsDiffer : (Func<string, bool>)null,
                 Now = now ?? DateTime.Now
             });
             Notes.Clear();
@@ -220,7 +243,7 @@ namespace Kudusync.Core
 
             if (Pair.Mode != SyncMode.Move)
             {
-                var record = BuildRecord(LeftTree, RightTree, Record, Tolerance);
+                var record = BuildRecord(LeftTree, RightTree, Record, Tolerance, HourShift);
                 record.LeftRoot = RecordKey(Pair.Left);
                 record.RightRoot = RecordKey(Pair.Right);
                 try { record.Save(DataStore.RecordFile(Pair.Id)); }
@@ -267,13 +290,13 @@ namespace Kudusync.Core
         /// The record after a run: files that are the same on both sides are recorded as they are now. Files that differ
         /// (a step failed or was unticked) keep their previous record, so the next run sees the same change again.
         /// </summary>
-        public static SyncRecord BuildRecord(Tree left, Tree right, SyncRecord old, long tolerance)
+        public static SyncRecord BuildRecord(Tree left, Tree right, SyncRecord old, long tolerance, bool hourShift = false)
         {
             var record = new SyncRecord();
             foreach (var l in left.Items.Values)
             {
                 var r = right.Get(l.Path);
-                if (r != null && Planner.Same(l, r, tolerance))
+                if (r != null && Planner.Same(l, r, tolerance, hourShift))
                 {
                     record.Items[l.Path] = new RecordEntry
                     {

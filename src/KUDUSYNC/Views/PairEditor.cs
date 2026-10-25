@@ -43,6 +43,7 @@ namespace Kudusync.Views
         private readonly CheckBox _customHistory = new CheckBox { Content = "Keep them in a folder of my choice", Margin = new Thickness(0, 8, 0, 0) };
         private readonly TextBox _historyFolder = new TextBox { MinHeight = 32 };
         private readonly CheckBox _verify = new CheckBox { Content = "Check every copy against the original (slower, catches failing drives)" };
+        private readonly CheckBox _contents = new CheckBox { Content = "Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)", Margin = new Thickness(0, 6, 0, 0) };
         private readonly CheckBox _renames = new CheckBox { Content = "When a file is renamed or moved, rename it on the other side instead of copying it again", Margin = new Thickness(0, 6, 0, 0) };
         private readonly ComboBox _schedule = new ComboBox { MinWidth = 220 };
         private readonly TextBox _time = new TextBox { MinHeight = 32, Width = 70, HorizontalContentAlignment = HorizontalAlignment.Center };
@@ -167,8 +168,10 @@ namespace Kudusync.Views
 
             body.Children.Add(Section("Checks"));
             _verify.IsChecked = pair.Verify;
+            _contents.IsChecked = pair.CompareContents;
             _renames.IsChecked = pair.DetectRenames;
             body.Children.Add(_verify);
+            body.Children.Add(_contents);
             body.Children.Add(_renames);
 
             // ---- automatic
@@ -188,7 +191,7 @@ namespace Kudusync.Views
             }
             body.Children.Add(_dayRow);
             _schedule.SelectionChanged += (s, e) => UpdateSchedule();
-            body.Children.Add(Ui.Subtle("Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. If the PC was off, the sync runs as soon as it's back on.", 12).Margin(0, 8, 0, 0));
+            body.Children.Add(Ui.Subtle("Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. They run while you're signed in to Windows (a locked screen is fine). If the PC was off or you were signed out, the sync runs as soon as you're back.", 12).Margin(0, 8, 0, 0));
 
             _live.IsChecked = pair.LiveSync;
             foreach (var d in DelayChoices) _delay.Items.Add(MainWindow.Delay(d) + " later");
@@ -378,6 +381,7 @@ namespace Kudusync.Views
             pair.KeepDays = keepDays;
             pair.HistoryFolder = historyFolder;
             pair.Verify = _verify.IsChecked == true;
+            pair.CompareContents = _contents.IsChecked == true;
             pair.DetectRenames = _renames.IsChecked == true;
             pair.Schedule.Kind = kind;
             pair.Schedule.Days = days;

@@ -16,6 +16,10 @@ namespace Kudusync.Core
         /// <summary>NTFS and ReFS keep a file's ID when it's renamed, so renames can be recognised exactly.</summary>
         public bool StableFileIds => FileSystem == "NTFS" || FileSystem == "ReFS";
 
+        /// <summary>FAT and exFAT store local time, so file times move by an hour when the clocks change.</summary>
+        public bool StoresLocalTime => FileSystem != null &&
+            (FileSystem.StartsWith("FAT", StringComparison.OrdinalIgnoreCase) || FileSystem.Equals("exFAT", StringComparison.OrdinalIgnoreCase));
+
         public string Describe()
         {
             var name = string.IsNullOrEmpty(Label) ? KindName : Label;

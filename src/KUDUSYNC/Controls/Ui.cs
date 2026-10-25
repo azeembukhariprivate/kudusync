@@ -91,7 +91,17 @@ namespace Kudusync.Controls
         {
             var b = new Button { Content = Label(icon, text) }.Styled(style);
             if (click != null) b.Click += click;
-            if (string.IsNullOrEmpty(text) && icon != null) b.Padding = new Thickness(10, 0, 10, 0);
+            // Screen readers can't read a name from an icon and text in a panel, so the button is given one.
+            if (!string.IsNullOrEmpty(text)) System.Windows.Automation.AutomationProperties.SetName(b, text);
+            if (string.IsNullOrEmpty(text) && icon != null)
+            {
+                b.Padding = new Thickness(10, 0, 10, 0);
+                b.Loaded += (s, e) =>
+                {
+                    if (string.IsNullOrEmpty(System.Windows.Automation.AutomationProperties.GetName(b)) && b.ToolTip is string tip)
+                        System.Windows.Automation.AutomationProperties.SetName(b, tip);
+                };
+            }
             return b;
         }
 

@@ -168,6 +168,11 @@ namespace Kudusync.Core
 
         /// <summary>Read each copy back and compare its checksum with the original.</summary>
         [DataMember] public bool Verify { get; set; }
+        /// <summary>
+        /// Also compare the contents of files whose size and modified time match, to catch changes those don't show
+        /// (SyncToy's "Check file contents"). Slower: every such file is read on both sides.
+        /// </summary>
+        [DataMember] public bool CompareContents { get; set; }
         /// <summary>Rename files in the destination when they were renamed or moved in the source, instead of copying them again.</summary>
         [DataMember] public bool DetectRenames { get; set; }
 
@@ -197,6 +202,7 @@ namespace Kudusync.Core
             Mode = SyncMode.Mirror;
             Filters = new Filters();
             Verify = false;
+            CompareContents = false;
             DetectRenames = true;
             KeepDays = 30;
             HistoryFolder = string.Empty;

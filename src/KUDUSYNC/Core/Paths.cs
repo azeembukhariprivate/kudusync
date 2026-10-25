@@ -119,6 +119,37 @@ namespace Kudusync.Core
 
         public static string Join(string parent, string name) => string.IsNullOrEmpty(parent) ? name : parent + "\\" + name;
 
+        /// <summary>True when two files hold the same bytes (read side by side, stopping at the first difference).</summary>
+        public static bool SameContents(string a, string b, System.Threading.CancellationToken token = default)
+        {
+            const int chunk = 1 << 20;
+            using (var fa = new FileStream(a, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, chunk, FileOptions.SequentialScan))
+            using (var fb = new FileStream(b, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, chunk, FileOptions.SequentialScan))
+            {
+                if (fa.Length != fb.Length) return false;
+                var ba = new byte[chunk];
+                var bb = new byte[chunk];
+                while (true)
+                {
+                    token.ThrowIfCancellationRequested();
+                    var na = ReadFull(fa, ba);
+                    var nb = ReadFull(fb, bb);
+                    if (na != nb) return false;
+                    if (na == 0) return true;
+                    for (var i = 0; i < na; i++)
+                        if (ba[i] != bb[i]) return false;
+                }
+            }
+        }
+
+        private static int ReadFull(Stream s, byte[] buffer)
+        {
+            var total = 0;
+            int n;
+            while (total < buffer.Length && (n = s.Read(buffer, total, buffer.Length - total)) > 0) total += n;
+            return total;
+        }
+
         public static int Depth(string relative) => relative.Count(c => c == '\\');
 
         /// <summary>Makes text safe as a file or folder name.</summary>

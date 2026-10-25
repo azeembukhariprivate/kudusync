@@ -164,7 +164,7 @@ namespace Kudusync.Core
                 Left = Locations.FromPath(p.Left),
                 Right = Locations.FromPath(p.Right),
                 Mode = p.Mode,
-                Verify = p.CheckContents,
+                CompareContents = p.CheckContents,
                 InRunAll = p.Active,
                 KeepDays = p.UsedRecycleBin ? 30 : -1
             };

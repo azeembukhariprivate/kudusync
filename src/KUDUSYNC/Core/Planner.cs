@@ -47,7 +47,21 @@ namespace Kudusync.Core
         public bool DetectRenames { get; set; } = true;
         /// <summary>How far apart two modified times may be and still count as the same (FAT drives store them to 2 seconds).</summary>
         public long Tolerance { get; set; } = TimeSpan.FromSeconds(2).Ticks;
+        /// <summary>
+        /// A side is a FAT or exFAT drive, which stores local time: when the clocks change, every file's time moves by
+        /// exactly one hour, so a one-hour difference also counts as the same.
+        /// </summary>
+        public bool HourShift { get; set; }
+        /// <summary>
+        /// When set, files whose size and time match are also compared by contents: it gets a file's relative path and
+        /// returns true when the two copies differ.
+        /// </summary>
+        public Func<string, bool> ContentsDiffer { get; set; }
         public DateTime Now { get; set; } = DateTime.Now;
+
+        /// <summary>The same size and time, and (when contents are compared) the same contents too.</summary>
+        internal bool Same(Entry a, Entry b) =>
+            Planner.Same(a, b, Tolerance, HourShift) && (a.IsDir || ContentsDiffer == null || !ContentsDiffer(a.Path));
     }
 
     public sealed class Plan
@@ -122,18 +136,25 @@ namespace Kudusync.Core
             }
         }
 
-        public static bool Same(Entry a, Entry b, long tolerance)
+        public static bool Same(Entry a, Entry b, long tolerance, bool hourShift = false)
         {
             if (a == null || b == null || a.IsDir != b.IsDir) return false;
             if (a.IsDir) return true;
-            return a.Size == b.Size && Math.Abs(a.Mtime - b.Mtime) <= tolerance;
+            return a.Size == b.Size && TimesMatch(a.Mtime, b.Mtime, tolerance, hourShift);
         }
 
-        public static bool SameAsRecord(Entry e, RecordEntry r, Side side, long tolerance)
+        public static bool SameAsRecord(Entry e, RecordEntry r, Side side, long tolerance, bool hourShift = false)
         {
             if (e == null || r == null || e.IsDir != r.IsDir) return false;
             if (e.IsDir) return true;
-            return e.Size == r.Size && Math.Abs(e.Mtime - r.Mtime(side)) <= tolerance;
+            return e.Size == r.Size && TimesMatch(e.Mtime, r.Mtime(side), tolerance, hourShift);
+        }
+
+        /// <summary>Two modified times count as the same within the tolerance, or exactly one hour apart (see <see cref="PlanOptions.HourShift"/>).</summary>
+        public static bool TimesMatch(long a, long b, long tolerance, bool hourShift)
+        {
+            var apart = Math.Abs(a - b);
+            return apart <= tolerance || (hourShift && Math.Abs(apart - TimeSpan.TicksPerHour) <= tolerance);
         }
 
         private static bool Protected(string path, Tree left, Tree right) => left.IsUnderUnreadable(path) || right.IsUnderUnreadable(path);
@@ -158,7 +179,7 @@ namespace Kudusync.Core
                 }
                 if (r == null) newFiles.Add(l);
                 else if (r.IsDir) plan.Clashes.Add(l.Path);
-                else if (Same(l, r, o.Tolerance))
+                else if (o.Same(l, r))
                 {
                     if (!string.Equals(l.Path, r.Path, StringComparison.Ordinal))
                         plan.Actions.Add(new SyncAction { Kind = ActionKind.Rename, Target = Side.Right, From = r.Path, Path = l.Path, Size = l.Size, Reason = "Name's capitalisation changed" });
@@ -168,7 +189,8 @@ namespace Kudusync.Core
                     plan.Actions.Add(new SyncAction
                     {
                         Kind = ActionKind.Update, Target = Side.Right, Path = l.Path, Size = l.Size,
-                        Reason = r.Mtime > l.Mtime + o.Tolerance ? "Different from the source (the destination's copy is newer)" : "Changed"
+                        Reason = Same(l, r, o.Tolerance, o.HourShift) ? "Same size and time, but different contents"
+                            : r.Mtime > l.Mtime + o.Tolerance ? "Different from the source (the destination's copy is newer)" : "Changed"
                     });
                 }
             }
@@ -232,7 +254,7 @@ namespace Kudusync.Core
                 var b = record.Get(candidate.Path);
                 if (b == null || b.IsDir || b.Size == 0) continue;
                 if (sourceTree.Get(candidate.Path) != null) continue;
-                if (!SameAsRecord(candidate, b, otherSide, o.Tolerance)) continue; // changed on that side since: not a pure rename
+                if (!SameAsRecord(candidate, b, otherSide, o.Tolerance, o.HourShift)) continue; // changed on that side since: not a pure rename
                 pool.Add(new KeyValuePair<Entry, RecordEntry>(candidate, b));
             }
             if (pool.Count == 0) return result;
@@ -242,7 +264,7 @@ namespace Kudusync.Core
             foreach (var n in newFiles)
             {
                 if (n.Size == 0 || !bySize.TryGetValue(n.Size, out var sameSize)) continue;
-                var matches = sameSize.Where(p => Math.Abs(n.Mtime - p.Value.Mtime(sourceSide)) <= o.Tolerance).ToList();
+                var matches = sameSize.Where(p => TimesMatch(n.Mtime, p.Value.Mtime(sourceSide), o.Tolerance, o.HourShift)).ToList();
                 var byId = sourceTree.StableFileIds && n.FileId != 0 ? matches.Where(p => p.Value.Id(sourceSide) == n.FileId).ToList() : null;
                 if (byId != null && byId.Count > 0) matches = byId;
                 else
@@ -282,7 +304,7 @@ namespace Kudusync.Core
                     plan.Actions.Add(new SyncAction { Kind = ActionKind.Copy, Target = Side.Right, Path = l.Path, Size = l.Size, RemoveSource = true, Reason = "Moved" });
                 else if (r.IsDir)
                     plan.Clashes.Add(l.Path);
-                else if (Same(l, r, o.Tolerance))
+                else if (o.Same(l, r))
                     plan.Actions.Add(new SyncAction { Kind = ActionKind.Delete, Target = Side.Left, Path = l.Path, Size = l.Size, Permanent = true, Reason = "Already in the destination" });
                 else
                     plan.Actions.Add(new SyncAction { Kind = ActionKind.Update, Target = Side.Right, Path = l.Path, Size = l.Size, RemoveSource = true, Reason = "Moved (replaces the destination's copy)" });
@@ -329,12 +351,12 @@ namespace Kudusync.Core
                     continue;
                 }
 
-                var lc = ChangeOf(l, b, Side.Left, o.Tolerance);
-                var rc = ChangeOf(r, b, Side.Right, o.Tolerance);
+                var lc = ChangeOf(l, b, Side.Left, o);
+                var rc = ChangeOf(r, b, Side.Right, o);
 
                 if (l != null && r != null)
                 {
-                    if (Same(l, r, o.Tolerance)) continue;
+                    if (o.Same(l, r)) continue;
                     if (lc == Change.Changed && rc == Change.Unchanged)
                         copies.Add(new SyncAction { Kind = ActionKind.Update, Target = Side.Right, Path = path, Size = l.Size, Reason = "Changed in " + SideName(Side.Left) });
                     else if (rc == Change.Changed && lc == Change.Unchanged)
@@ -400,11 +422,11 @@ namespace Kudusync.Core
             }
         }
 
-        private static Change ChangeOf(Entry e, RecordEntry b, Side side, long tolerance)
+        private static Change ChangeOf(Entry e, RecordEntry b, Side side, PlanOptions o)
         {
             if (e == null) return b != null ? Change.Deleted : Change.None;
             if (b == null || b.IsDir) return Change.New;
-            return SameAsRecord(e, b, side, tolerance) ? Change.Unchanged : Change.Changed;
+            return SameAsRecord(e, b, side, o.Tolerance, o.HourShift) ? Change.Unchanged : Change.Changed;
         }
 
         public static string SideName(Side side) => side == Side.Left ? "Folder 1" : "Folder 2";
