@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Work out the version
         id: ver
@@ -60,6 +60,19 @@ jobs:
           Remove-Item out/KUDUSYNC/self-test.log -ErrorAction SilentlyContinue
           if ($p.ExitCode -ne 0) { Write-Host "Self-test failed with exit code $($p.ExitCode)"; exit 1 }
 
+      - name: Keep the screenshots the self-test took
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: KUDUSYNC-screenshots-${{ steps.ver.outputs.version }}
+          path: out/KUDUSYNC/screenshots/*.png
+          if-no-files-found: warn
+
+      - name: Leave the screenshots out of the app
+        if: always()
+        shell: pwsh
+        run: Remove-Item -Recurse -Force out/KUDUSYNC/screenshots -ErrorAction SilentlyContinue
+
       - name: Show build output
         shell: pwsh
         run: Get-ChildItem -Recurse out/KUDUSYNC | Select-Object FullName, Length | Format-Table -AutoSize
@@ -84,7 +97,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload build files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: KUDUSYNC-${{ steps.ver.outputs.version }}
           path: artifacts/*
@@ -96,13 +109,16 @@ jobs:
 
       - name: Publish GitHub release
         if: github.ref_type == 'tag' || steps.rel.outputs.new == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.ver.outputs.version }}
-          target_commitish: ${{ github.sha }}
-          name: KUDUSYNC ${{ steps.ver.outputs.version }}
-          files: artifacts/*
-          generate_release_notes: true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "v${{ steps.ver.outputs.version }}"
+          $files = (Get-ChildItem artifacts/*).FullName
+          gh release view $tag 2>$null | Out-Null
+          if ($LASTEXITCODE -eq 0) { gh release upload $tag $files --clobber }
+          else { gh release create $tag $files --target "${{ github.sha }}" --title "KUDUSYNC ${{ steps.ver.outputs.version }}" --generate-notes }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Give the latest release a copy of the installer without the version in its name
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.rel.outputs.new != 'true'
