@@ -1,3 +1,5 @@
+// Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
+// Change it there and run its sync script; the build fails when this copy differs from kudu-common.
 using System;
 using System.Net;
 using System.Net.Http;
@@ -22,7 +24,7 @@ namespace Kudusync.Core
 
             using (var http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) })
             {
-                http.DefaultRequestHeaders.UserAgent.ParseAdd("KUDUSYNC/" + AppInfo.VersionText);
+                http.DefaultRequestHeaders.UserAgent.ParseAdd(AppInfo.Name + "/" + AppInfo.VersionText);
                 http.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
 
                 var url = $"https://api.github.com/repos/{AppInfo.RepoOwner}/{AppInfo.RepoName}/releases/latest";

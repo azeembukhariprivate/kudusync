@@ -42,6 +42,19 @@ jobs:
           Write-Host "New release: $new"
           $global:LASTEXITCODE = 0
 
+      - name: Shared code matches kudu-common
+        shell: pwsh
+        run: |
+          # The shared files come from https://github.com/azeembukhariprivate/kudu-common and mustn't be edited here.
+          $sha = (Select-String -Path .kudu-common -Pattern '^commit (\S+)').Matches[0].Groups[1].Value
+          git clone -q https://github.com/azeembukhariprivate/kudu-common "$env:RUNNER_TEMP/kudu-common"
+          git -C "$env:RUNNER_TEMP/kudu-common" checkout -q $sha
+          if ($LASTEXITCODE -ne 0) { Write-Host "kudu-common has no commit $sha"; exit 1 }
+          python "$env:RUNNER_TEMP/kudu-common/sync.py" --check .
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $latest = git -C "$env:RUNNER_TEMP/kudu-common" rev-parse origin/main
+          if ($latest -ne $sha) { Write-Host "::warning::kudu-common has newer shared code than this app; run its sync.py." }
+
       - name: Test the core logic
         shell: pwsh
         run: dotnet run --project tests/KUDUSYNC.Tests -c Release

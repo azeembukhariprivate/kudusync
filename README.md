@@ -69,6 +69,14 @@ out\KUDUSYNC\KUDUSYNC.exe --self-test
 
 The tests plan every mode against made-up folder trees and run real syncs on temporary folders: mirror, update, move and two-way (first-run merge, changes, deletions, conflicts, a change beating a deletion), renames, filters, unreadable folders, safety checks, unticked steps, verification, history clean-up, the record, pairs and the run log, schedules and the SyncToy import. `--self-test` needs administrator rights: it syncs real folders in every mode and compares every byte, checks renames by NTFS file ID, a file in use, very long paths and attributes, creates a virtual USB drive (VHD) and changes its letter, syncs to a FAT32 drive and a network share, creates every kind of Windows Task Scheduler task and lets Windows run one, starts the tray part and checks live sync and the drive-plugged-in notification, checks the right-click menu and the SyncToy import, drives every screen in both themes, writes `self-test.log` and exits. To build the installer, install [Inno Setup 6](https://jrsoftware.org/isinfo.php) and compile `installer/KUDUSYNC.iss`.
 
+
+### Shared code
+
+Some files (the look, dialogs, the update check, administrator helpers) are shared by the KUDU apps and come from
+[kudu-common](https://github.com/azeembukhariprivate/kudu-common); each starts with a comment saying so, and `.kudu-common`
+lists them. You don't need kudu-common to build this app, but change those files there, not here: the build checks that
+they match.
+
 ## Publishing a new version
 
 1. Change `<Version>` in `src/KUDUSYNC/KUDUSYNC.csproj` (and `MyAppVersion` in `installer/KUDUSYNC.iss`).

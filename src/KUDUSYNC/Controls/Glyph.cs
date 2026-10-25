@@ -1,3 +1,5 @@
+// Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
+// Change it there and run its sync script; the build fails when this copy differs from kudu-common.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

@@ -1,3 +1,5 @@
+// Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
+// Change it there and run its sync script; the build fails when this copy differs from kudu-common.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,13 +16,13 @@ namespace Kudusync.Views
 {
     public static class Dialogs
     {
-        public static void Info(Window owner, string message, string title = "KUDUSYNC") =>
+        public static void Info(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Information);
 
-        public static void Error(Window owner, string message, string title = "KUDUSYNC") =>
+        public static void Error(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
 
-        public static bool Confirm(Window owner, string message, string title = "KUDUSYNC") =>
+        public static bool Confirm(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
 
         private static MessageBoxResult Show(Window owner, string message, string title, MessageBoxButton buttons, MessageBoxImage image)
@@ -86,7 +88,7 @@ namespace Kudusync.Views
                 if (_icon != null) return _icon;
                 try
                 {
-                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Kudusync.Assets.KUDUSYNC.ico"))
+                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Kudusync.Assets." + AppInfo.Name + ".ico"))
                     {
                         var decoder = new IconBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
                         _icon = decoder.Frames.OrderByDescending(f => f.PixelWidth).First();
@@ -101,7 +103,7 @@ namespace Kudusync.Views
         }
 
         public static Stream AppIconStream() =>
-            Assembly.GetExecutingAssembly().GetManifestResourceStream("Kudusync.Assets.KUDUSYNC.ico");
+            Assembly.GetExecutingAssembly().GetManifestResourceStream("Kudusync.Assets." + AppInfo.Name + ".ico");
 
         /// <summary>Common window setup: theme colours, font, icon and title bar.</summary>
         public static void Prepare(Window window, string title, Window owner = null)
