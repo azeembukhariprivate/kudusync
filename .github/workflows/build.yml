@@ -52,8 +52,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { Write-Host "kudu-common has no commit $sha"; exit 1 }
           python "$env:RUNNER_TEMP/kudu-common/sync.py" --check .
           if ($LASTEXITCODE -ne 0) { exit 1 }
-          $latest = git -C "$env:RUNNER_TEMP/kudu-common" rev-parse origin/main
-          if ($latest -ne $sha) { Write-Host "::warning::kudu-common has newer shared code than this app; run its sync.py." }
+          git -C "$env:RUNNER_TEMP/kudu-common" diff --quiet $sha origin/main -- shared
+          if ($LASTEXITCODE -ne 0) { Write-Host "::warning::kudu-common has newer shared code than this app; run its sync.py." }
+          $global:LASTEXITCODE = 0
 
       - name: Test the core logic
         shell: pwsh
