@@ -67,30 +67,52 @@ namespace Kudusync.Core
         public static List<SyncToyPair> Read(Stream stream)
         {
             var found = new List<SyncToyPair>();
-            foreach (var root in NrbfReader.ReadAll(stream))
-                foreach (var obj in Objects(root, new HashSet<object>()))
-                {
-                    var pair = FromObject(obj);
-                    if (pair != null) found.Add(pair);
-                }
+            try
+            {
+                foreach (var root in NrbfReader.ReadAll(stream))
+                    foreach (var obj in Objects(root))
+                    {
+                        var pair = FromObject(obj);
+                        if (pair != null) found.Add(pair);
+                    }
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is IndexOutOfRangeException || ex is InvalidCastException ||
+                                       ex is OverflowException || ex is FormatException || ex is KeyNotFoundException || ex is OutOfMemoryException)
+            {
+                // A damaged or made-up file: say so rather than stop the app.
+                throw new InvalidDataException("This file isn't SyncToy settings that can be read.", ex);
+            }
             return found;
         }
 
         /// <summary>Every object in a graph (the file may hold one settings object per pair, or a list of them).</summary>
-        private static IEnumerable<NrbfObject> Objects(object value, HashSet<object> seen)
+        /// <remarks>Walked with a list rather than by calling itself, so a very long chain of objects can't run out of room.</remarks>
+        private static IEnumerable<NrbfObject> Objects(object root)
         {
-            if (value == null || value is string || !seen.Add(value)) yield break;
-            if (value is NrbfObject obj)
+            var seen = new HashSet<object>(ReferenceEqualityComparer.Instance);
+            var waiting = new Stack<object>();
+            waiting.Push(root);
+            while (waiting.Count > 0)
             {
-                yield return obj;
-                foreach (var member in obj.Members.Values)
-                    foreach (var inner in Objects(member, seen)) yield return inner;
+                var value = waiting.Pop();
+                if (value == null || value is string || !seen.Add(value)) continue;
+                if (value is NrbfObject obj)
+                {
+                    yield return obj;
+                    foreach (var member in obj.Members.Values.Reverse()) waiting.Push(member);
+                }
+                else if (value is object[] array)
+                {
+                    for (var i = array.Length - 1; i >= 0; i--) waiting.Push(array[i]);
+                }
             }
-            else if (value is object[] array)
-            {
-                foreach (var item in array)
-                    foreach (var inner in Objects(item, seen)) yield return inner;
-            }
+        }
+
+        private sealed class ReferenceEqualityComparer : IEqualityComparer<object>
+        {
+            public static readonly ReferenceEqualityComparer Instance = new ReferenceEqualityComparer();
+            public new bool Equals(object a, object b) => ReferenceEquals(a, b);
+            public int GetHashCode(object o) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(o);
         }
 
         private static SyncToyPair FromObject(NrbfObject obj)

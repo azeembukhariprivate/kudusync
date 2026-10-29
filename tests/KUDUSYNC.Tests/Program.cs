@@ -716,6 +716,51 @@ namespace Kudusync.Tests
             }
             catch (InvalidDataException) { }
         }
+
+        /// <summary>Made-up, damaged SyncToy files are refused with a message, never crash the app.</summary>
+        private static void TestSyncToyDamagedFiles()
+        {
+            byte[] Made(Action<BinaryWriter> body)
+            {
+                var m = new MemoryStream();
+                var w = new BinaryWriter(m);
+                w.Write((byte)0); w.Write(1); w.Write(-1); w.Write(1); w.Write(0); // header
+                body(w);
+                w.Flush();
+                return m.ToArray();
+            }
+            void Refused(byte[] data, string what)
+            {
+                try
+                {
+                    SyncToyImport.Read(new MemoryStream(data));
+                    throw new Exception(what + ": accepted");
+                }
+                catch (InvalidDataException) { }
+                catch (EndOfStreamException) { }
+            }
+            // Thousands of records nested inside each other.
+            Refused(Made(w => { for (var i = 0; i < 100000; i++) { w.Write((byte)12); w.Write(i); w.Write("x"); } }), "deep nesting");
+            // An array claiming a billion dimensions.
+            Refused(Made(w => { w.Write((byte)7); w.Write(1); w.Write((byte)0); w.Write(1_000_000_000); }), "huge array shape");
+            // Dimensions that multiply to far more than fits.
+            Refused(Made(w => { w.Write((byte)7); w.Write(1); w.Write((byte)0); w.Write(3); w.Write(9_000_000); w.Write(9_000_000); w.Write(9_000_000); }), "huge array");
+            // A run of "nothing" counted backwards.
+            Refused(Made(w => { w.Write((byte)16); w.Write(1); w.Write(5); w.Write((byte)14); w.Write(-3); }), "negative run");
+
+            // A very long chain of objects, each pointing to the next: read without running out of room.
+            var chain = Made(w =>
+            {
+                const int n = 200000;
+                for (var i = 0; i < n; i++)
+                {
+                    w.Write((byte)16); w.Write(10 + i); w.Write(1); // an array holding a reference to the next one
+                    w.Write((byte)9); w.Write(10 + i + 1);
+                }
+                w.Write((byte)11);
+            });
+            SyncToyImport.Read(new MemoryStream(chain));
+        }
     }
 }
 

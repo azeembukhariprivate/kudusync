@@ -93,7 +93,20 @@ namespace Kudusync.Core
             return _objects.TryGetValue(rootId, out var root) ? root : null;
         }
 
+        private int _depth;
+
+        /// <summary>
+        /// Reads one record. Records can hold records; a damaged or made-up file that nests them very deeply stops with an
+        /// error instead of running the program out of room.
+        /// </summary>
         private object ReadRecord(out bool end)
+        {
+            if (++_depth > 200) throw new InvalidDataException("The file nests its data too deeply.");
+            try { return ReadRecordCore(out end); }
+            finally { _depth--; }
+        }
+
+        private object ReadRecordCore(out bool end)
         {
             end = false;
             var type = _r.ReadByte();
@@ -142,14 +155,16 @@ namespace Kudusync.Core
                     var id = _r.ReadInt32();
                     var arrayType = _r.ReadByte();
                     var rank = _r.ReadInt32();
+                    if (rank < 1 || rank > 32) throw new InvalidDataException("Unsupported array shape.");
                     var lengths = new int[rank];
                     for (var i = 0; i < rank; i++) lengths[i] = _r.ReadInt32();
                     if (arrayType >= 3 && arrayType <= 5)
                         for (var i = 0; i < rank; i++) _r.ReadInt32(); // lower bounds
                     var elementType = _r.ReadByte();
                     var extra = ReadExtra(elementType);
-                    var total = lengths.Aggregate(1L, (a, b) => a * b);
-                    if (total < 0 || total > 10_000_000) throw new InvalidDataException("Array too large.");
+                    if (lengths.Any(l => l < 0 || l > 10_000_000)) throw new InvalidDataException("Array too large.");
+                    var total = lengths.Aggregate(1L, (a, b) => Math.Min(a * b, 100_000_000L));
+                    if (total > 10_000_000) throw new InvalidDataException("Array too large.");
                     var items = elementType == 0
                         ? Enumerable.Range(0, (int)total).Select(_ => ReadPrimitive((byte)extra)).ToArray()
                         : ReadElements((int)total);
@@ -209,6 +224,7 @@ namespace Kudusync.Core
                 if (end) throw new InvalidDataException("The file ended too early.");
                 if (value is NullRun run)
                 {
+                    if (run.Count <= 0) throw new InvalidDataException("The file is damaged.");
                     i += run.Count;
                     continue;
                 }
