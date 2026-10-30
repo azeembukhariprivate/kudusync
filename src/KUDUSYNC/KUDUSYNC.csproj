@@ -12,7 +12,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartupObject>Kudusync.Program</StartupObject>
 
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Product>KUDUSYNC</Product>
     <Company>Azeem Bukhari</Company>
     <Authors>Azeem Bukhari</Authors>

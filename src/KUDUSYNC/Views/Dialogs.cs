@@ -126,7 +126,77 @@ namespace Kudusync.Views
             {
                 window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
+            FitToScreen(window);
         }
+
+        /// <summary>
+        /// Keeps a window on its screen: never bigger than the screen (less the taskbar), and never with its title bar
+        /// above the top, where it couldn't be moved or closed. On a small or low-resolution screen a big window would
+        /// otherwise open partly off the screen.
+        /// </summary>
+        public static void FitToScreen(Window window)
+        {
+            var primary = SystemParameters.WorkArea;
+            if (!double.IsNaN(window.Width) && window.Width > primary.Width) window.Width = Math.Max(window.MinWidth, primary.Width);
+            if (!double.IsNaN(window.Height) && window.Height > primary.Height) window.Height = Math.Max(window.MinHeight, primary.Height);
+            window.Loaded += (s, e) =>
+            {
+                // Windows the self-test puts out of sight on purpose stay there.
+                if (window.WindowState != WindowState.Normal || window.Left < -10000) return;
+                var area = ScreenArea(window) ?? primary;
+                if (window.ActualWidth > area.Width) window.Width = Math.Max(window.MinWidth, area.Width);
+                if (window.ActualHeight > area.Height) window.Height = Math.Max(window.MinHeight, area.Height);
+                var w = double.IsNaN(window.Width) ? window.ActualWidth : window.Width;
+                var h = double.IsNaN(window.Height) ? window.ActualHeight : window.Height;
+                if (window.Left + w > area.Right) window.Left = area.Right - w;
+                if (window.Top + h > area.Bottom) window.Top = area.Bottom - h;
+                if (window.Left < area.Left) window.Left = area.Left;
+                if (window.Top < area.Top) window.Top = area.Top;
+            };
+        }
+
+        /// <summary>The work area (without the taskbar) of the screen the window is on, in WPF units.</summary>
+        private static Rect? ScreenArea(Window window)
+        {
+            try
+            {
+                var handle = new System.Windows.Interop.WindowInteropHelper(window).Handle;
+                var source = PresentationSource.FromVisual(window);
+                if (handle == IntPtr.Zero || source?.CompositionTarget == null) return null;
+                var monitor = MonitorFromWindow(handle, 2 /* nearest */);
+                var info = new MonitorInfo { Size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(MonitorInfo)) };
+                if (monitor == IntPtr.Zero || !GetMonitorInfo(monitor, ref info)) return null;
+                var m = source.CompositionTarget.TransformFromDevice;
+                var topLeft = m.Transform(new Point(info.Work.Left, info.Work.Top));
+                var bottomRight = m.Transform(new Point(info.Work.Right, info.Work.Bottom));
+                return new Rect(topLeft, bottomRight);
+            }
+            catch (Exception ex) when (ex is System.ComponentModel.Win32Exception || ex is InvalidOperationException || ex is DllNotFoundException || ex is EntryPointNotFoundException)
+            {
+                return null;
+            }
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct Bounds
+        {
+            public int Left, Top, Right, Bottom;
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct MonitorInfo
+        {
+            public int Size;
+            public Bounds Monitor;
+            public Bounds Work;
+            public int Flags;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfo info);
 
         /// <summary>A fixed-size dialog with content and a right-aligned row of buttons.</summary>
         public static Window Dialog(Window owner, string title, UIElement content, double width, params Button[] buttons)
