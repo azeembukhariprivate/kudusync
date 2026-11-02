@@ -676,6 +676,12 @@ namespace Kudusync.Tests
             Equal("v3", File.ReadAllText(after.Of("Docs\\report.txt")[0].FullPath), "the one that was there is kept first, so it can be undone");
             Equal(3, after.Of("Docs\\report.txt").Count, "and the earlier version is still kept too");
 
+            // Putting back in the same second as a sync: the kept copy still keeps its own name.
+            Versions.PutBack(Versions.Read(h).Of("Docs\\report.txt").Last(), pair, Side.Right, pair.Left.Path, r, new DateTime(2026, 10, 10, 9, 0, 0));
+            var same = Versions.Read(h);
+            Equal(4, same.Of("Docs\\report.txt").Count, "a fourth version, under its own name");
+            Check(!same.Files.Any(f => f.Contains("(2)")), "no renamed copies: " + string.Join(", ", same.Files));
+
             // A deleted file comes back where it was.
             Versions.PutBack(Versions.Read(h).Of("old.txt")[0], pair, Side.Right, pair.Left.Path, r, new DateTime(2026, 11, 2, 10, 5, 0));
             Equal("gone", Read(r, "old.txt"), "the deleted file is back");

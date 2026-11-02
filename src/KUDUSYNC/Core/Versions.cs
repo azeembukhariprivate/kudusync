@@ -174,6 +174,10 @@ namespace Kudusync.Core
         {
             var root = side == Side.Left ? leftRoot : rightRoot;
             var place = Paths.Full(root, version.Relative);
+            // Its own moment in the history (a sync in the same second would otherwise share its folder, and the kept
+            // copy would get another name there).
+            var historyBase = History.BaseFolder(pair, root, side);
+            while (Directory.Exists(Paths.Long(Path.Combine(historyBase, now.ToString(History.StampFormat, CultureInfo.InvariantCulture))))) now = now.AddSeconds(1);
             if (File.Exists(place)) new History(pair, leftRoot, rightRoot, now, always: true).Keep(side, root, version.Relative);
             Directory.CreateDirectory(Path.GetDirectoryName(place));
             var temp = place + Paths.TempSuffix;
