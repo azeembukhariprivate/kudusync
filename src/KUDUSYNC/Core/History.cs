@@ -18,16 +18,19 @@ namespace Kudusync.Core
         private readonly string _leftRoot;
         private readonly string _rightRoot;
         private readonly string _stamp;
+        private readonly bool _always;
 
-        public History(FolderPair pair, string leftRoot, string rightRoot, DateTime started)
+        /// <param name="always">Keep files even when the pair keeps no history (used when putting an earlier version back).</param>
+        public History(FolderPair pair, string leftRoot, string rightRoot, DateTime started, bool always = false)
         {
+            _always = always;
             _pair = pair;
             _leftRoot = leftRoot;
             _rightRoot = rightRoot;
             _stamp = started.ToString(StampFormat, CultureInfo.InvariantCulture);
         }
 
-        public bool Enabled => _pair.KeepDays >= 0;
+        public bool Enabled => _always || _pair.KeepDays >= 0;
 
         /// <summary>The folder holding all of a side's runs.</summary>
         public static string BaseFolder(FolderPair pair, string sideRoot, Side side)

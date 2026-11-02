@@ -3,7 +3,7 @@
 ; (and syncing never needs them either).
 
 #ifndef MyAppVersion
-  #define MyAppVersion "1.1.2"
+  #define MyAppVersion "1.2.0"
 #endif
 #ifndef SourceDir
   #define SourceDir "..\out\KUDUSYNC"

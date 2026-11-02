@@ -707,6 +707,56 @@ namespace Kudusync.Views
                 Pump();
                 Expect(main.PageName == "history", "history shown");
             });
+            Step("Earlier versions: kept, put back, and the backup as it was", () =>
+            {
+                var pair = main.Selected;
+                pair.Verify = false;
+                // Two syncs that replace and delete files, a moment apart.
+                Put(src, "two.txt", Pattern(3100, 82));
+                File.Delete(Path.Combine(src, @"Album\one.jpg"));
+                Expect(Sync(pair).Status == RunStatus.Ok, "the first sync");
+                Thread.Sleep(1100);
+                Put(src, "two.txt", Pattern(3200, 83));
+                Expect(Sync(pair).Status == RunStatus.Ok, "the second sync");
+
+                var w = new VersionsWindow(main, pair) { SkipConfirm = true };
+                OffScreen(w);
+                w.Show();
+                WaitFor(() => !w.IsLoading, 60, "the earlier versions to be read");
+                Expect(w.Found.Of("two.txt").Count == 2, "two earlier versions of the changed file, got " + w.Found.Of("two.txt").Count);
+                Expect(w.Found.Of(@"Album\one.jpg").Count == 1, "the deleted file is kept");
+                w.SelectFile("two.txt");
+                Pump();
+                Screenshots.One(w, "Earlier versions");
+
+                var oldest = w.Found.Of("two.txt").Last();
+                var put = w.PutBack(oldest);
+                WaitFor(() => put.IsCompleted && !w.IsLoading, 60, "putting it back");
+                Expect(put.Result, "put back");
+                Expect(File.ReadAllBytes(Path.Combine(dst, "two.txt")).SequenceEqual(Pattern(3000, 81)), "the first version is back in the backup");
+                Expect(w.Found.Of("two.txt").Count == 3, "the one that was there is kept, so it can be undone");
+
+                put = w.PutBack(w.Found.Of(@"Album\one.jpg")[0]);
+                WaitFor(() => put.IsCompleted && !w.IsLoading, 60, "putting the deleted file back");
+                Expect(SameBytes(Path.Combine(dst, @"Album\one.jpg"), w.Found.Of(@"Album\one.jpg")[0].FullPath), "the deleted file is back");
+
+                // The whole backup as it was before the first of the two syncs, in a new folder.
+                var first = w.Found.Runs.Min();
+                w.ChooseRun(first);
+                var target = Path.Combine(_temp, "as it was");
+                w.SetTarget(target);
+                var copy = w.CopyAsItWas();
+                WaitFor(() => copy.IsCompleted, 300, "the copy");
+                Expect(copy.Result > 0, "copied: " + w.CopyNote);
+                Expect(File.ReadAllBytes(Path.Combine(target, "two.txt")).SequenceEqual(Pattern(3000, 81)), "the file as it was then");
+                Expect(File.Exists(Path.Combine(target, @"Album\one.jpg")), "with the file deleted since");
+                Expect(!Directory.Exists(Path.Combine(target, Paths.HistoryName)), "without the kept versions themselves");
+                Screenshots.One(w, "The backup as it was");
+                copy = w.CopyAsItWas();
+                WaitFor(() => copy.IsCompleted, 30, "refusing a folder in use");
+                Expect(copy.Result == -1 && w.CopyNote.Contains("empty"), "a folder with files in it isn't used: " + w.CopyNote);
+                w.Close();
+            });
             Step("Edit window for an existing pair", () => ShowAndClose(new PairEditor(main, main.Pairs[0].Clone(), main.Pairs.ToList(), false)));
             Step("Dark theme", () =>
             {
@@ -718,6 +768,7 @@ namespace Kudusync.Views
                 Pump();
                 Screenshots.All("Dark theme");
                 ShowAndClose(new PairEditor(main, new FolderPair(), main.Pairs.ToList(), true));
+                ShowAndClose(new VersionsWindow(main, main.Pairs[0]));
                 ThemeManager.Apply(ThemeMode.Light);
                 main.ShowPairs();
                 Pump();

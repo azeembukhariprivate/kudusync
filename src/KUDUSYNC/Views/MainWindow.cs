@@ -401,7 +401,9 @@ namespace Kudusync.Views
                 Row("Drive plugged in", Ui.Text($"Shows a notification when {(string.IsNullOrEmpty(drive.VolumeLabel) ? "the drive" : drive.VolumeLabel)} is plugged in", 12.5, wrap: true));
             Row("Files", Ui.Text(FilterSummary(pair.Filters), 12.5, wrap: true));
             var keep = Ui.Row(Ui.Text(pair.KeepText, 12.5));
-            if (pair.KeepDays >= 0)
+            var space = Ui.Subtle(string.Empty, 12.5, false);
+            keep.Children.Add(space.Margin(8, 0, 0, 0));
+            var keptFolders = new List<(string Folder, Side Side)>();
             {
                 var keptOn = pair.Mode == SyncMode.TwoWay ? new[] { Side.Left, Side.Right } : new[] { Side.Right };
                 foreach (var side in keptOn)
@@ -410,9 +412,23 @@ namespace Kudusync.Views
                     if (!now.Ok) continue;
                     var folder = History.BaseFolder(pair, now.Root, side);
                     if (!Directory.Exists(Paths.Long(folder))) continue;
+                    keptFolders.Add((folder, side));
                     var label = keptOn.Length == 1 ? "Open" : "Open (" + (side == Side.Left ? pair.LeftTitle : pair.RightTitle) + ")";
                     keep.Children.Add(Ui.Link(label, (s, e) => AppInfo.OpenFolder(folder)).Margin(10, 0, 0, 0));
                 }
+            }
+            if (keptFolders.Count > 0)
+            {
+                // How much room the kept versions take (worked out in the background: there can be many).
+                var measured = pair;
+                Task.Run(() => keptFolders.Select(k => History.Measure(pair, k.Side == Side.Left ? leftNow.Root : rightNow.Root, k.Side)).ToList())
+                    .ContinueWith(t =>
+                    {
+                        if (t.IsFaulted || _selected != measured) return;
+                        var files = t.Result.Sum(x => x.Files);
+                        var bytes = t.Result.Sum(x => x.Bytes);
+                        space.Text = files == 0 ? string.Empty : $"· {Format.Count(files, "file")}, {Format.Size(bytes)}";
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             Row("Replaced and deleted files", keep);
             var checks = new List<string>();
@@ -425,7 +441,8 @@ namespace Kudusync.Views
 
             var actions = Ui.Row(
                 Ui.Button("Sync now", "IconSync", "PrimaryButton", (s, e) => RunPairs(new List<FolderPair> { pair }, false)),
-                Ui.Button("Preview", "IconEye", "SecondaryButton", (s, e) => RunPairs(new List<FolderPair> { pair }, true)).Margin(8, 0, 0, 0));
+                Ui.Button("Preview", "IconEye", "SecondaryButton", (s, e) => RunPairs(new List<FolderPair> { pair }, true)).Margin(8, 0, 0, 0),
+                Ui.Button("Earlier versions", "IconHistory", "SecondaryButton", (s, e) => new VersionsWindow(this, pair).ShowDialog()).Margin(8, 0, 0, 0));
             if (PairLock.IsRunning(pair.Id))
             {
                 foreach (Button b in actions.Children) b.IsEnabled = false;

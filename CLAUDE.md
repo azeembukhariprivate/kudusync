@@ -34,6 +34,13 @@ dotnet build src/KUDUSYNC/KUDUSYNC.csproj -c Release -o out/KUDUSYNC
 out\KUDUSYNC\KUDUSYNC.exe --self-test        (Windows only; needs administrator rights)
 ```
 
+## Notes
+
+- Earlier versions (1.2): `Core/Versions.cs` reads a side's history folder ("_KUDUSYNC History\<run time>\<path>") into
+  versions per file; `AsItWas` picks, for each file, the earliest version kept at or after a run (else the file now);
+  `CopyAsItWas` writes that into a new, empty folder outside the backup (`CheckTarget`); `PutBack` keeps the current file
+  first (`History` with `always`, even for pairs that keep nothing). The window is `Views/VersionsWindow.cs`.
+
 ## Shared code (kudu-common)
 
 The files listed in `.kudu-common` (the look and controls in `Controls/`, `Core/Admin.cs`, `AppInfo.cs`, `Args.cs`,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Kudusync.Core;
@@ -590,6 +591,114 @@ namespace Kudusync.Tests
             Directory.CreateDirectory(Path.Combine(folder, "not a run"));
             Equal(1, History.Cleanup(pair, r, Side.Right, DateTime.Now), "old run removed");
             Check(Directory.Exists(Path.Combine(folder, "not a run")), "other folders left alone");
+        }
+
+
+        // ================================================================== earlier versions
+
+        /// <summary>A backup with three syncs' worth of kept versions, made by hand with known times.</summary>
+        private static (string Root, string History) VersionedBackup()
+        {
+            var r = NewDir("versions");
+            var h = Path.Combine(r, Paths.HistoryName);
+            // Now: report v3, photo, a file added later.
+            Put(r, "Docs\\report.txt", "v3");
+            Put(r, "photo.jpg", "photo");
+            Put(r, "added-later.txt", "new");
+            Put(r, "half" + Paths.TempSuffix, "unfinished");
+            // 1 Oct: report v1 replaced. 10 Oct: report v2 replaced, and old.txt deleted. 20 Oct: nothing for report.
+            Put(h, "2026-10-01 090000\\Docs\\report.txt", "v1");
+            Put(h, "2026-10-10 090000\\Docs\\report.txt", "v2");
+            Put(h, "2026-10-10 090000\\old.txt", "gone");
+            Put(h, "2026-10-20 090000\\photo.jpg", "older photo");
+            Directory.CreateDirectory(Path.Combine(h, "not a run"));
+            return (r, h);
+        }
+
+        private static void TestEarlierVersionsAreRead()
+        {
+            var (r, h) = VersionedBackup();
+            var v = Versions.Read(h);
+            Check(v.Files.SequenceEqual(new[] { "Docs\\report.txt", "old.txt", "photo.jpg" }), "files with versions: " + string.Join(", ", v.Files));
+            var report = v.Of("docs\\REPORT.txt");
+            Equal(2, report.Count, "two versions of the report (any case)");
+            Equal(new DateTime(2026, 10, 10, 9, 0, 0), report[0].ReplacedAt, "newest first");
+            Equal("v1", File.ReadAllText(report[1].FullPath), "the oldest");
+            Equal(4, v.Count, "versions in all");
+            Equal(3, v.Runs.Count, "three syncs kept something");
+            Equal(0, Versions.Read(Path.Combine(r, "nothing here")).Count, "no history folder: none");
+            var now = Versions.CurrentFiles(r);
+            Check(now.OrderBy(x => x).SequenceEqual(new[] { "added-later.txt", "Docs\\report.txt", "photo.jpg" }.OrderBy(x => x)), "files now, without history or unfinished copies: " + string.Join(", ", now));
+        }
+
+        private static void TestTheFolderAsItWas()
+        {
+            var (r, h) = VersionedBackup();
+            var v = Versions.Read(h);
+            var now = Versions.CurrentFiles(r);
+            string Content(List<(string Relative, string From)> plan, string rel) => File.ReadAllText(plan.Single(x => x.Relative == rel).From);
+
+            var beforeOct10 = v.AsItWas(new DateTime(2026, 10, 10, 9, 0, 0), now, x => Paths.Full(r, x));
+            Equal("v2", Content(beforeOct10, "Docs\\report.txt"), "the report as it was until 10 Oct");
+            Equal("gone", Content(beforeOct10, "old.txt"), "a deleted file comes back");
+            Equal("older photo", Content(beforeOct10, "photo.jpg"), "the photo as it was until 20 Oct");
+
+            var beforeOct1 = v.AsItWas(new DateTime(2026, 10, 1, 9, 0, 0), now, x => Paths.Full(r, x));
+            Equal("v1", Content(beforeOct1, "Docs\\report.txt"), "the first report");
+
+            var latest = v.AsItWas(new DateTime(2026, 10, 30), now, x => Paths.Full(r, x));
+            Equal("v3", Content(latest, "Docs\\report.txt"), "after every sync: as it is now");
+            Check(!latest.Any(x => x.Relative == "old.txt"), "the deleted file isn't there now");
+
+            var target = Path.Combine(_root, "as-it-was-" + Guid.NewGuid().ToString("N").Substring(0, 6));
+            Equal(null, Versions.CheckTarget(target, r, h), "a new folder is fine");
+            var problems = new List<string>();
+            var steps = new List<int>();
+            Equal(4, Versions.CopyAsItWas(beforeOct10, target, (d, t) => steps.Add(d), problems, CancellationToken.None), "four files copied");
+            Equal("v2", Read(target, "Docs\\report.txt"), "copied as it was");
+            Equal("gone", Read(target, "old.txt"), "with the deleted file");
+            Equal("v3", Read(r, "Docs\\report.txt"), "the backup isn't touched");
+            Check(steps.Last() == 4 && problems.Count == 0, "progress to the end, no problems");
+            Check(Versions.CheckTarget(target, r, h).Contains("empty"), "a folder with files in it isn't used");
+            Check(Versions.CheckTarget(Path.Combine(r, "inside"), r, h).Contains("outside the backup"), "not inside the backup");
+            Check(Versions.CheckTarget(Path.GetDirectoryName(r), r, h).Contains("outside the backup"), "not around the backup either");
+            Check(Versions.CheckTarget("", r, h) != null, "a folder must be chosen");
+        }
+
+        private static void TestPuttingAVersionBack()
+        {
+            var (r, h) = VersionedBackup();
+            var pair = Pair(NewDir("l"), r, SyncMode.Mirror);
+            var v1 = Versions.Read(h).Of("Docs\\report.txt").Last();
+            Versions.PutBack(v1, pair, Side.Right, pair.Left.Path, r, new DateTime(2026, 11, 2, 10, 0, 0));
+            Equal("v1", Read(r, "Docs\\report.txt"), "the earlier version is back in its place");
+            var after = Versions.Read(h);
+            Equal("v3", File.ReadAllText(after.Of("Docs\\report.txt")[0].FullPath), "the one that was there is kept first, so it can be undone");
+            Equal(3, after.Of("Docs\\report.txt").Count, "and the earlier version is still kept too");
+
+            // A deleted file comes back where it was.
+            Versions.PutBack(Versions.Read(h).Of("old.txt")[0], pair, Side.Right, pair.Left.Path, r, new DateTime(2026, 11, 2, 10, 5, 0));
+            Equal("gone", Read(r, "old.txt"), "the deleted file is back");
+
+            // Even a pair that keeps no history keeps the copy it replaces when putting a version back.
+            pair.KeepDays = -1;
+            Versions.PutBack(Versions.Read(h).Of("photo.jpg")[0], pair, Side.Right, pair.Left.Path, r, new DateTime(2026, 11, 2, 10, 10, 0));
+            Check(Versions.Read(h).Of("photo.jpg").Any(x => File.ReadAllText(x.FullPath) == "photo"), "the photo that was there is kept");
+            Check(!Directory.EnumerateFiles(r, "*" + Paths.TempSuffix, SearchOption.AllDirectories).Any(f => !f.EndsWith("half" + Paths.TempSuffix)), "no unfinished copies left");
+        }
+
+        private static void TestVersionsComeFromRealSyncs()
+        {
+            var l = NewDir("l");
+            var r = NewDir("r");
+            Put(l, "a.txt", "new", 5);
+            Put(r, "a.txt", "old", 1);
+            Put(r, "extra.txt", "x");
+            var pair = Pair(l, r, SyncMode.Mirror);
+            Run(pair);
+            var v = Versions.Read(History.BaseFolder(pair, r, Side.Right));
+            Equal("old", File.ReadAllText(v.Of("a.txt").Single().FullPath), "the replaced file is an earlier version");
+            Equal("x", File.ReadAllText(v.Of("extra.txt").Single().FullPath), "so is the deleted one");
         }
 
         private static void TestRecordRoundTrip()
