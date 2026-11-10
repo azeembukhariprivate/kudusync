@@ -1,0 +1,36 @@
+# Run by hand: puts the screenshots from the latest finished build into a temporary pre-release ("screenshot-staging"),
+# so they can be picked for the README. Run it again with "remove" ticked to take the pre-release away.
+name: Stage screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      remove:
+        description: Remove the temporary pre-release
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Remove the temporary pre-release
+        if: ${{ inputs.remove }}
+        run: gh release delete screenshot-staging --yes --cleanup-tag || true
+      - name: Get the screenshots from the latest finished build
+        if: ${{ !inputs.remove }}
+        run: |
+          run=$(gh run list --workflow build.yml --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+          gh run download "$run" --pattern '*screenshots*' --dir shots
+          (cd shots && zip -q -r ../screenshots.zip .)
+          gh release delete screenshot-staging --yes --cleanup-tag || true
+          gh release create screenshot-staging screenshots.zip --prerelease --target "$GITHUB_SHA" \
+            --title "Screenshots (temporary)" --notes "Temporary: screenshots from build $run, for picking README pictures."
