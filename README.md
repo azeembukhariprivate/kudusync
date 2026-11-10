@@ -12,6 +12,12 @@
   <sub>The installer for Windows 10 and 11, always the latest version · <a href="https://github.com/azeembukhariprivate/kudusync/releases/latest">portable zip and what's new</a></sub>
 </p>
 
+<p align="center">
+  <img src="docs/screenshot-1.png" alt="KUDUSYNC with a folder pair: where it copies from and to, and how" width="820">
+  <br><br>
+  <img src="docs/screenshot-2.png" alt="KUDUSYNC's history of every run" width="820">
+</p>
+
 ---
 
 ## Features
