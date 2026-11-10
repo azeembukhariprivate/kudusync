@@ -1,7 +1,8 @@
 # Shared code copied from https://github.com/azeembukhariprivate/kudu-common by its sync.py.
-commit 2d46adca891b5a7d030b14771b042bae44e4a58c
+commit 19bc6f11045aaabb0740e6aa3134ea644c5be607
 folder src/KUDUSYNC
 - Views/Dialogs.cs
+- Views/SafetyNet.cs
 - Views/Screenshots.cs
 - Core/Admin.cs
 - Core/AppInfo.cs
