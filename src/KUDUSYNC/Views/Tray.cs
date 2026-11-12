@@ -42,12 +42,12 @@ namespace Kudusync.Views
             Log("Started");
             _icon = new Forms.NotifyIcon { Icon = Notifier.AppIcon(Forms.SystemInformation.SmallIconSize.Width), Text = "KUDUSYNC", Visible = true };
             var menu = new Forms.ContextMenuStrip();
-            menu.Items.Add("Open KUDUSYNC", null, (s, e) => Notifier.OpenApp());
-            menu.Items.Add("Sync all pairs now", null, (s, e) => RunPairs(_pairs.Where(p => p.InRunAll).ToList(), Triggers.Manual));
-            _pauseItem = new Forms.ToolStripMenuItem("Pause live sync", null, (s, e) => SetPaused(!_paused));
+            menu.Items.Add(Lang.T("Open KUDUSYNC"), null, (s, e) => Notifier.OpenApp());
+            menu.Items.Add(Lang.T("Sync all pairs now"), null, (s, e) => RunPairs(_pairs.Where(p => p.InRunAll).ToList(), Triggers.Manual));
+            _pauseItem = new Forms.ToolStripMenuItem(Lang.T("Pause live sync"), null, (s, e) => SetPaused(!_paused));
             menu.Items.Add(_pauseItem);
             menu.Items.Add(new Forms.ToolStripSeparator());
-            menu.Items.Add("Stop running in the notification area", null, (s, e) => Exit());
+            menu.Items.Add(Lang.T("Stop running in the notification area"), null, (s, e) => Exit());
             _icon.ContextMenuStrip = menu;
             _icon.DoubleClick += (s, e) => Notifier.OpenApp();
             _icon.BalloonTipClicked += (s, e) =>
@@ -119,7 +119,7 @@ namespace Kudusync.Views
         private void SetPaused(bool paused)
         {
             _paused = paused;
-            _pauseItem.Text = paused ? "Resume live sync" : "Pause live sync";
+            _pauseItem.Text = Lang.T(paused ? "Resume live sync" : "Pause live sync");
             Reload();
         }
 
@@ -134,7 +134,7 @@ namespace Kudusync.Views
                     var watch = LiveWatch.TryCreate(pair, RunLive);
                     if (watch != null) _watches.Add(watch);
                 }
-            var text = _paused ? "KUDUSYNC · live sync paused" : _watches.Count == 0 ? "KUDUSYNC" : $"KUDUSYNC · live sync on for {Format.Count(_watches.Count, "pair")}";
+            var text = _paused ? Lang.T("KUDUSYNC · live sync paused") : _watches.Count == 0 ? "KUDUSYNC" : Lang.T("KUDUSYNC · live sync on for {0}", Format.Count(_watches.Count, "pair"));
             _icon.Text = text.Length > 63 ? text.Substring(0, 63) : text;
             Log($"Watching {_watches.Count} live pair(s): {string.Join(", ", _watches.Select(w => w.Pair.Name))}");
         }
@@ -166,7 +166,7 @@ namespace Kudusync.Views
                 {
                     var bad = results.Count(r => r.Status == RunStatus.Failed || r.Status == RunStatus.Warnings);
                     _balloonClick = Notifier.OpenHistory;
-                    _icon.ShowBalloonTip(10000, bad == 0 ? $"{Format.Count(results.Count, "pair")} synced" : $"{Format.Count(bad, "pair")} had problems",
+                    _icon.ShowBalloonTip(10000, bad == 0 ? Lang.T("{0} synced", Format.Count(results.Count, "pair")) : Lang.T("{0} had problems", Format.Count(bad, "pair")),
                         Notifier.Trim(string.Join("\n", results.Select(r => r.PairName + ": " + r.Summary))), bad == 0 ? Forms.ToolTipIcon.Info : Forms.ToolTipIcon.Warning);
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -229,8 +229,8 @@ namespace Kudusync.Views
                 if (pairs.Count == 0) continue;
                 _balloonClick = () => RunPairs(pairs, Triggers.Plugged);
                 var names = string.Join(", ", pairs.Select(p => p.Name));
-                _icon.ShowBalloonTip(15000, $"{volume.Describe()} is connected",
-                    Notifier.Trim($"Click to sync {(pairs.Count == 1 ? "\"" + names + "\"" : names)}."), Forms.ToolTipIcon.Info);
+                _icon.ShowBalloonTip(15000, Lang.T("{0} is connected", volume.Describe()),
+                    Notifier.Trim(Lang.T("Click to sync {0}.", pairs.Count == 1 ? "\"" + names + "\"" : names)), Forms.ToolTipIcon.Info);
             }
             _reload.Stop();
             _reload.Start();

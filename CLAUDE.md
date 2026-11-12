@@ -41,6 +41,12 @@ out\KUDUSYNC\KUDUSYNC.exe --self-test        (Windows only; needs administrator 
   `CopyAsItWas` writes that into a new, empty folder outside the backup (`CheckTarget`); `PutBack` keeps the current file
   first (`History` with `always`, even for pairs that keep nothing). The window is `Views/VersionsWindow.cs`.
 
+- Other languages (1.3): the shared `Lang`/`LangUi` (kudu-common) put each window into the chosen language as it's shown.
+  Texts made in code for lists, the tray menu and its balloons, notifications, schedules and the run summary call
+  `Lang.T` (`Model.cs`, `RunLog.cs`, `Locations.cs`, `Tray.cs`, `Notifier.cs`); the log files' own labels stay in English. Texts are in
+  `src/KUDUSYNC/Lang/<code>.txt`, made and checked with kudu-common's `tools/lang.py`; when adding or changing a text,
+  add it to every language file (`tools/lang.py check ../kudusync`).
+
 ## Shared code (kudu-common)
 
 The files listed in `.kudu-common` (the look and controls in `Controls/`, `Core/Admin.cs`, `AppInfo.cs`, `Args.cs`,

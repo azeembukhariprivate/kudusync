@@ -43,6 +43,7 @@
 - **Filters**: include and leave out files by name pattern, leave out folders, skip hidden and system files. Office lock files (`~$*`), `*.tmp` and `Thumbs.db` are left out by default.
 - **Careful copying**: copies are written to a temporary file and only get their real name when complete; files that change while being copied are tried again next time; files in use are skipped and retried; dates and attributes are kept; paths longer than 260 characters work; optional **checking of every copy** against the original.
 - **History of every run** (from the window, a schedule, live sync or a notification) with a full text log, plus Windows notifications for scheduled and automatic syncs.
+- **In your language**: English, Malayalam (മലയാളം), Hindi (हिन्दी), Spanish, French and Arabic (with the windows mirrored for right-to-left). KUDUSYNC starts in the same language as Windows when it has it; choose another in Settings.
 - Light and dark themes, following Windows.
 
 ## How it works

@@ -119,6 +119,9 @@ namespace Kudusync.Tests
 
         // ================================================================== Mirror, Update, Move
 
+        private static void TestOtherLanguages() => LangTests.Run();
+
+
         private static void TestMirrorCopiesUpdatesAndDeletes()
         {
             var l = NewDir("l");

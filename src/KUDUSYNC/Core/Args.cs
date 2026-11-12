@@ -93,13 +93,14 @@ namespace Kudusync.Core
 
         public static string Duration(System.TimeSpan t)
         {
-            if (t.TotalSeconds < 1) return "less than a second";
-            if (t.TotalHours >= 1) return $"{(int)t.TotalHours} h {t.Minutes} min";
-            if (t.TotalMinutes >= 1) return $"{(int)t.TotalMinutes} min {t.Seconds} s";
-            return $"{(int)t.TotalSeconds} s";
+            if (t.TotalSeconds < 1) return Lang.T("less than a second");
+            if (t.TotalHours >= 1) return Lang.T("{0} h {1} min", (int)t.TotalHours, t.Minutes);
+            if (t.TotalMinutes >= 1) return Lang.T("{0} min {1} s", (int)t.TotalMinutes, t.Seconds);
+            return Lang.T("{0} s", (int)t.TotalSeconds);
         }
 
+        /// <summary>"1 file", "12 files": in another language the app's file has "{0} file" and "{0} files".</summary>
         public static string Count(int n, string one, string many = null) =>
-            n.ToString("N0") + " " + (n == 1 ? one : many ?? one + "s");
+            Lang.T("{0} " + (n == 1 ? one : many ?? one + "s"), n.ToString("N0"));
     }
 }

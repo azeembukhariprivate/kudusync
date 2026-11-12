@@ -32,10 +32,10 @@ namespace Kudusync.Core
             {
                 switch (Type)
                 {
-                    case DriveType.Removable: return "USB drive";
-                    case DriveType.Network: return "Network drive";
-                    case DriveType.CDRom: return "Disc";
-                    default: return "Local disk";
+                    case DriveType.Removable: return Lang.T("USB drive");
+                    case DriveType.Network: return Lang.T("Network drive");
+                    case DriveType.CDRom: return Lang.T("Disc");
+                    default: return Lang.T("Local disk");
                 }
             }
         }

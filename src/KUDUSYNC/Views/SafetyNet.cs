@@ -30,7 +30,7 @@ namespace Kudusync.Views
                 try
                 {
                     MessageBox.Show(
-                        AppInfo.Name + " ran into a problem it couldn't get past, and has to close." +
+                        Lang.T("{0} ran into a problem it couldn't get past, and has to close.", AppInfo.Name) +
                         (string.IsNullOrEmpty(why) ? string.Empty : "\n\n" + why),
                         AppInfo.Name, MessageBoxButton.OK, MessageBoxImage.Error);
                 }

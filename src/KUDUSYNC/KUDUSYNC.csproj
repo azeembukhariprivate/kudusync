@@ -12,7 +12,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <StartupObject>Kudusync.Program</StartupObject>
 
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Product>KUDUSYNC</Product>
     <Company>Azeem Bukhari</Company>
     <Authors>Azeem Bukhari</Authors>
@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Lang\*.txt" LogicalName="Kudusync.Lang.%(Filename).txt" />
     <EmbeddedResource Include="Themes\*.xaml" LogicalName="Kudusync.Themes.%(Filename).xaml" />
     <EmbeddedResource Include="Assets\KUDUSYNC.ico" LogicalName="Kudusync.Assets.KUDUSYNC.ico" />
     <None Include="..\..\LICENSE" Link="LICENSE.txt" CopyToOutputDirectory="PreserveNewest" />

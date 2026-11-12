@@ -1,0 +1,524 @@
+Error: {0}	خطأ: {0}
+Something went wrong:\n\n{0}	حدث خطأ ما:\n\n{0}
+Azeem Bukhari	Azeem Bukhari
+less than a second	أقل من ثانية
+{0} h {1} min	{0} س {1} د
+{0} min {1} s	{0} د {1} ث
+{0}.damaged	{0}.damaged
+{0}.saving	{0}.saving
+Stopped.	توقف.
+Not empty, so it was left in place	ليس فارغًا، لذلك تُرك في مكانه
+It's no longer there.	لم يعد موجودًا.
+A file called "{0}" is already there.	يوجد ملف بالاسم "{0}" بالفعل.
+Not enough free space in {0}.	لا توجد مساحة فارغة كافية على {0}.
+It changed while it was being copied. It'll be copied next time.	تغيّر أثناء النسخ. سيُنسخ في المرة القادمة.
+The copy didn't match the original when it was read back (the drive may be failing). It'll be tried again next time.	النسخة لم تطابق الأصل عند قراءتها مرة أخرى (ربما القرص بدأ يتعطل). ستُعاد المحاولة في المرة القادمة.
+Copied, but couldn't be removed from the source: {0}	نُسخ، لكن تعذّر حذفه من المصدر: {0}
+There's a file called "{0}" where a folder is needed.	يوجد ملف باسم "{0}" في مكان يحتاج إلى مجلد.
+not enough space	لا توجد مساحة كافية
+In use by another program. It'll be tried again next time.	برنامج آخر يستخدمه. ستُعاد المحاولة في المرة القادمة.
+Access denied (it may be read-only, or need permissions you don't have).	تم رفض الوصول (قد يكون للقراءة فقط، أو يحتاج صلاحيات ليست لديك).
+The path is too long for that drive.	المسار أطول مما يسمح به هذا القرص.
+Copied	نُسخ
+Updated	حُدّث
+Removed from the source	أُزيل من المصدر
+Deleted (kept as an old version)	حُذف (حُفظ كنسخة قديمة)
+Deleted	حُذف
+Renamed	أُعيدت تسميته
+Created folder	أُنشئ المجلد
+Removed folder	أُزيل المجلد
+FAILED  {0} in {1}: {2} — {3}	FAILED  {0} in {1}: {2} — {3}
+Left    {0} in {1} — {2}	Left    {0} in {1} — {2}
+{0} in {1}: {2}{3}	{0} in {1}: {2}{3}
+ ({0} bytes)	 ({0} bytes)
+System Volume Information	System Volume Information
+The folder itself	المجلد نفسه
+Folder not found: {0}	المجلد غير موجود: {0}
+Access is denied.	تم رفض الوصول.
+Folder 1	المجلد 1
+Folder 2	المجلد 2
+USB drive	قرص USB
+Network drive	قرص شبكة
+Disc	قرص ضوئي
+Local disk	قرص محلي
+No folder chosen.	لم يُختر أي مجلد.
+Drive {0} isn't connected.	القرص {0} غير موصول.
+The drive	القرص
+{0} (was {1}) isn't connected. {2} is now a different drive, so KUDUSYNC won't use it. If you formatted or replaced the drive, edit the pair and choose the folder again.	{0} (كان {1}) غير موصول. {2} الآن قرص آخر، لذلك لن يستخدمه KUDUSYNC. إذا قمت بتهيئة القرص أو استبداله، فعدّل الزوج واختر المجلد مرة أخرى.
+{0} ({1}) isn't connected.	{0} ({1}) غير موصول.
+Not chosen	لم يُختر
+Network share {0}	مشاركة الشبكة {0}
+Drive {0}	القرص {0}
+~$*; *.tmp; Thumbs.db	~$*; *.tmp; Thumbs.db
+Every day at {0}	كل يوم في {0}
+{0} at {1}	{0} في {1}
+Every hour	كل ساعة
+Every {0} hours	كل {0} ساعات
+When you sign in to Windows	عند تسجيل الدخول إلى Windows
+Only when you run it	فقط عندما تشغّله
+Sun	أحد
+Mon	اثنين
+Tue	ثلاثاء
+Wed	أربعاء
+Thu	خميس
+Fri	جمعة
+Sat	سبت
+Every day	كل يوم
+Weekdays	أيام العمل
+Weekends	عطلة نهاية الأسبوع
+No days	لا أيام
+Source	المصدر
+Destination	الوجهة
+Mirror	مرآة
+Update	تحديث
+Two-way sync	مزامنة في الاتجاهين
+Move	نقل
+The destination becomes an exact copy of the source. Files removed from the source are removed from the destination too.	تصبح الوجهة نسخة مطابقة للمصدر. الملفات التي تُزال من المصدر تُزال من الوجهة أيضًا.
+New and changed files are copied to the destination. Nothing is ever deleted there.	تُنسخ الملفات الجديدة والمتغيرة إلى الوجهة. لا يُحذف منها أي شيء أبدًا.
+Changes on either side are copied to the other, deletions included. If a file changed on both sides, both copies are kept.	التغييرات في أي جانب تُنسخ إلى الآخر، بما فيها الحذف. إذا تغيّر ملف في الجانبين، تُحفظ النسختان.
+Files are copied to the destination and then removed from the source.	تُنسخ الملفات إلى الوجهة، ثم تُزال من المصدر.
+Not kept (deleted permanently)	لا تُحفظ (تُحذف نهائيًا)
+Kept forever	تُحفظ دائمًا
+Kept for 1 day	تُحفظ يومًا واحدًا
+Kept for {0} days	تُحفظ {0} أيام
+KUDUSYNC login for {0}	KUDUSYNC login for {0}
+This isn't a network path.	هذا ليس مسار شبكة.
+Couldn't sign in to {0}: {1}. Edit the pair to update the login.	تعذّر تسجيل الدخول إلى {0}: {1}. عدّل الزوج لتحديث بيانات الدخول.
+Couldn't connect to {0}: {1}.	تعذّر الاتصال بـ {0}: {1}.
+Couldn't reach {0}. Check that it's switched on and connected to the network (if it needs a login, edit the pair and sign in).	تعذّر الوصول إلى {0}. تأكد أنه يعمل ومتصل بالشبكة (إذا كان يحتاج تسجيل دخول، فعدّل الزوج وسجّل الدخول).
+Couldn't reach {0}.	تعذّر الوصول إلى {0}.
+This isn't a .NET binary-serialized file.	This isn't a .NET binary-serialized file.
+Unsupported serialization format version.	Unsupported serialization format version.
+The file nests its data too deeply.	The file nests its data too deeply.
+Unknown class reference.	Unknown class reference.
+Unsupported array shape.	Unsupported array shape.
+Array too large.	Array too large.
+Unsupported record type {0}.	Unsupported record type {0}.
+The file ended too early.	The file ended too early.
+The file is damaged.	The file is damaged.
+Too many members.	Too many members.
+Unsupported value type {0}.	Unsupported value type {0}.
+_KUDUSYNC History	_KUDUSYNC History
+Pair	زوج
+New folder	مجلد جديد
+Name's capitalisation changed	تغيّرت الأحرف الكبيرة والصغيرة في الاسم
+Same size and time, but different contents	نفس الحجم والوقت، لكن المحتوى مختلف
+Different from the source (the destination's copy is newer)	مختلف عن المصدر (نسخة الوجهة أحدث)
+Changed	تغيّر
+Not in the source	غير موجود في المصدر
+Renamed or moved in the source	أُعيدت تسميته أو نُقل في المصدر
+New	جديد
+Its files were moved	نُقلت ملفاته
+Moved	نُقل
+Already in the destination	موجود في الوجهة بالفعل
+Moved (replaces the destination's copy)	نُقل (يحل محل نسخة الوجهة)
+Deleted in {0}	حُذف في {0}
+Changed in {0}	تغيّر في {0}
+Changed in {0} after it was deleted in {1}: the change is kept	تغيّر في {0} بعد حذفه في {1}: يُحتفظ بالتغيير
+New in {0}	جديد في {0}
+Different files with the same name on both sides	ملفات مختلفة بنفس الاسم في الجانبين
+Changed on both sides	تغيّر في الجانبين
+{2}: the older copy (in {0}) is kept as "{1}"	{2}: النسخة الأقدم (في {0}) تُحفظ باسم "{1}"
+{0}: the newer copy keeps the name	{0}: النسخة الأحدث تحتفظ بالاسم
+{0}: the older copy, kept on both sides	{0}: النسخة الأقدم، محفوظة في الجانبين
+Renamed or moved in {0}	أُعيدت تسميته أو نُقل في {0}
+{0} (conflict {1}{2}){3}	{0} (تعارض {1}{2}){3}
+Didn't run	لم يُشغَّل
+{0} moved	نُقل {0}
+{0} copied	نُسخ {0}
+{0} updated	حُدّث {0}
+{0} renamed	أُعيدت تسمية {0}
+{0} deleted	حُذف {0}
+{0} (both kept)	{0} (حُفظت النسختان)
+{0} couldn't be done	تعذّر تنفيذ {0}
+Already in step, nothing to do	محدّث بالفعل، لا شيء للقيام به
+Stopped: {0}	توقف: {0}
+Done	تم
+Done, with problems	تم، مع مشكلات
+Failed	فشل
+Stopped	توقف
+Skipped	تم التخطي
+{0} {1}.txt	{0} {1}.txt
+KUDUSYNC {0} · {1}	KUDUSYNC {0} · {1}
+Mode:        {0}	Mode:        {0}
+Started by:  {0}	Started by:  {0}
+Started:     {0}	Started:     {0}
+Finished:    {0}	Finished:    {0}
+Result:      {0} · {1}	Result:      {0} · {1}
+Note: {0}	Note: {0}
+You	أنت
+Schedule	الجدول
+Live sync	مزامنة مباشرة
+Drive plugged in	قرص موصول
+Right-click menu	قائمة النقر بزر الماوس الأيمن
+Paused for safety: {0} Open KUDUSYNC and run it yourself if this is right.	متوقف مؤقتًا للأمان: {0} افتح KUDUSYNC وشغّله بنفسك إذا كان هذا صحيحًا.
+KUDUSYNC -	KUDUSYNC -
+Sunday	الأحد
+Monday	الاثنين
+Tuesday	الثلاثاء
+Wednesday	الأربعاء
+Thursday	الخميس
+Friday	الجمعة
+Saturday	السبت
+This pair has no schedule.	هذا الزوج ليس له جدول.
+Runs the KUDUSYNC pair "{0}" ({1}).	يشغّل زوج KUDUSYNC "{0}" ({1}).
+{0}.xml	{0}.xml
+Windows Task Scheduler said: {0}	قال برنامج جدولة المهام في Windows: {0}
+Task Scheduler is only on Windows.	برنامج جدولة المهام موجود في Windows فقط.
+Task Scheduler didn't respond.	لم يستجب برنامج جدولة المهام.
+"{0}" is already running.	"{0}" قيد التشغيل بالفعل.
+The two folders are the same, or one is inside the other ({0} and {1}). Edit the pair to choose different folders.	المجلدان هما المجلد نفسه، أو أحدهما داخل الآخر ({0} و{1}). عدّل الزوج لاختيار مجلدين منفصلين.
+The source folder {0} wasn't found.	لم يُعثر على مجلد المصدر {0}.
+The folder {0} wasn't found. (It was there at the last sync, so KUDUSYNC won't treat everything in it as deleted.)	لم يُعثر على المجلد {0}. (كان موجودًا في آخر مزامنة، لذلك لن يعتبر KUDUSYNC كل ما فيه محذوفًا.)
+Couldn't compare the contents of {0}: {1}	تعذّرت مقارنة محتوى {0}: {1}
+{0}: couldn't read {1}. Nothing in that folder was changed.	{0}: تعذّرت قراءة {1}. لم يتغيّر شيء في ذلك المجلد.
+{0}: {1} to other folders skipped.	{0}: تم تخطي {1} إلى مجلدات أخرى.
+{0} left alone because a file on one side has the same name as a folder on the other: {1}	تُرك {0} كما هو لأن ملفًا في جانب يحمل نفس اسم مجلد في الجانب الآخر: {1}
+The {0} folder is empty, so this would delete all {1} in the {2}. If the folder was emptied by mistake, or a drive isn't working, don't go ahead.	المجلد {0} فارغ، لذلك سيحذف هذا كل {1} في {2}. إذا أُفرغ المجلد بالخطأ، أو كان قرص لا يعمل، فلا تتابع.
+This would delete {0}, more than half of the {1} in the {2}.	سيحذف هذا {0}، أي أكثر من نصف {1} في {2}.
+The {0} needs {1} but only has {2} free. Files that don't fit will be skipped.	يحتاج {0} إلى {1} لكن المساحة الفارغة {2} فقط. الملفات التي لا تتسع ستُتخطى.
+Couldn't save the record of this sync: {0}	تعذّر حفظ سجل هذه المزامنة: {0}
+{0}.lock	{0}.lock
+Theme	المظهر
+Notify	أخبرني
+Sync with KUDUSYNC	مزامنة باستخدام KUDUSYNC
+Back up this folder with KUDUSYNC…	نسخ هذا المجلد احتياطيًا باستخدام KUDUSYNC…
+"{0}" --tray	"{0}" --tray
+Echo	Echo
+Contribute	Contribute
+Synchronize	Synchronize
+Microsoft	Microsoft
+This file isn't SyncToy settings that can be read.	هذا الملف ليس إعدادات SyncToy يمكن قراءتها.
+SyncToy pair	زوج SyncToy
+Missing theme resource {0}	Missing theme resource {0}
+Light	فاتح
+Styles	Styles
+Dark	داكن
+Application	Application
+Choose a folder for the copy.	اختر مجلدًا للنسخة.
+Choose a folder outside the backup, so the copy and the backup stay apart.	اختر مجلدًا خارج النسخة الاحتياطية، لتبقى النسخة والنسخة الاحتياطية منفصلتين.
+Choose a folder outside the kept versions.	اختر مجلدًا خارج النسخ المحفوظة.
+Choose an empty folder (or a new one), so nothing in it is mixed up or replaced.	اختر مجلدًا فارغًا (أو جديدًا)، حتى لا يختلط شيء أو يُستبدل.
+Error message shown: {0}	Error message shown: {0}
+All files	كل الملفات
+Save	حفظ
+Cancel	إلغاء
+KUDUSYNC	KUDUSYNC
+Folder pairs	أزواج المجلدات
+Import from SyncToy	استيراد من SyncToy
+History	السجل
+Settings	الإعدادات
+About	حول
+A sync is still running. Stop it and close KUDUSYNC?	لا تزال هناك مزامنة قيد التشغيل. هل تريد إيقافها وإغلاق KUDUSYNC؟
+KUDUSYNC {0} is available	يتوفر KUDUSYNC {0}
+New pair	زوج جديد
+ · next scheduled: {0}, {1}	 · الموعد القادم: {0}، {1}
+Sync all	مزامنة الكل
+Runs every pair that's included in "Sync all", one after another	يشغّل واحدًا تلو الآخر كل الأزواج المضمّنة في "مزامنة الكل"
+today	اليوم
+tomorrow	غدًا
+Not run yet	لم يُشغَّل بعد
+· Live	· مباشر
+Keep your folders in step	حافظ على تطابق مجلداتك
+Pick two folders (on this PC, a USB drive or a network share) and how to keep them in step: mirror, update, two-way sync or move. Run them when you like, on a schedule, or as files change.	اختر مجلدين (على هذا الكمبيوتر أو قرص USB أو مشاركة شبكة) وطريقة إبقائهما متطابقين: مرآة أو تحديث أو مزامنة في الاتجاهين أو نقل. شغّلها متى شئت، أو حسب جدول، أو عندما تتغيّر الملفات.
+Create a folder pair	إنشاء زوج مجلدات
+No folder pairs yet	لا توجد أزواج مجلدات بعد
+Edit	تعديل
+More	المزيد
+{0} · started by {1}	{0} · بدأه {1}
+Open the log	فتح السجل
+Last run	آخر تشغيل
+ · next {0}	 · التالي {0}
+Runs	مرات التشغيل
+On: syncs {0} after files change{1}	مفعّلة: يزامن {0} بعد تغيّر الملفات{1}
+(needs KUDUSYNC in the notification area: see Settings)	(يحتاج KUDUSYNC في منطقة الإعلامات: راجع الإعدادات)
+Shows a notification when {0} is plugged in	يعرض رسالة عند توصيل {0}
+Files	الملفات
+Open	فتح
+Open ({0})	فتح ({0})
+Replaced and deleted files	الملفات المستبدلة والمحذوفة
+every copy is checked against the original	تُفحص كل نسخة مقابل الأصل
+files are compared by contents, not just size and date	تُقارن الملفات بمحتواها، لا بالحجم والتاريخ فقط
+renamed files are renamed, not copied again	الملفات المعاد تسميتها يُعاد تسميتها، ولا تُنسخ من جديد
+not included in "Sync all"	غير مضمّن في "مزامنة الكل"
+Also	أيضًا
+Sync now	مزامنة الآن
+Preview	معاينة
+Earlier versions	النسخ السابقة
+Running elsewhere right now (on a schedule or in the notification area)…	قيد التشغيل في مكان آخر الآن (حسب الجدول أو في منطقة الإعلامات)…
+{0} seconds	{0} ثانية
+a minute	دقيقة واحدة
+{0} minutes	{0} دقائق
+Only {0}	{0} فقط
+except {0}	ما عدا {0}
+leaving out the folders {0}	دون المجلدات {0}
+skipping hidden files	مع تخطي الملفات المخفية
+skipping system files	مع تخطي ملفات النظام
+Not connected	غير موصول
+Problem	مشكلة
+ · {0} free	 · {0} فارغة
+ · signed in as {0}	 · مسجّل الدخول باسم {0}
+The folder will be created when the pair runs.	سيُنشأ المجلد عند تشغيل الزوج.
+Duplicate	تكرار
+Forget what was synced (start afresh)	نسيان ما تمت مزامنته (البدء من جديد)
+Delete pair	حذف الزوج
+{0} backup	نسخ احتياطي لـ {0}
+Drive {0} backup	نسخ احتياطي للقرص {0}
+The pair was saved, but its schedule couldn't be set up.\n\n{0}	حُفظ الزوج، لكن تعذّر إعداد جدوله.\n\n{0}
+{0} (copy)	{0} (نسخة)
+Forget what "{0}" last synced?\n\nThe next run is then treated as the first one: nothing is deleted, files that differ are kept on both sides, and renamed files are copied again.	هل تريد نسيان ما زامنه "{0}" في المرة الماضية؟\n\nسيُعامل التشغيل القادم كأنه الأول: لا يُحذف شيء، وتُحفظ الملفات المختلفة في الجانبين، وتُنسخ الملفات المعاد تسميتها من جديد.
+Delete the pair "{0}"?\n\nNo files are deleted: both folders stay as they are.	هل تريد حذف الزوج "{0}"؟\n\nلا يُحذف أي ملف: يبقى المجلدان كما هما.
+No folder pair uses {0} yet.\n\nCreate one to back it up?	لا يستخدم أي زوج مجلدات {0} بعد.\n\nهل تريد إنشاء زوج لنسخه احتياطيًا؟
+Imported {0}. Check each one before running it: SyncToy's last-sync information can't be imported, so the first run of a two-way pair keeps both copies of files that differ.	تم استيراد {0}. راجع كل واحد قبل تشغيله: لا يمكن استيراد معلومات آخر مزامنة من SyncToy، لذلك يحتفظ أول تشغيل لزوج في الاتجاهين بالنسختين من الملفات المختلفة.
+{0} of {1}	{0} من {1}
+{0} looked at	تم فحص {0}
+"{0}" needs a look before it runs:\n\n{1}	يحتاج "{0}" إلى مراجعة قبل تشغيله:\n\n{1}
+{0}\n\nGo ahead anyway? (Choose No to see the preview instead.)	{0}\n\nهل تريد المتابعة على أي حال؟ (اختر لا لرؤية المعاينة.)
+Stopped before anything was changed.	توقف قبل تغيير أي شيء.
+Starting…	جارٍ البدء…
+Comparing	جارٍ المقارنة
+Comparing · pair {0}	جارٍ المقارنة · الزوج {0}
+Looking at both folders. Nothing is changed yet.	جارٍ فحص المجلدين. لم يتغيّر شيء بعد.
+Stop	إيقاف
+Preview · pair {0}	معاينة · الزوج {0}
+to move	للنقل
+new	جديدة
+changed	متغيرة
+renamed	معاد تسميتها
+deleted (kept as old versions)	محذوفة (محفوظة كنسخ قديمة)
+deleted	محذوفة
+changed on both sides	متغيرة في الجانبين
+already copied (removed from the source)	منسوخة بالفعل (أُزيلت من المصدر)
+to copy	للنسخ
+All	الكل
+Both changed	متغيرة في الجانبين
+Folders	المجلدات
+Already in step	محدّث بالفعل
+Both folders match. There's nothing to do.	المجلدان متطابقان. لا شيء للقيام به.
+Move now	نقل الآن
+Untick anything you don't want done this time. It'll be offered again next time.	ألغِ تحديد ما لا تريد فعله هذه المرة. سيُعرض مرة أخرى في المرة القادمة.
+Back	رجوع
+Showing the first {0}; all {1} will be done.	يُعرض أول {0}؛ وسيتم تنفيذ كل الـ {1}.
+Untick to skip this time	ألغِ التحديد لتخطيه هذه المرة
+{0} · in {1}	{0} · في {1}
+Keep both	الاحتفاظ بالاثنين
+Copy (both kept)	نسخ (تُحفظ النسختان)
+Move (replace)	نقل (استبدال)
+Already copied	منسوخ بالفعل
+Delete	حذف
+Rename	إعادة تسمية
+Remove folder	إزالة المجلد
+Moving	جارٍ النقل
+Syncing	جارٍ المزامنة
+Syncing · pair {0}	جارٍ المزامنة · الزوج {0}
+You can stop at any time: whatever is half-copied is cleaned up, and the rest happens next time.	يمكنك الإيقاف في أي وقت: ما نُسخ نصفه يُنظَّف، والباقي يُنجز في المرة القادمة.
+ · {0} of {1}	 · {0} من {1}
+ · about {0} left	 · بقي حوالي {0}
+ · {0} couldn't be done	 · تعذّر تنفيذ {0}
+…the log has the full list.	…القائمة الكاملة في السجل.
+Open {0}	فتح {0}
+All done.	تم كل شيء.
+Done. Anything that couldn't be done will be tried again next time.	تم. ما تعذّر تنفيذه سيُعاد في المرة القادمة.
+Log	السجل
+Nothing has run yet.	لم يُشغَّل شيء بعد.
+Every run of every pair: from this window, on a schedule, by live sync or from a notification.	كل تشغيل لكل زوج: من هذه النافذة، أو حسب الجدول، أو بالمزامنة المباشرة، أو من رسالة.
+Open the logs folder	فتح مجلد السجلات
+{0}: done, both copies kept of {1}	{0}: تم، وحُفظت النسختان من {1}
+{0}: done	{0}: تم
+{0}: done, with problems	{0}: تم، مع مشكلات
+{0}: didn't sync	{0}: لم تتم المزامنة
+{0}: stopped	{0}: توقف
+{0}: paused	{0}: متوقف مؤقتًا
+Settings · KUDUSYNC	الإعدادات · KUDUSYNC
+Appearance	المظهر
+Same as Windows	مثل Windows
+Language	اللغة
+In the background	في الخلفية
+Run KUDUSYNC in the notification area when Windows starts	تشغيل KUDUSYNC في منطقة الإعلامات عند بدء Windows
+Needed for live sync and for notifications when a pair's drive is plugged in. Schedules work without it.	مطلوب للمزامنة المباشرة وللرسائل عند توصيل قرص أحد الأزواج. الجداول تعمل بدونه.
+After a scheduled or automatic sync, notify me	بعد مزامنة مجدولة أو تلقائية، أخبرني
+Always	دائمًا
+Only about problems	فقط عند حدوث مشكلات
+Never	أبدًا
+Live sync only speaks up about problems.	المزامنة المباشرة تُخبر بالمشكلات فقط.
+Pause a scheduled or automatic sync that would delete more than half of the files	إيقاف مؤقت لمزامنة مجدولة أو تلقائية ستحذف أكثر من نصف الملفات
+A sync that would empty a folder completely (for example when the source drive is blank) always waits for you.	المزامنة التي ستفرغ مجلدًا بالكامل (مثلًا إذا كان قرص المصدر فارغًا) تنتظرك دائمًا.
+File Explorer	مستكشف الملفات
+Add "Sync with KUDUSYNC" and "Back up this folder" to folders' right-click menu	إضافة "Sync with KUDUSYNC" و"Back up this folder" إلى قائمة النقر بزر الماوس الأيمن للمجلدات
+For your Windows account only. On Windows 11 it's under "Show more options".	لحسابك في Windows فقط. في Windows 11 تجدها تحت "إظهار المزيد من الخيارات".
+Updates	التحديثات
+Check for a new KUDUSYNC version when it starts	البحث عن إصدار جديد من KUDUSYNC عند البدء
+Only asks GitHub for the latest version number. Nothing is downloaded without asking.	يسأل GitHub فقط عن رقم أحدث إصدار. لا يُنزَّل شيء دون أن يسألك.
+About KUDUSYNC	حول KUDUSYNC
+Close	إغلاق
+Version {0} · Keep folders in step	الإصدار {0} · حافظ على تطابق المجلدات
+Azeem, with Claude and	Azeem, with Claude and
+Made by	Made by
+Licence	الترخيص
+MIT · free and open source	MIT · مجاني ومفتوح المصدر
+View	عرض
+Source code	الشيفرة المصدرية
+Your data	بياناتك
+Kept next to the program (portable)	محفوظة بجانب البرنامج (نسخة محمولة)
+Pairs and logs are kept on this PC only	الأزواج والسجلات محفوظة على هذا الكمبيوتر فقط
+Third-party	أطراف أخرى
+Third-party notices	إشعارات الأطراف الأخرى
+KUDUSYNC never deletes a file without keeping a copy first, unless you tell a pair not to. Replaced and deleted files go to a "_KUDUSYNC History" folder and are cleaned up after the number of days you choose.	لا يحذف KUDUSYNC أي ملف دون أن يحفظ نسخة منه أولًا، إلا إذا طلبت من زوج ألا يفعل. تذهب الملفات المستبدلة والمحذوفة إلى مجلد "_KUDUSYNC History" وتُنظَّف بعد عدد الأيام الذي تختاره.
+Check for updates	البحث عن تحديثات
+Couldn't find any published version yet.	لم يُعثر على أي إصدار منشور بعد.
+KUDUSYNC {0} is available. Open the download page?	يتوفر KUDUSYNC {0}. هل تريد فتح صفحة التنزيل؟
+You have the latest version.	لديك أحدث إصدار.
+Couldn't check for updates. Check your internet connection and try again.	تعذّر البحث عن تحديثات. تحقق من اتصالك بالإنترنت وحاول مرة أخرى.
+Import from SyncToy · KUDUSYNC	استيراد من SyncToy · KUDUSYNC
+These folder pairs were found in SyncToy's settings. Echo becomes Mirror, Contribute becomes Update, and Synchronize becomes Two-way sync.	وُجدت أزواج المجلدات هذه في إعدادات SyncToy. يصبح Echo مرآة، وContribute تحديثًا، وSynchronize مزامنة في الاتجاهين.
+Already in KUDUSYNC	موجود في KUDUSYNC بالفعل
+SyncToy's settings couldn't be read: {0}	تعذّرت قراءة إعدادات SyncToy: {0}
+No folder pairs were found in SyncToy's settings.	لم يُعثر على أزواج مجلدات في إعدادات SyncToy.
+Import	استيراد
+Sign in to {0}	تسجيل الدخول إلى {0}
+Saved in Windows Credential Manager for your account, so scheduled syncs can sign in too. KUDUSYNC never stores it itself.	يُحفظ في مدير بيانات الاعتماد في Windows لحسابك، حتى تتمكن المزامنات المجدولة من تسجيل الدخول أيضًا. لا يحفظه KUDUSYNC بنفسه أبدًا.
+User name (like NAS\\azeem or azeem@example.com)	اسم المستخدم (مثل NAS\\azeem أو azeem@example.com)
+Password	كلمة المرور
+Test and save	تجربة وحفظ
+Sign in · KUDUSYNC	تسجيل الدخول · KUDUSYNC
+Checking…	جارٍ التحقق…
+Couldn't sign in: {0}	تعذّر تسجيل الدخول: {0}
+Keep for 7 days	الاحتفاظ 7 أيام
+Keep for 30 days	الاحتفاظ 30 يومًا
+Keep for 90 days	الاحتفاظ 90 يومًا
+Keep for a year	الاحتفاظ سنة
+Keep forever	الاحتفاظ دائمًا
+Don't keep them (delete permanently)	عدم الاحتفاظ بها (حذف نهائي)
+Only when I run it	فقط عندما أشغّله
+On certain days	أيام معيّنة
+Every few hours	كل بضع ساعات
+When I sign in to Windows	عند تسجيل الدخول إلى Windows
+Skip hidden files and folders	تخطي الملفات والمجلدات المخفية
+Skip Windows system files	تخطي ملفات نظام Windows
+Keep them in a folder of my choice	الاحتفاظ بها في مجلد أختاره
+Check every copy against the original (slower, catches failing drives)	فحص كل نسخة مقابل الأصل (أبطأ، يكتشف الأقراص التي بدأت تتعطل)
+Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)	مقارنة المحتوى أيضًا، لاكتشاف التغييرات التي تُبقي الحجم والتاريخ كما هما (أبطأ: يقرأ الملفات في الجانبين)
+When a file is renamed or moved, rename it on the other side instead of copying it again	عند إعادة تسمية ملف أو نقله، أعِد تسميته في الجانب الآخر بدل نسخه من جديد
+Live sync: sync a short while after files change	المزامنة المباشرة: المزامنة بعد تغيّر الملفات بقليل
+Show a notification when the drive is plugged in	عرض رسالة عند توصيل القرص
+Include in "Sync all"	تضمين في "مزامنة الكل"
+New folder pair	زوج مجلدات جديد
+Edit {0}	تعديل {0}
+{0} · KUDUSYNC	{0} · KUDUSYNC
+Edit folder pair	تعديل زوج المجلدات
+Name	الاسم
+What to do	ما المطلوب
+Which files	أي ملفات
+Include files matching (separate with ;)	تضمين الملفات المطابقة لـ (افصل بـ ;)
+Leave out files matching	استبعاد الملفات المطابقة لـ
+Files that are left out are never copied or deleted, on either side.	الملفات المستبعدة لا تُنسخ ولا تُحذف أبدًا، في أي جانب.
+Files a sync replaces or deletes are moved to a "_KUDUSYNC History" folder on that drive first, so a mistake can be undone.	الملفات التي تستبدلها المزامنة أو تحذفها تُنقل أولًا إلى مجلد "_KUDUSYNC History" على ذلك القرص، لتتمكن من التراجع عن خطأ.
+{0} days	{0} أيام
+Browse…	استعراض…
+Choose where to keep replaced and deleted files	اختر أين تُحفظ الملفات المستبدلة والمحذوفة
+Checks	الفحوصات
+Running automatically	التشغيل التلقائي
+at	في
+Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. They run while you're signed in to Windows (a locked screen is fine). If the PC was off or you were signed out, the sync runs as soon as you're back.	تستخدم الجداول برنامج جدولة المهام في Windows، لذلك تعمل حتى عندما يكون KUDUSYNC مغلقًا. تعمل ما دمت مسجّل الدخول إلى Windows (ومع قفل الشاشة أيضًا). إذا كان الكمبيوتر مطفأً أو كنت قد سجّلت الخروج، تتم المزامنة فور عودتك.
+{0} later	بعد {0}
+Create pair	إنشاء الزوج
+Files are moved out of here.	تُنقل الملفات من هنا.
+Copied from here. Nothing in it is changed.	يُنسخ من هنا. لا يتغيّر شيء هنا.
+Made into an exact copy of the source.	يصبح نسخة مطابقة للمصدر.
+Gets new and changed files. Nothing here is deleted.	يستقبل الملفات الجديدة والمتغيرة. لا يُحذف شيء هنا.
+Files are moved to here.	تُنقل الملفات إلى هنا.
+Turn it on	تفعيله
+Live sync and drive notifications need KUDUSYNC running in the notification area (it starts with Windows and uses very little).	المزامنة المباشرة ورسائل الأقراص تحتاج KUDUSYNC في منطقة الإعلامات (يبدأ مع Windows ويستهلك القليل جدًا).
+Give the pair a name.	أعطِ الزوج اسمًا.
+There's already a pair called "{0}".	يوجد زوج باسم "{0}" بالفعل.
+Choose both folders ({0} and {1}).	اختر المجلدين ({0} و{1}).
+The two folders are the same, or one is inside the other. Choose two separate folders.	المجلدان هما المجلد نفسه، أو أحدهما داخل الآخر. اختر مجلدين منفصلين.
+The source folder {0} doesn't exist.	مجلد المصدر {0} غير موجود.
+Choose at least one day for the schedule.	اختر يومًا واحدًا على الأقل للجدول.
+Enter the time like 21:00.	اكتب الوقت هكذا: 21:00.
+Choose the folder for replaced and deleted files, or untick that option.	اختر المجلد للملفات المستبدلة والمحذوفة، أو ألغِ تحديد هذا الخيار.
+{0} can't be reached right now. Does it need a user name and password?\n\nChoose Yes to sign in, or No to save the pair anyway (it'll be tried when the pair runs).	لا يمكن الوصول إلى {0} الآن. هل يحتاج اسم مستخدم وكلمة مرور؟\n\nاختر نعم لتسجيل الدخول، أو لا لحفظ الزوج على أي حال (ستُجرى المحاولة عند تشغيله).
+Choose the {0} folder	اختر مجلد {0}
+Sign in…	تسجيل الدخول…
+· uses your Windows login	· يستخدم تسجيل دخولك إلى Windows
+Change login…	تغيير تسجيل الدخول…
+That drive isn't connected.	هذا القرص غير موصول.
+· recognised even if its letter changes	· يُعرف حتى لو تغيّر حرفه
+· the folder will be created	· سيُنشأ المجلد
+{0} ran into a problem it couldn't get past, and has to close.	واجه {0} مشكلة لم يستطع تجاوزها، ويجب أن يُغلق.
+Started	Started
+Open KUDUSYNC	فتح KUDUSYNC
+Sync all pairs now	مزامنة كل الأزواج الآن
+Pause live sync	إيقاف المزامنة المباشرة مؤقتًا
+Stop running in the notification area	التوقف عن العمل في منطقة الإعلامات
+KUDUSYNC tray	KUDUSYNC tray
+Resume live sync	استئناف المزامنة المباشرة
+KUDUSYNC · live sync paused	KUDUSYNC · المزامنة المباشرة متوقفة مؤقتًا
+KUDUSYNC · live sync on for {0}	KUDUSYNC · المزامنة المباشرة تعمل لـ {0}
+Watching {0} live pair(s): {1}	Watching {0} live pair(s): {1}
+Live sync: {0}	Live sync: {0}
+Live sync finished: {0}: {1} · {2}	Live sync finished: {0}: {1} · {2}
+{0} synced	تمت مزامنة {0}
+{0} had problems	واجه {0} مشكلات
+Drive removed: {0}	Drive removed: {0}
+Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}	Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}
+{0} is connected	{0} موصول
+Click to sync {0}.	انقر لمزامنة {0}.
+Can't watch {0}: {1}	Can't watch {0}: {1}
+No folder chosen	لم يُختر مجلد
+Earlier versions · {0}	النسخ السابقة · {0}
+Earlier versions of {0}	النسخ السابقة من {0}
+Find a file	ابحث عن ملف
+Choose a folder...	اختيار مجلد...
+Choose a new, empty folder for the copy	اختر مجلدًا جديدًا فارغًا للنسخة
+Make the copy	عمل النسخة
+Which sync	أي مزامنة
+The backup as it was	النسخة الاحتياطية كما كانت
+Makes a copy of the whole backup as it was just before a sync, in a new folder. The backup itself isn't changed. Files added since then (and never replaced) are in the copy too, as they are now.	ينسخ النسخة الاحتياطية كلها كما كانت قبل مزامنة مباشرةً، إلى مجلد جديد. لا تتغيّر النسخة الاحتياطية. الملفات المضافة بعد ذلك (ولم تُستبدل أبدًا) موجودة في النسخة أيضًا، كما هي الآن.
+{0} Earlier versions can be seen when it's there.	{0} يمكن رؤية النسخ السابقة عندما يكون موصولًا.
+Reading the kept versions...	جارٍ قراءة النسخ المحفوظة...
+This pair doesn't keep the files a sync replaces or deletes, so there are no earlier versions. You can change that with Edit.	هذا الزوج لا يحتفظ بالملفات التي تستبدلها المزامنة أو تحذفها، لذلك لا توجد نسخ سابقة. يمكنك تغيير ذلك من تعديل.
+No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here ({0}).	لا توجد نسخ سابقة بعد. عندما تستبدل مزامنة ملفًا أو تحذفه، يُحفظ القديم هنا ({0}).
+{0} of {1} ({2}), from {3}	{0} من {1} ({2})، من {3}
+earlier version	نسخة سابقة
+1 file deleted since	حُذف ملف واحد منذ ذلك الحين
+{0} files deleted since	حُذف {0} ملفات منذ ذلك الحين
+Just before the sync on {0}	قبل مزامنة {0} مباشرةً
+No file has those words.	لا يوجد ملف بهذه الكلمات.
+(top folder)	(المجلد الرئيسي)
+· not in the backup now (deleted)	· لم يعد في النسخة الاحتياطية (محذوف)
+Until {0}	حتى {0}
+{0} · last changed {1}	{0} · آخر تغيير {1}
+Open a copy to look at it	فتح نسخة لرؤيتها
+Put back	إرجاع
+Put this version back in its usual place	إرجاع هذه النسخة إلى مكانها المعتاد
+Show in its folder	إظهار في مجلده
+KUDUSYNC versions	KUDUSYNC versions
+It couldn't be opened: {0}	تعذّر الفتح: {0}
+This pair is being synced right now. Try again when it's finished.	هذا الزوج قيد المزامنة الآن. حاول مرة أخرى عندما ينتهي.
+Put back the version of "{0}" from before {1}?\n\nThe file there now is kept with the earlier versions first, so you can go back to it.	هل تريد إرجاع نسخة "{0}" من قبل {1}؟\n\nيُحفظ الملف الحالي أولًا مع النسخ السابقة، لتتمكن من العودة إليه.
+It couldn't be put back: {0}	تعذّر الإرجاع: {0}
+Choose which sync first.	اختر أي مزامنة أولًا.
+Working out what was there...	جارٍ معرفة ما كان موجودًا...
+Copying: {0} of {1} files	جارٍ النسخ: {0} من {1} ملفات
+Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	تم: نُسخ {0} إلى {1}، كما كانت النسخة الاحتياطية قبل مزامنة {2}.{3}
+ {0} couldn't be copied (first: {1}).	 تعذّر نسخ {0} (أولها: {1}).
+Stopped. The files copied so far are in the folder.	توقف. الملفات المنسوخة حتى الآن موجودة في المجلد.
+{0} conflict	{0} تعارض
+{0} conflicts	{0} تعارضات
+{0} link	{0} رابط
+{0} links	{0} روابط
+{0} item	{0} عنصر
+{0} items	{0} عناصر
+{0} file	{0} ملف
+{0} files	{0} ملفات
+{0} pair	{0} زوج
+{0} pairs	{0} أزواج
+{0} step	{0} خطوة
+{0} steps	{0} خطوات
+{0} earlier version	{0} نسخة سابقة
+{0} earlier versions	{0} نسخ سابقة
+{0} sync	{0} مزامنة
+{0} syncs	{0} مزامنات
+{0} version	{0} نسخة
+{0} versions	{0} نسخ

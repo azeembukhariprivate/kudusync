@@ -1,0 +1,524 @@
+Error: {0}	Error: {0}
+Something went wrong:\n\n{0}	Algo salió mal:\n\n{0}
+Azeem Bukhari	Azeem Bukhari
+less than a second	menos de un segundo
+{0} h {1} min	{0} h {1} min
+{0} min {1} s	{0} min {1} s
+{0}.damaged	{0}.damaged
+{0}.saving	{0}.saving
+Stopped.	Detenido.
+Not empty, so it was left in place	No está vacía, así que se dejó en su sitio
+It's no longer there.	Ya no está ahí.
+A file called "{0}" is already there.	Ya hay un archivo llamado "{0}".
+Not enough free space in {0}.	No hay suficiente espacio libre en {0}.
+It changed while it was being copied. It'll be copied next time.	Cambió mientras se copiaba. Se copiará la próxima vez.
+The copy didn't match the original when it was read back (the drive may be failing). It'll be tried again next time.	La copia no coincidió con el original al leerla de nuevo (puede que la unidad esté fallando). Se volverá a intentar la próxima vez.
+Copied, but couldn't be removed from the source: {0}	Copiado, pero no se pudo quitar del origen: {0}
+There's a file called "{0}" where a folder is needed.	Hay un archivo llamado "{0}" donde hace falta una carpeta.
+not enough space	no hay espacio suficiente
+In use by another program. It'll be tried again next time.	Lo está usando otro programa. Se volverá a intentar la próxima vez.
+Access denied (it may be read-only, or need permissions you don't have).	Acceso denegado (puede ser de solo lectura o necesitar permisos que no tienes).
+The path is too long for that drive.	La ruta es demasiado larga para esa unidad.
+Copied	Copiado
+Updated	Actualizado
+Removed from the source	Quitado del origen
+Deleted (kept as an old version)	Eliminado (guardado como versión antigua)
+Deleted	Eliminado
+Renamed	Renombrado
+Created folder	Carpeta creada
+Removed folder	Carpeta quitada
+FAILED  {0} in {1}: {2} — {3}	FAILED  {0} in {1}: {2} — {3}
+Left    {0} in {1} — {2}	Left    {0} in {1} — {2}
+{0} in {1}: {2}{3}	{0} in {1}: {2}{3}
+ ({0} bytes)	 ({0} bytes)
+System Volume Information	System Volume Information
+The folder itself	La propia carpeta
+Folder not found: {0}	Carpeta no encontrada: {0}
+Access is denied.	Acceso denegado.
+Folder 1	Carpeta 1
+Folder 2	Carpeta 2
+USB drive	Unidad USB
+Network drive	Unidad de red
+Disc	Disco óptico
+Local disk	Disco local
+No folder chosen.	No se ha elegido ninguna carpeta.
+Drive {0} isn't connected.	La unidad {0} no está conectada.
+The drive	La unidad
+{0} (was {1}) isn't connected. {2} is now a different drive, so KUDUSYNC won't use it. If you formatted or replaced the drive, edit the pair and choose the folder again.	{0} (antes {1}) no está conectada. {2} ahora es otra unidad, así que KUDUSYNC no la usará. Si formateaste o cambiaste la unidad, edita el par y vuelve a elegir la carpeta.
+{0} ({1}) isn't connected.	{0} ({1}) no está conectada.
+Not chosen	Sin elegir
+Network share {0}	Recurso de red {0}
+Drive {0}	Unidad {0}
+~$*; *.tmp; Thumbs.db	~$*; *.tmp; Thumbs.db
+Every day at {0}	Todos los días a las {0}
+{0} at {1}	{0} a las {1}
+Every hour	Cada hora
+Every {0} hours	Cada {0} horas
+When you sign in to Windows	Al iniciar sesión en Windows
+Only when you run it	Solo cuando lo ejecutes
+Sun	Dom
+Mon	Lun
+Tue	Mar
+Wed	Mié
+Thu	Jue
+Fri	Vie
+Sat	Sáb
+Every day	Todos los días
+Weekdays	Laborables
+Weekends	Fines de semana
+No days	Ningún día
+Source	Origen
+Destination	Destino
+Mirror	Espejo
+Update	Actualizar
+Two-way sync	Sincronización en ambos sentidos
+Move	Mover
+The destination becomes an exact copy of the source. Files removed from the source are removed from the destination too.	El destino se convierte en una copia exacta del origen. Los archivos quitados del origen también se quitan del destino.
+New and changed files are copied to the destination. Nothing is ever deleted there.	Los archivos nuevos y cambiados se copian al destino. Allí nunca se elimina nada.
+Changes on either side are copied to the other, deletions included. If a file changed on both sides, both copies are kept.	Los cambios de cualquier lado se copian al otro, incluidas las eliminaciones. Si un archivo cambió en ambos lados, se conservan las dos copias.
+Files are copied to the destination and then removed from the source.	Los archivos se copian al destino y luego se quitan del origen.
+Not kept (deleted permanently)	No se guardan (se eliminan para siempre)
+Kept forever	Se guardan para siempre
+Kept for 1 day	Se guardan 1 día
+Kept for {0} days	Se guardan {0} días
+KUDUSYNC login for {0}	KUDUSYNC login for {0}
+This isn't a network path.	Esto no es una ruta de red.
+Couldn't sign in to {0}: {1}. Edit the pair to update the login.	No se pudo iniciar sesión en {0}: {1}. Edita el par para actualizar el inicio de sesión.
+Couldn't connect to {0}: {1}.	No se pudo conectar con {0}: {1}.
+Couldn't reach {0}. Check that it's switched on and connected to the network (if it needs a login, edit the pair and sign in).	No se pudo llegar a {0}. Comprueba que está encendido y conectado a la red (si necesita inicio de sesión, edita el par e inicia sesión).
+Couldn't reach {0}.	No se pudo llegar a {0}.
+This isn't a .NET binary-serialized file.	This isn't a .NET binary-serialized file.
+Unsupported serialization format version.	Unsupported serialization format version.
+The file nests its data too deeply.	The file nests its data too deeply.
+Unknown class reference.	Unknown class reference.
+Unsupported array shape.	Unsupported array shape.
+Array too large.	Array too large.
+Unsupported record type {0}.	Unsupported record type {0}.
+The file ended too early.	The file ended too early.
+The file is damaged.	The file is damaged.
+Too many members.	Too many members.
+Unsupported value type {0}.	Unsupported value type {0}.
+_KUDUSYNC History	_KUDUSYNC History
+Pair	Par
+New folder	Carpeta nueva
+Name's capitalisation changed	Cambiaron las mayúsculas del nombre
+Same size and time, but different contents	Mismo tamaño y hora, pero distinto contenido
+Different from the source (the destination's copy is newer)	Distinto del origen (la copia del destino es más reciente)
+Changed	Cambiado
+Not in the source	No está en el origen
+Renamed or moved in the source	Renombrado o movido en el origen
+New	Nuevo
+Its files were moved	Sus archivos se movieron
+Moved	Movido
+Already in the destination	Ya está en el destino
+Moved (replaces the destination's copy)	Movido (reemplaza la copia del destino)
+Deleted in {0}	Eliminado en {0}
+Changed in {0}	Cambiado en {0}
+Changed in {0} after it was deleted in {1}: the change is kept	Cambiado en {0} después de eliminarse en {1}: se conserva el cambio
+New in {0}	Nuevo en {0}
+Different files with the same name on both sides	Archivos distintos con el mismo nombre en ambos lados
+Changed on both sides	Cambiado en ambos lados
+{2}: the older copy (in {0}) is kept as "{1}"	{2}: la copia más antigua (en {0}) se guarda como "{1}"
+{0}: the newer copy keeps the name	{0}: la copia más reciente conserva el nombre
+{0}: the older copy, kept on both sides	{0}: la copia más antigua, guardada en ambos lados
+Renamed or moved in {0}	Renombrado o movido en {0}
+{0} (conflict {1}{2}){3}	{0} (conflicto {1}{2}){3}
+Didn't run	No se ejecutó
+{0} moved	{0} movidos
+{0} copied	{0} copiados
+{0} updated	{0} actualizados
+{0} renamed	{0} renombrados
+{0} deleted	{0} eliminados
+{0} (both kept)	{0} (se conservan ambos)
+{0} couldn't be done	{0} no se pudieron hacer
+Already in step, nothing to do	Ya están al día, no hay nada que hacer
+Stopped: {0}	Detenido: {0}
+Done	Hecho
+Done, with problems	Hecho, con problemas
+Failed	Falló
+Stopped	Detenido
+Skipped	Omitido
+{0} {1}.txt	{0} {1}.txt
+KUDUSYNC {0} · {1}	KUDUSYNC {0} · {1}
+Mode:        {0}	Mode:        {0}
+Started by:  {0}	Started by:  {0}
+Started:     {0}	Started:     {0}
+Finished:    {0}	Finished:    {0}
+Result:      {0} · {1}	Result:      {0} · {1}
+Note: {0}	Note: {0}
+You	Tú
+Schedule	Programación
+Live sync	Sincronización en vivo
+Drive plugged in	Unidad conectada
+Right-click menu	Menú del clic derecho
+Paused for safety: {0} Open KUDUSYNC and run it yourself if this is right.	En pausa por seguridad: {0} Abre KUDUSYNC y ejecútalo tú si es correcto.
+KUDUSYNC -	KUDUSYNC -
+Sunday	Domingo
+Monday	Lunes
+Tuesday	Martes
+Wednesday	Miércoles
+Thursday	Jueves
+Friday	Viernes
+Saturday	Sábado
+This pair has no schedule.	Este par no tiene programación.
+Runs the KUDUSYNC pair "{0}" ({1}).	Ejecuta el par de KUDUSYNC "{0}" ({1}).
+{0}.xml	{0}.xml
+Windows Task Scheduler said: {0}	El Programador de tareas de Windows dijo: {0}
+Task Scheduler is only on Windows.	El Programador de tareas solo existe en Windows.
+Task Scheduler didn't respond.	El Programador de tareas no respondió.
+"{0}" is already running.	"{0}" ya se está ejecutando.
+The two folders are the same, or one is inside the other ({0} and {1}). Edit the pair to choose different folders.	Las dos carpetas son la misma, o una está dentro de la otra ({0} y {1}). Edita el par para elegir carpetas distintas.
+The source folder {0} wasn't found.	No se encontró la carpeta de origen {0}.
+The folder {0} wasn't found. (It was there at the last sync, so KUDUSYNC won't treat everything in it as deleted.)	No se encontró la carpeta {0}. (Estaba en la última sincronización, así que KUDUSYNC no tratará todo lo que contiene como eliminado.)
+Couldn't compare the contents of {0}: {1}	No se pudo comparar el contenido de {0}: {1}
+{0}: couldn't read {1}. Nothing in that folder was changed.	{0}: no se pudo leer {1}. No se cambió nada en esa carpeta.
+{0}: {1} to other folders skipped.	{0}: se omitieron {1} hacia otras carpetas.
+{0} left alone because a file on one side has the same name as a folder on the other: {1}	{0} sin tocar porque un archivo de un lado se llama igual que una carpeta del otro: {1}
+The {0} folder is empty, so this would delete all {1} in the {2}. If the folder was emptied by mistake, or a drive isn't working, don't go ahead.	La carpeta {0} está vacía, así que esto eliminaría los {1} del {2}. Si la carpeta se vació por error, o una unidad no funciona, no sigas.
+This would delete {0}, more than half of the {1} in the {2}.	Esto eliminaría {0}, más de la mitad de los {1} del {2}.
+The {0} needs {1} but only has {2} free. Files that don't fit will be skipped.	El {0} necesita {1} pero solo tiene {2} libres. Los archivos que no quepan se omitirán.
+Couldn't save the record of this sync: {0}	No se pudo guardar el registro de esta sincronización: {0}
+{0}.lock	{0}.lock
+Theme	Tema
+Notify	Avisar
+Sync with KUDUSYNC	Sincronizar con KUDUSYNC
+Back up this folder with KUDUSYNC…	Hacer copia de seguridad de esta carpeta con KUDUSYNC…
+"{0}" --tray	"{0}" --tray
+Echo	Echo
+Contribute	Contribute
+Synchronize	Synchronize
+Microsoft	Microsoft
+This file isn't SyncToy settings that can be read.	Este archivo no son ajustes de SyncToy que se puedan leer.
+SyncToy pair	Par de SyncToy
+Missing theme resource {0}	Missing theme resource {0}
+Light	Claro
+Styles	Styles
+Dark	Oscuro
+Application	Application
+Choose a folder for the copy.	Elige una carpeta para la copia.
+Choose a folder outside the backup, so the copy and the backup stay apart.	Elige una carpeta fuera de la copia de seguridad, para que la copia y la copia de seguridad queden separadas.
+Choose a folder outside the kept versions.	Elige una carpeta fuera de las versiones guardadas.
+Choose an empty folder (or a new one), so nothing in it is mixed up or replaced.	Elige una carpeta vacía (o nueva), para que nada se mezcle ni se reemplace.
+Error message shown: {0}	Error message shown: {0}
+All files	Todos los archivos
+Save	Guardar
+Cancel	Cancelar
+KUDUSYNC	KUDUSYNC
+Folder pairs	Pares de carpetas
+Import from SyncToy	Importar de SyncToy
+History	Historial
+Settings	Ajustes
+About	Acerca de
+A sync is still running. Stop it and close KUDUSYNC?	Todavía hay una sincronización en curso. ¿Detenerla y cerrar KUDUSYNC?
+KUDUSYNC {0} is available	KUDUSYNC {0} está disponible
+New pair	Par nuevo
+ · next scheduled: {0}, {1}	 · próxima programada: {0}, {1}
+Sync all	Sincronizar todo
+Runs every pair that's included in "Sync all", one after another	Ejecuta uno tras otro todos los pares incluidos en "Sincronizar todo"
+today	hoy
+tomorrow	mañana
+Not run yet	Aún no se ha ejecutado
+· Live	· En vivo
+Keep your folders in step	Mantén tus carpetas al día
+Pick two folders (on this PC, a USB drive or a network share) and how to keep them in step: mirror, update, two-way sync or move. Run them when you like, on a schedule, or as files change.	Elige dos carpetas (en este PC, una unidad USB o un recurso de red) y cómo mantenerlas al día: espejo, actualizar, sincronización en ambos sentidos o mover. Ejecútalas cuando quieras, con una programación o cuando cambien los archivos.
+Create a folder pair	Crear un par de carpetas
+No folder pairs yet	Aún no hay pares de carpetas
+Edit	Editar
+More	Más
+{0} · started by {1}	{0} · iniciado por {1}
+Open the log	Abrir el registro
+Last run	Última ejecución
+ · next {0}	 · siguiente {0}
+Runs	Ejecuciones
+On: syncs {0} after files change{1}	Activada: sincroniza {0} después de que cambien los archivos{1}
+(needs KUDUSYNC in the notification area: see Settings)	(necesita KUDUSYNC en el área de notificación: ver Ajustes)
+Shows a notification when {0} is plugged in	Muestra un aviso al conectar {0}
+Files	Archivos
+Open	Abrir
+Open ({0})	Abrir ({0})
+Replaced and deleted files	Archivos reemplazados y eliminados
+every copy is checked against the original	cada copia se comprueba con el original
+files are compared by contents, not just size and date	los archivos se comparan por contenido, no solo por tamaño y fecha
+renamed files are renamed, not copied again	los archivos renombrados se renombran, no se copian de nuevo
+not included in "Sync all"	no incluido en "Sincronizar todo"
+Also	Además
+Sync now	Sincronizar ahora
+Preview	Vista previa
+Earlier versions	Versiones anteriores
+Running elsewhere right now (on a schedule or in the notification area)…	Ejecutándose en otro lugar ahora mismo (programado o en el área de notificación)…
+{0} seconds	{0} segundos
+a minute	un minuto
+{0} minutes	{0} minutos
+Only {0}	Solo {0}
+except {0}	excepto {0}
+leaving out the folders {0}	sin las carpetas {0}
+skipping hidden files	omitiendo archivos ocultos
+skipping system files	omitiendo archivos del sistema
+Not connected	No conectada
+Problem	Problema
+ · {0} free	 · {0} libres
+ · signed in as {0}	 · sesión iniciada como {0}
+The folder will be created when the pair runs.	La carpeta se creará cuando se ejecute el par.
+Duplicate	Duplicar
+Forget what was synced (start afresh)	Olvidar lo sincronizado (empezar de cero)
+Delete pair	Eliminar par
+{0} backup	Copia de {0}
+Drive {0} backup	Copia de la unidad {0}
+The pair was saved, but its schedule couldn't be set up.\n\n{0}	El par se guardó, pero no se pudo configurar su programación.\n\n{0}
+{0} (copy)	{0} (copia)
+Forget what "{0}" last synced?\n\nThe next run is then treated as the first one: nothing is deleted, files that differ are kept on both sides, and renamed files are copied again.	¿Olvidar lo que "{0}" sincronizó la última vez?\n\nLa próxima ejecución se tratará como la primera: no se elimina nada, los archivos distintos se conservan en ambos lados y los renombrados se vuelven a copiar.
+Delete the pair "{0}"?\n\nNo files are deleted: both folders stay as they are.	¿Eliminar el par "{0}"?\n\nNo se elimina ningún archivo: ambas carpetas quedan como están.
+No folder pair uses {0} yet.\n\nCreate one to back it up?	Ningún par de carpetas usa {0} todavía.\n\n¿Crear uno para hacer copia de seguridad?
+Imported {0}. Check each one before running it: SyncToy's last-sync information can't be imported, so the first run of a two-way pair keeps both copies of files that differ.	Importados {0}. Revisa cada uno antes de ejecutarlo: la información de la última sincronización de SyncToy no se puede importar, así que la primera ejecución de un par en ambos sentidos conserva las dos copias de los archivos distintos.
+{0} of {1}	{0} de {1}
+{0} looked at	{0} revisados
+"{0}" needs a look before it runs:\n\n{1}	"{0}" necesita una revisión antes de ejecutarse:\n\n{1}
+{0}\n\nGo ahead anyway? (Choose No to see the preview instead.)	{0}\n\n¿Seguir de todos modos? (Elige No para ver la vista previa.)
+Stopped before anything was changed.	Detenido antes de cambiar nada.
+Starting…	Empezando…
+Comparing	Comparando
+Comparing · pair {0}	Comparando · par {0}
+Looking at both folders. Nothing is changed yet.	Mirando ambas carpetas. Aún no se cambia nada.
+Stop	Detener
+Preview · pair {0}	Vista previa · par {0}
+to move	para mover
+new	nuevos
+changed	cambiados
+renamed	renombrados
+deleted (kept as old versions)	eliminados (guardados como versiones antiguas)
+deleted	eliminados
+changed on both sides	cambiados en ambos lados
+already copied (removed from the source)	ya copiados (quitados del origen)
+to copy	para copiar
+All	Todo
+Both changed	Ambos cambiados
+Folders	Carpetas
+Already in step	Ya al día
+Both folders match. There's nothing to do.	Las dos carpetas coinciden. No hay nada que hacer.
+Move now	Mover ahora
+Untick anything you don't want done this time. It'll be offered again next time.	Desmarca lo que no quieras hacer esta vez. Se ofrecerá de nuevo la próxima vez.
+Back	Atrás
+Showing the first {0}; all {1} will be done.	Se muestran los primeros {0}; se harán los {1}.
+Untick to skip this time	Desmarca para omitirlo esta vez
+{0} · in {1}	{0} · en {1}
+Keep both	Conservar ambos
+Copy (both kept)	Copiar (se conservan ambos)
+Move (replace)	Mover (reemplazar)
+Already copied	Ya copiado
+Delete	Eliminar
+Rename	Renombrar
+Remove folder	Quitar carpeta
+Moving	Moviendo
+Syncing	Sincronizando
+Syncing · pair {0}	Sincronizando · par {0}
+You can stop at any time: whatever is half-copied is cleaned up, and the rest happens next time.	Puedes detenerte cuando quieras: lo que esté a medio copiar se limpia y el resto se hace la próxima vez.
+ · {0} of {1}	 · {0} de {1}
+ · about {0} left	 · quedan unos {0}
+ · {0} couldn't be done	 · {0} no se pudieron hacer
+…the log has the full list.	…el registro tiene la lista completa.
+Open {0}	Abrir {0}
+All done.	Todo listo.
+Done. Anything that couldn't be done will be tried again next time.	Hecho. Lo que no se pudo hacer se volverá a intentar la próxima vez.
+Log	Registro
+Nothing has run yet.	Aún no se ha ejecutado nada.
+Every run of every pair: from this window, on a schedule, by live sync or from a notification.	Cada ejecución de cada par: desde esta ventana, programada, por sincronización en vivo o desde un aviso.
+Open the logs folder	Abrir la carpeta de registros
+{0}: done, both copies kept of {1}	{0}: hecho, se conservaron ambas copias de {1}
+{0}: done	{0}: hecho
+{0}: done, with problems	{0}: hecho, con problemas
+{0}: didn't sync	{0}: no se sincronizó
+{0}: stopped	{0}: detenido
+{0}: paused	{0}: en pausa
+Settings · KUDUSYNC	Ajustes · KUDUSYNC
+Appearance	Apariencia
+Same as Windows	Igual que Windows
+Language	Idioma
+In the background	En segundo plano
+Run KUDUSYNC in the notification area when Windows starts	Ejecutar KUDUSYNC en el área de notificación al iniciar Windows
+Needed for live sync and for notifications when a pair's drive is plugged in. Schedules work without it.	Necesario para la sincronización en vivo y los avisos al conectar la unidad de un par. Las programaciones funcionan sin esto.
+After a scheduled or automatic sync, notify me	Después de una sincronización programada o automática, avisarme
+Always	Siempre
+Only about problems	Solo si hay problemas
+Never	Nunca
+Live sync only speaks up about problems.	La sincronización en vivo solo avisa de problemas.
+Pause a scheduled or automatic sync that would delete more than half of the files	Poner en pausa una sincronización programada o automática que eliminaría más de la mitad de los archivos
+A sync that would empty a folder completely (for example when the source drive is blank) always waits for you.	Una sincronización que vaciaría una carpeta por completo (por ejemplo, si la unidad de origen está vacía) siempre te espera.
+File Explorer	Explorador de archivos
+Add "Sync with KUDUSYNC" and "Back up this folder" to folders' right-click menu	Añadir "Sync with KUDUSYNC" y "Back up this folder" al menú del clic derecho de las carpetas
+For your Windows account only. On Windows 11 it's under "Show more options".	Solo para tu cuenta de Windows. En Windows 11 está en "Mostrar más opciones".
+Updates	Actualizaciones
+Check for a new KUDUSYNC version when it starts	Buscar una nueva versión de KUDUSYNC al iniciar
+Only asks GitHub for the latest version number. Nothing is downloaded without asking.	Solo pregunta a GitHub el número de la última versión. No se descarga nada sin preguntar.
+About KUDUSYNC	Acerca de KUDUSYNC
+Close	Cerrar
+Version {0} · Keep folders in step	Versión {0} · Mantén las carpetas al día
+Azeem, with Claude and	Azeem, with Claude and
+Made by	Made by
+Licence	Licencia
+MIT · free and open source	MIT · libre y de código abierto
+View	Ver
+Source code	Código fuente
+Your data	Tus datos
+Kept next to the program (portable)	Guardados junto al programa (portátil)
+Pairs and logs are kept on this PC only	Los pares y registros se guardan solo en este PC
+Third-party	De terceros
+Third-party notices	Avisos de terceros
+KUDUSYNC never deletes a file without keeping a copy first, unless you tell a pair not to. Replaced and deleted files go to a "_KUDUSYNC History" folder and are cleaned up after the number of days you choose.	KUDUSYNC nunca elimina un archivo sin guardar antes una copia, salvo que le digas a un par que no lo haga. Los archivos reemplazados y eliminados van a una carpeta "_KUDUSYNC History" y se limpian tras los días que elijas.
+Check for updates	Buscar actualizaciones
+Couldn't find any published version yet.	Aún no se ha encontrado ninguna versión publicada.
+KUDUSYNC {0} is available. Open the download page?	KUDUSYNC {0} está disponible. ¿Abrir la página de descarga?
+You have the latest version.	Tienes la última versión.
+Couldn't check for updates. Check your internet connection and try again.	No se pudieron buscar actualizaciones. Revisa tu conexión a internet e inténtalo de nuevo.
+Import from SyncToy · KUDUSYNC	Importar de SyncToy · KUDUSYNC
+These folder pairs were found in SyncToy's settings. Echo becomes Mirror, Contribute becomes Update, and Synchronize becomes Two-way sync.	Se encontraron estos pares de carpetas en los ajustes de SyncToy. Echo pasa a ser Espejo, Contribute pasa a ser Actualizar y Synchronize pasa a ser Sincronización en ambos sentidos.
+Already in KUDUSYNC	Ya está en KUDUSYNC
+SyncToy's settings couldn't be read: {0}	No se pudieron leer los ajustes de SyncToy: {0}
+No folder pairs were found in SyncToy's settings.	No se encontraron pares de carpetas en los ajustes de SyncToy.
+Import	Importar
+Sign in to {0}	Iniciar sesión en {0}
+Saved in Windows Credential Manager for your account, so scheduled syncs can sign in too. KUDUSYNC never stores it itself.	Se guarda en el Administrador de credenciales de Windows para tu cuenta, así las sincronizaciones programadas también pueden iniciar sesión. KUDUSYNC nunca la guarda por su cuenta.
+User name (like NAS\\azeem or azeem@example.com)	Nombre de usuario (como NAS\\azeem o azeem@example.com)
+Password	Contraseña
+Test and save	Probar y guardar
+Sign in · KUDUSYNC	Iniciar sesión · KUDUSYNC
+Checking…	Comprobando…
+Couldn't sign in: {0}	No se pudo iniciar sesión: {0}
+Keep for 7 days	Guardar 7 días
+Keep for 30 days	Guardar 30 días
+Keep for 90 days	Guardar 90 días
+Keep for a year	Guardar un año
+Keep forever	Guardar para siempre
+Don't keep them (delete permanently)	No guardarlos (eliminar para siempre)
+Only when I run it	Solo cuando lo ejecute
+On certain days	Ciertos días
+Every few hours	Cada pocas horas
+When I sign in to Windows	Al iniciar sesión en Windows
+Skip hidden files and folders	Omitir archivos y carpetas ocultos
+Skip Windows system files	Omitir archivos del sistema de Windows
+Keep them in a folder of my choice	Guardarlos en una carpeta que yo elija
+Check every copy against the original (slower, catches failing drives)	Comprobar cada copia con el original (más lento, detecta unidades que fallan)
+Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)	Comparar también el contenido, para detectar cambios que mantienen el tamaño y la fecha (más lento: lee los archivos en ambos lados)
+When a file is renamed or moved, rename it on the other side instead of copying it again	Si un archivo se renombra o se mueve, renombrarlo en el otro lado en vez de copiarlo de nuevo
+Live sync: sync a short while after files change	Sincronización en vivo: sincronizar poco después de que cambien los archivos
+Show a notification when the drive is plugged in	Mostrar un aviso al conectar la unidad
+Include in "Sync all"	Incluir en "Sincronizar todo"
+New folder pair	Nuevo par de carpetas
+Edit {0}	Editar {0}
+{0} · KUDUSYNC	{0} · KUDUSYNC
+Edit folder pair	Editar par de carpetas
+Name	Nombre
+What to do	Qué hacer
+Which files	Qué archivos
+Include files matching (separate with ;)	Incluir archivos que coincidan con (separa con ;)
+Leave out files matching	Excluir archivos que coincidan con
+Files that are left out are never copied or deleted, on either side.	Los archivos excluidos nunca se copian ni se eliminan, en ningún lado.
+Files a sync replaces or deletes are moved to a "_KUDUSYNC History" folder on that drive first, so a mistake can be undone.	Los archivos que una sincronización reemplaza o elimina se mueven antes a una carpeta "_KUDUSYNC History" de esa unidad, para poder deshacer un error.
+{0} days	{0} días
+Browse…	Examinar…
+Choose where to keep replaced and deleted files	Elige dónde guardar los archivos reemplazados y eliminados
+Checks	Comprobaciones
+Running automatically	Ejecución automática
+at	a las
+Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. They run while you're signed in to Windows (a locked screen is fine). If the PC was off or you were signed out, the sync runs as soon as you're back.	Las programaciones usan el Programador de tareas de Windows, así que funcionan aunque KUDUSYNC esté cerrado. Se ejecutan mientras tengas la sesión iniciada en Windows (con la pantalla bloqueada también). Si el PC estaba apagado o habías cerrado sesión, la sincronización se hace en cuanto vuelvas.
+{0} later	{0} después
+Create pair	Crear par
+Files are moved out of here.	Los archivos se mueven desde aquí.
+Copied from here. Nothing in it is changed.	Se copia desde aquí. No se cambia nada aquí.
+Made into an exact copy of the source.	Se convierte en copia exacta del origen.
+Gets new and changed files. Nothing here is deleted.	Recibe archivos nuevos y cambiados. Aquí no se elimina nada.
+Files are moved to here.	Los archivos se mueven aquí.
+Turn it on	Activarlo
+Live sync and drive notifications need KUDUSYNC running in the notification area (it starts with Windows and uses very little).	La sincronización en vivo y los avisos de unidad necesitan KUDUSYNC en el área de notificación (se inicia con Windows y gasta muy poco).
+Give the pair a name.	Ponle un nombre al par.
+There's already a pair called "{0}".	Ya hay un par llamado "{0}".
+Choose both folders ({0} and {1}).	Elige ambas carpetas ({0} y {1}).
+The two folders are the same, or one is inside the other. Choose two separate folders.	Las dos carpetas son la misma, o una está dentro de la otra. Elige dos carpetas separadas.
+The source folder {0} doesn't exist.	La carpeta de origen {0} no existe.
+Choose at least one day for the schedule.	Elige al menos un día para la programación.
+Enter the time like 21:00.	Escribe la hora así: 21:00.
+Choose the folder for replaced and deleted files, or untick that option.	Elige la carpeta para los archivos reemplazados y eliminados, o desmarca esa opción.
+{0} can't be reached right now. Does it need a user name and password?\n\nChoose Yes to sign in, or No to save the pair anyway (it'll be tried when the pair runs).	No se puede llegar a {0} ahora mismo. ¿Necesita usuario y contraseña?\n\nElige Sí para iniciar sesión, o No para guardar el par de todos modos (se intentará cuando se ejecute).
+Choose the {0} folder	Elige la carpeta de {0}
+Sign in…	Iniciar sesión…
+· uses your Windows login	· usa tu inicio de sesión de Windows
+Change login…	Cambiar inicio de sesión…
+That drive isn't connected.	Esa unidad no está conectada.
+· recognised even if its letter changes	· se reconoce aunque cambie su letra
+· the folder will be created	· se creará la carpeta
+{0} ran into a problem it couldn't get past, and has to close.	{0} ha encontrado un problema que no ha podido superar y tiene que cerrarse.
+Started	Started
+Open KUDUSYNC	Abrir KUDUSYNC
+Sync all pairs now	Sincronizar ahora todos los pares
+Pause live sync	Pausar la sincronización en vivo
+Stop running in the notification area	Dejar de ejecutarse en el área de notificación
+KUDUSYNC tray	KUDUSYNC tray
+Resume live sync	Reanudar la sincronización en vivo
+KUDUSYNC · live sync paused	KUDUSYNC · sincronización en vivo en pausa
+KUDUSYNC · live sync on for {0}	KUDUSYNC · sincronización en vivo activa para {0}
+Watching {0} live pair(s): {1}	Watching {0} live pair(s): {1}
+Live sync: {0}	Live sync: {0}
+Live sync finished: {0}: {1} · {2}	Live sync finished: {0}: {1} · {2}
+{0} synced	{0} sincronizados
+{0} had problems	{0} tuvieron problemas
+Drive removed: {0}	Drive removed: {0}
+Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}	Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}
+{0} is connected	{0} está conectada
+Click to sync {0}.	Haz clic para sincronizar {0}.
+Can't watch {0}: {1}	Can't watch {0}: {1}
+No folder chosen	No se ha elegido carpeta
+Earlier versions · {0}	Versiones anteriores · {0}
+Earlier versions of {0}	Versiones anteriores de {0}
+Find a file	Buscar un archivo
+Choose a folder...	Elegir una carpeta...
+Choose a new, empty folder for the copy	Elige una carpeta nueva y vacía para la copia
+Make the copy	Hacer la copia
+Which sync	Qué sincronización
+The backup as it was	La copia de seguridad tal como era
+Makes a copy of the whole backup as it was just before a sync, in a new folder. The backup itself isn't changed. Files added since then (and never replaced) are in the copy too, as they are now.	Hace una copia de toda la copia de seguridad tal como era justo antes de una sincronización, en una carpeta nueva. La copia de seguridad no cambia. Los archivos añadidos después (y nunca reemplazados) también están en la copia, tal como son ahora.
+{0} Earlier versions can be seen when it's there.	{0} Las versiones anteriores se pueden ver cuando esté conectada.
+Reading the kept versions...	Leyendo las versiones guardadas...
+This pair doesn't keep the files a sync replaces or deletes, so there are no earlier versions. You can change that with Edit.	Este par no guarda los archivos que una sincronización reemplaza o elimina, así que no hay versiones anteriores. Puedes cambiarlo con Editar.
+No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here ({0}).	Aún no hay versiones anteriores. Cuando una sincronización reemplace o elimine un archivo, el antiguo se guardará aquí ({0}).
+{0} of {1} ({2}), from {3}	{0} de {1} ({2}), de {3}
+earlier version	versión anterior
+1 file deleted since	1 archivo eliminado desde entonces
+{0} files deleted since	{0} archivos eliminados desde entonces
+Just before the sync on {0}	Justo antes de la sincronización del {0}
+No file has those words.	Ningún archivo tiene esas palabras.
+(top folder)	(carpeta principal)
+· not in the backup now (deleted)	· ya no está en la copia de seguridad (eliminado)
+Until {0}	Hasta {0}
+{0} · last changed {1}	{0} · último cambio {1}
+Open a copy to look at it	Abrir una copia para verla
+Put back	Devolver
+Put this version back in its usual place	Devolver esta versión a su sitio habitual
+Show in its folder	Mostrar en su carpeta
+KUDUSYNC versions	KUDUSYNC versions
+It couldn't be opened: {0}	No se pudo abrir: {0}
+This pair is being synced right now. Try again when it's finished.	Este par se está sincronizando ahora. Inténtalo de nuevo cuando termine.
+Put back the version of "{0}" from before {1}?\n\nThe file there now is kept with the earlier versions first, so you can go back to it.	¿Devolver la versión de "{0}" de antes del {1}?\n\nEl archivo que hay ahora se guarda antes con las versiones anteriores, para que puedas volver a él.
+It couldn't be put back: {0}	No se pudo devolver: {0}
+Choose which sync first.	Elige primero qué sincronización.
+Working out what was there...	Averiguando qué había...
+Copying: {0} of {1} files	Copiando: {0} de {1} archivos
+Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	Hecho: {0} copiados en {1}, como estaba la copia de seguridad antes de la sincronización del {2}.{3}
+ {0} couldn't be copied (first: {1}).	 No se pudieron copiar {0} (el primero: {1}).
+Stopped. The files copied so far are in the folder.	Detenido. Los archivos copiados hasta ahora están en la carpeta.
+{0} conflict	{0} conflicto
+{0} conflicts	{0} conflictos
+{0} link	{0} vínculo
+{0} links	{0} vínculos
+{0} item	{0} elemento
+{0} items	{0} elementos
+{0} file	{0} archivo
+{0} files	{0} archivos
+{0} pair	{0} par
+{0} pairs	{0} pares
+{0} step	{0} paso
+{0} steps	{0} pasos
+{0} earlier version	{0} versión anterior
+{0} earlier versions	{0} versiones anteriores
+{0} sync	{0} sincronización
+{0} syncs	{0} sincronizaciones
+{0} version	{0} versión
+{0} versions	{0} versiones

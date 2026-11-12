@@ -1,0 +1,524 @@
+Error: {0}	त्रुटि: {0}
+Something went wrong:\n\n{0}	कुछ गड़बड़ हो गई:\n\n{0}
+Azeem Bukhari	Azeem Bukhari
+less than a second	एक सेकंड से कम
+{0} h {1} min	{0} घंटे {1} मिनट
+{0} min {1} s	{0} मिनट {1} सेकंड
+{0}.damaged	{0}.damaged
+{0}.saving	{0}.saving
+Stopped.	रोका गया।
+Not empty, so it was left in place	खाली नहीं, इसलिए वहीं छोड़ दिया
+It's no longer there.	यह अब वहाँ नहीं है।
+A file called "{0}" is already there.	"{0}" नाम की फ़ाइल पहले से वहाँ है।
+Not enough free space in {0}.	{0} में पर्याप्त खाली जगह नहीं है।
+It changed while it was being copied. It'll be copied next time.	कॉपी होते समय यह बदल गई। अगली बार कॉपी होगी।
+The copy didn't match the original when it was read back (the drive may be failing). It'll be tried again next time.	वापस पढ़ने पर कॉपी मूल से मेल नहीं खाई (ड्राइव खराब हो रही हो सकती है)। अगली बार फिर कोशिश होगी।
+Copied, but couldn't be removed from the source: {0}	कॉपी हो गई, पर स्रोत से हटाई नहीं जा सकी: {0}
+There's a file called "{0}" where a folder is needed.	जहाँ फ़ोल्डर चाहिए वहाँ "{0}" नाम की फ़ाइल है।
+not enough space	पर्याप्त जगह नहीं
+In use by another program. It'll be tried again next time.	कोई दूसरा प्रोग्राम इस्तेमाल कर रहा है। अगली बार फिर कोशिश होगी।
+Access denied (it may be read-only, or need permissions you don't have).	पहुँच अस्वीकृत (यह केवल पढ़ने के लिए हो सकती है, या ऐसी अनुमतियाँ चाहिए जो आपके पास नहीं)।
+The path is too long for that drive.	उस ड्राइव के लिए पथ बहुत लंबा है।
+Copied	कॉपी किया
+Updated	अपडेट किया
+Removed from the source	स्रोत से हटाया
+Deleted (kept as an old version)	हटाया (पुराने संस्करण के रूप में रखा)
+Deleted	हटाया
+Renamed	नाम बदला
+Created folder	फ़ोल्डर बनाया
+Removed folder	फ़ोल्डर हटाया
+FAILED  {0} in {1}: {2} — {3}	FAILED  {0} in {1}: {2} — {3}
+Left    {0} in {1} — {2}	Left    {0} in {1} — {2}
+{0} in {1}: {2}{3}	{0} in {1}: {2}{3}
+ ({0} bytes)	 ({0} bytes)
+System Volume Information	System Volume Information
+The folder itself	फ़ोल्डर खुद
+Folder not found: {0}	फ़ोल्डर नहीं मिला: {0}
+Access is denied.	पहुँच अस्वीकृत।
+Folder 1	फ़ोल्डर 1
+Folder 2	फ़ोल्डर 2
+USB drive	USB ड्राइव
+Network drive	नेटवर्क ड्राइव
+Disc	डिस्क
+Local disk	लोकल डिस्क
+No folder chosen.	कोई फ़ोल्डर नहीं चुना गया।
+Drive {0} isn't connected.	ड्राइव {0} जुड़ी नहीं है।
+The drive	ड्राइव
+{0} (was {1}) isn't connected. {2} is now a different drive, so KUDUSYNC won't use it. If you formatted or replaced the drive, edit the pair and choose the folder again.	{0} (पहले {1}) जुड़ी नहीं है। {2} अब दूसरी ड्राइव है, इसलिए KUDUSYNC उसका इस्तेमाल नहीं करेगा। अगर आपने ड्राइव फ़ॉर्मैट की या बदली है, तो जोड़ी बदलें और फ़ोल्डर फिर चुनें।
+{0} ({1}) isn't connected.	{0} ({1}) जुड़ी नहीं है।
+Not chosen	चुना नहीं गया
+Network share {0}	नेटवर्क शेयर {0}
+Drive {0}	ड्राइव {0}
+~$*; *.tmp; Thumbs.db	~$*; *.tmp; Thumbs.db
+Every day at {0}	हर दिन {0} बजे
+{0} at {1}	{0} {1} बजे
+Every hour	हर घंटे
+Every {0} hours	हर {0} घंटे
+When you sign in to Windows	जब आप Windows में साइन इन करें
+Only when you run it	केवल जब आप चलाएँ
+Sun	रवि
+Mon	सोम
+Tue	मंगल
+Wed	बुध
+Thu	गुरु
+Fri	शुक्र
+Sat	शनि
+Every day	हर दिन
+Weekdays	कामकाजी दिन
+Weekends	सप्ताहांत
+No days	कोई दिन नहीं
+Source	स्रोत
+Destination	गंतव्य
+Mirror	मिरर
+Update	अपडेट
+Two-way sync	दोनों तरफ़ सिंक
+Move	खिसकाएँ
+The destination becomes an exact copy of the source. Files removed from the source are removed from the destination too.	गंतव्य स्रोत की हूबहू कॉपी बन जाता है। स्रोत से हटाई गई फ़ाइलें गंतव्य से भी हटती हैं।
+New and changed files are copied to the destination. Nothing is ever deleted there.	नई और बदली फ़ाइलें गंतव्य में कॉपी होती हैं। वहाँ से कभी कुछ नहीं हटता।
+Changes on either side are copied to the other, deletions included. If a file changed on both sides, both copies are kept.	किसी भी तरफ़ के बदलाव, हटाना भी, दूसरी तरफ़ कॉपी होते हैं। अगर कोई फ़ाइल दोनों तरफ़ बदली, तो दोनों कॉपी रखी जाती हैं।
+Files are copied to the destination and then removed from the source.	फ़ाइलें गंतव्य में कॉपी होकर स्रोत से हटा दी जाती हैं।
+Not kept (deleted permanently)	नहीं रखी जातीं (हमेशा के लिए हटती हैं)
+Kept forever	हमेशा रखी जाती हैं
+Kept for 1 day	1 दिन रखी जाती हैं
+Kept for {0} days	{0} दिन रखी जाती हैं
+KUDUSYNC login for {0}	KUDUSYNC login for {0}
+This isn't a network path.	यह नेटवर्क पथ नहीं है।
+Couldn't sign in to {0}: {1}. Edit the pair to update the login.	{0} में साइन इन नहीं हो सका: {1}। लॉगिन अपडेट करने के लिए जोड़ी बदलें।
+Couldn't connect to {0}: {1}.	{0} से जुड़ नहीं सका: {1}।
+Couldn't reach {0}. Check that it's switched on and connected to the network (if it needs a login, edit the pair and sign in).	{0} तक नहीं पहुँच सका। जाँचें कि यह चालू है और नेटवर्क से जुड़ा है (लॉगिन चाहिए तो जोड़ी बदलकर साइन इन करें)।
+Couldn't reach {0}.	{0} तक नहीं पहुँच सका।
+This isn't a .NET binary-serialized file.	This isn't a .NET binary-serialized file.
+Unsupported serialization format version.	Unsupported serialization format version.
+The file nests its data too deeply.	The file nests its data too deeply.
+Unknown class reference.	Unknown class reference.
+Unsupported array shape.	Unsupported array shape.
+Array too large.	Array too large.
+Unsupported record type {0}.	Unsupported record type {0}.
+The file ended too early.	The file ended too early.
+The file is damaged.	The file is damaged.
+Too many members.	Too many members.
+Unsupported value type {0}.	Unsupported value type {0}.
+_KUDUSYNC History	_KUDUSYNC History
+Pair	जोड़ी
+New folder	नया फ़ोल्डर
+Name's capitalisation changed	नाम के बड़े-छोटे अक्षर बदले
+Same size and time, but different contents	आकार और समय वही, पर सामग्री अलग
+Different from the source (the destination's copy is newer)	स्रोत से अलग (गंतव्य की कॉपी नई है)
+Changed	बदला
+Not in the source	स्रोत में नहीं
+Renamed or moved in the source	स्रोत में नाम बदला या खिसकाया गया
+New	नया
+Its files were moved	इसकी फ़ाइलें खिसकाई गईं
+Moved	खिसकाया
+Already in the destination	गंतव्य में पहले से है
+Moved (replaces the destination's copy)	खिसकाया (गंतव्य की कॉपी की जगह)
+Deleted in {0}	{0} में हटाया
+Changed in {0}	{0} में बदला
+Changed in {0} after it was deleted in {1}: the change is kept	{1} में हटाने के बाद {0} में बदला: बदलाव रखा जाता है
+New in {0}	{0} में नया
+Different files with the same name on both sides	दोनों तरफ़ एक ही नाम की अलग फ़ाइलें
+Changed on both sides	दोनों तरफ़ बदला
+{2}: the older copy (in {0}) is kept as "{1}"	{2}: पुरानी कॉपी ({0} में) "{1}" नाम से रखी जाती है
+{0}: the newer copy keeps the name	{0}: नई कॉपी नाम रखती है
+{0}: the older copy, kept on both sides	{0}: पुरानी कॉपी, दोनों तरफ़ रखी जाती है
+Renamed or moved in {0}	{0} में नाम बदला या खिसकाया गया
+{0} (conflict {1}{2}){3}	{0} (टकराव {1}{2}){3}
+Didn't run	नहीं चला
+{0} moved	{0} खिसकाए
+{0} copied	{0} कॉपी किए
+{0} updated	{0} अपडेट किए
+{0} renamed	{0} के नाम बदले
+{0} deleted	{0} हटाए
+{0} (both kept)	{0} (दोनों रखे)
+{0} couldn't be done	{0} नहीं हो सके
+Already in step, nothing to do	पहले से एक जैसे, करने को कुछ नहीं
+Stopped: {0}	रोका गया: {0}
+Done	पूरा
+Done, with problems	पूरा, समस्याओं के साथ
+Failed	विफल
+Stopped	रोका गया
+Skipped	छोड़ा गया
+{0} {1}.txt	{0} {1}.txt
+KUDUSYNC {0} · {1}	KUDUSYNC {0} · {1}
+Mode:        {0}	Mode:        {0}
+Started by:  {0}	Started by:  {0}
+Started:     {0}	Started:     {0}
+Finished:    {0}	Finished:    {0}
+Result:      {0} · {1}	Result:      {0} · {1}
+Note: {0}	Note: {0}
+You	आप
+Schedule	शेड्यूल
+Live sync	लाइव सिंक
+Drive plugged in	ड्राइव लगाई गई
+Right-click menu	राइट-क्लिक मेनू
+Paused for safety: {0} Open KUDUSYNC and run it yourself if this is right.	सुरक्षा के लिए रोका गया: {0} अगर यह सही है तो KUDUSYNC खोलकर खुद चलाएँ।
+KUDUSYNC -	KUDUSYNC -
+Sunday	रविवार
+Monday	सोमवार
+Tuesday	मंगलवार
+Wednesday	बुधवार
+Thursday	गुरुवार
+Friday	शुक्रवार
+Saturday	शनिवार
+This pair has no schedule.	इस जोड़ी का कोई शेड्यूल नहीं है।
+Runs the KUDUSYNC pair "{0}" ({1}).	KUDUSYNC जोड़ी "{0}" चलाता है ({1})।
+{0}.xml	{0}.xml
+Windows Task Scheduler said: {0}	Windows Task Scheduler ने कहा: {0}
+Task Scheduler is only on Windows.	Task Scheduler केवल Windows पर है।
+Task Scheduler didn't respond.	Task Scheduler ने जवाब नहीं दिया।
+"{0}" is already running.	"{0}" पहले से चल रहा है।
+The two folders are the same, or one is inside the other ({0} and {1}). Edit the pair to choose different folders.	दोनों फ़ोल्डर एक ही हैं, या एक दूसरे के अंदर है ({0} और {1})। अलग फ़ोल्डर चुनने के लिए जोड़ी बदलें।
+The source folder {0} wasn't found.	स्रोत फ़ोल्डर {0} नहीं मिला।
+The folder {0} wasn't found. (It was there at the last sync, so KUDUSYNC won't treat everything in it as deleted.)	फ़ोल्डर {0} नहीं मिला। (पिछले सिंक में यह था, इसलिए KUDUSYNC इसमें सब कुछ हटाया हुआ नहीं मानेगा।)
+Couldn't compare the contents of {0}: {1}	{0} की सामग्री की तुलना नहीं हो सकी: {1}
+{0}: couldn't read {1}. Nothing in that folder was changed.	{0}: {1} पढ़ा नहीं जा सका। उस फ़ोल्डर में कुछ नहीं बदला।
+{0}: {1} to other folders skipped.	{0}: दूसरे फ़ोल्डरों के {1} छोड़े गए।
+{0} left alone because a file on one side has the same name as a folder on the other: {1}	{0} को छुआ नहीं गया क्योंकि एक तरफ़ की फ़ाइल का नाम दूसरी तरफ़ के फ़ोल्डर जैसा है: {1}
+The {0} folder is empty, so this would delete all {1} in the {2}. If the folder was emptied by mistake, or a drive isn't working, don't go ahead.	{0} फ़ोल्डर खाली है, इसलिए इससे {2} की सभी {1} हट जाएँगी। अगर फ़ोल्डर गलती से खाली हुआ, या कोई ड्राइव काम नहीं कर रही, तो आगे न बढ़ें।
+This would delete {0}, more than half of the {1} in the {2}.	इससे {0} हटेंगी, {2} की {1} में से आधे से ज़्यादा।
+The {0} needs {1} but only has {2} free. Files that don't fit will be skipped.	{0} को {1} चाहिए पर केवल {2} खाली है। जो फ़ाइलें नहीं समाएँगी वे छोड़ी जाएँगी।
+Couldn't save the record of this sync: {0}	इस सिंक का रिकॉर्ड सहेजा नहीं जा सका: {0}
+{0}.lock	{0}.lock
+Theme	थीम
+Notify	सूचना
+Sync with KUDUSYNC	KUDUSYNC से सिंक करें
+Back up this folder with KUDUSYNC…	इस फ़ोल्डर का KUDUSYNC से बैकअप लें…
+"{0}" --tray	"{0}" --tray
+Echo	Echo
+Contribute	Contribute
+Synchronize	Synchronize
+Microsoft	Microsoft
+This file isn't SyncToy settings that can be read.	यह फ़ाइल पढ़ने योग्य SyncToy सेटिंग्स नहीं है।
+SyncToy pair	SyncToy जोड़ी
+Missing theme resource {0}	Missing theme resource {0}
+Light	हल्का
+Styles	Styles
+Dark	गहरा
+Application	Application
+Choose a folder for the copy.	कॉपी के लिए फ़ोल्डर चुनें।
+Choose a folder outside the backup, so the copy and the backup stay apart.	बैकअप के बाहर का फ़ोल्डर चुनें, ताकि कॉपी और बैकअप अलग रहें।
+Choose a folder outside the kept versions.	रखे गए संस्करणों के बाहर का फ़ोल्डर चुनें।
+Choose an empty folder (or a new one), so nothing in it is mixed up or replaced.	खाली (या नया) फ़ोल्डर चुनें, ताकि उसमें कुछ मिले या बदले नहीं।
+Error message shown: {0}	Error message shown: {0}
+All files	सभी फ़ाइलें
+Save	सहेजें
+Cancel	रद्द करें
+KUDUSYNC	KUDUSYNC
+Folder pairs	फ़ोल्डर जोड़ियाँ
+Import from SyncToy	SyncToy से आयात करें
+History	इतिहास
+Settings	सेटिंग्स
+About	जानकारी
+A sync is still running. Stop it and close KUDUSYNC?	एक सिंक अभी चल रहा है। उसे रोककर KUDUSYNC बंद करें?
+KUDUSYNC {0} is available	KUDUSYNC {0} उपलब्ध है
+New pair	नई जोड़ी
+ · next scheduled: {0}, {1}	 · अगला शेड्यूल: {0}, {1}
+Sync all	सब सिंक करें
+Runs every pair that's included in "Sync all", one after another	"सब सिंक करें" में शामिल हर जोड़ी को एक के बाद एक चलाता है
+today	आज
+tomorrow	कल
+Not run yet	अभी तक नहीं चला
+· Live	· लाइव
+Keep your folders in step	अपने फ़ोल्डर एक जैसे रखें
+Pick two folders (on this PC, a USB drive or a network share) and how to keep them in step: mirror, update, two-way sync or move. Run them when you like, on a schedule, or as files change.	दो फ़ोल्डर चुनें (इस पीसी, USB ड्राइव या नेटवर्क शेयर पर) और उन्हें एक जैसा रखने का तरीका: मिरर, अपडेट, दोनों तरफ़ सिंक या खिसकाना। जब चाहें, शेड्यूल पर, या फ़ाइलें बदलते ही चलाएँ।
+Create a folder pair	फ़ोल्डर जोड़ी बनाएँ
+No folder pairs yet	अभी तक कोई फ़ोल्डर जोड़ी नहीं
+Edit	बदलें
+More	और
+{0} · started by {1}	{0} · {1} ने शुरू किया
+Open the log	लॉग खोलें
+Last run	पिछली बार चला
+ · next {0}	 · अगला {0}
+Runs	चलना
+On: syncs {0} after files change{1}	चालू: फ़ाइलें बदलने के {0} बाद सिंक करता है{1}
+(needs KUDUSYNC in the notification area: see Settings)	(सूचना क्षेत्र में KUDUSYNC चाहिए: सेटिंग्स देखें)
+Shows a notification when {0} is plugged in	{0} लगाने पर सूचना दिखाता है
+Files	फ़ाइलें
+Open	खोलें
+Open ({0})	खोलें ({0})
+Replaced and deleted files	बदली और हटाई गई फ़ाइलें
+every copy is checked against the original	हर कॉपी को मूल से जाँचा जाता है
+files are compared by contents, not just size and date	फ़ाइलों की तुलना सामग्री से होती है, केवल आकार और तारीख से नहीं
+renamed files are renamed, not copied again	नाम बदली फ़ाइलों का नाम बदला जाता है, फिर से कॉपी नहीं
+not included in "Sync all"	"सब सिंक करें" में शामिल नहीं
+Also	और भी
+Sync now	अभी सिंक करें
+Preview	पूर्वावलोकन
+Earlier versions	पिछले संस्करण
+Running elsewhere right now (on a schedule or in the notification area)…	अभी कहीं और चल रहा है (शेड्यूल पर या सूचना क्षेत्र में)…
+{0} seconds	{0} सेकंड
+a minute	एक मिनट
+{0} minutes	{0} मिनट
+Only {0}	केवल {0}
+except {0}	{0} को छोड़कर
+leaving out the folders {0}	{0} फ़ोल्डर छोड़कर
+skipping hidden files	छिपी फ़ाइलें छोड़कर
+skipping system files	सिस्टम फ़ाइलें छोड़कर
+Not connected	जुड़ा नहीं
+Problem	समस्या
+ · {0} free	 · {0} खाली
+ · signed in as {0}	 · {0} के रूप में साइन इन
+The folder will be created when the pair runs.	जोड़ी चलने पर फ़ोल्डर बन जाएगा।
+Duplicate	प्रतिलिपि
+Forget what was synced (start afresh)	जो सिंक हुआ उसे भूल जाएँ (नए सिरे से शुरू)
+Delete pair	जोड़ी हटाएँ
+{0} backup	{0} बैकअप
+Drive {0} backup	ड्राइव {0} बैकअप
+The pair was saved, but its schedule couldn't be set up.\n\n{0}	जोड़ी सहेजी गई, पर उसका शेड्यूल सेट नहीं हो सका।\n\n{0}
+{0} (copy)	{0} (कॉपी)
+Forget what "{0}" last synced?\n\nThe next run is then treated as the first one: nothing is deleted, files that differ are kept on both sides, and renamed files are copied again.	"{0}" ने पिछली बार जो सिंक किया उसे भूल जाएँ?\n\nतब अगला चलना पहला माना जाएगा: कुछ नहीं हटेगा, अलग फ़ाइलें दोनों तरफ़ रहेंगी, और नाम बदली फ़ाइलें फिर कॉपी होंगी।
+Delete the pair "{0}"?\n\nNo files are deleted: both folders stay as they are.	जोड़ी "{0}" हटाएँ?\n\nकोई फ़ाइल नहीं हटेगी: दोनों फ़ोल्डर जैसे हैं वैसे रहेंगे।
+No folder pair uses {0} yet.\n\nCreate one to back it up?	अभी कोई फ़ोल्डर जोड़ी {0} का इस्तेमाल नहीं करती।\n\nइसका बैकअप लेने के लिए एक बनाएँ?
+Imported {0}. Check each one before running it: SyncToy's last-sync information can't be imported, so the first run of a two-way pair keeps both copies of files that differ.	{0} आयात किए। चलाने से पहले हर एक जाँच लें: SyncToy की पिछली-सिंक जानकारी आयात नहीं हो सकती, इसलिए दोनों तरफ़ वाली जोड़ी का पहला चलना अलग फ़ाइलों की दोनों कॉपी रखता है।
+{0} of {1}	{0} / {1}
+{0} looked at	{0} देखे गए
+"{0}" needs a look before it runs:\n\n{1}	"{0}" चलने से पहले एक नज़र चाहिए:\n\n{1}
+{0}\n\nGo ahead anyway? (Choose No to see the preview instead.)	{0}\n\nफिर भी आगे बढ़ें? (इसके बजाय पूर्वावलोकन देखने के लिए नहीं चुनें।)
+Stopped before anything was changed.	कुछ भी बदलने से पहले रोका गया।
+Starting…	शुरू हो रहा है…
+Comparing	तुलना हो रही है
+Comparing · pair {0}	तुलना हो रही है · जोड़ी {0}
+Looking at both folders. Nothing is changed yet.	दोनों फ़ोल्डर देखे जा रहे हैं। अभी कुछ नहीं बदला।
+Stop	रोकें
+Preview · pair {0}	पूर्वावलोकन · जोड़ी {0}
+to move	खिसकाने को
+new	नई
+changed	बदली
+renamed	नाम बदली
+deleted (kept as old versions)	हटाई (पुराने संस्करण के रूप में रखी)
+deleted	हटाई
+changed on both sides	दोनों तरफ़ बदली
+already copied (removed from the source)	पहले से कॉपी (स्रोत से हटाई)
+to copy	कॉपी करने को
+All	सभी
+Both changed	दोनों बदली
+Folders	फ़ोल्डर
+Already in step	पहले से एक जैसे
+Both folders match. There's nothing to do.	दोनों फ़ोल्डर मेल खाते हैं। करने को कुछ नहीं।
+Move now	अभी खिसकाएँ
+Untick anything you don't want done this time. It'll be offered again next time.	इस बार जो नहीं करना उसका टिक हटाएँ। अगली बार फिर दिखाया जाएगा।
+Back	वापस
+Showing the first {0}; all {1} will be done.	पहले {0} दिखाए जा रहे हैं; सभी {1} किए जाएँगे।
+Untick to skip this time	इस बार छोड़ने के लिए टिक हटाएँ
+{0} · in {1}	{0} · {1} में
+Keep both	दोनों रखें
+Copy (both kept)	कॉपी (दोनों रखें)
+Move (replace)	खिसकाएँ (जगह लें)
+Already copied	पहले से कॉपी
+Delete	हटाएँ
+Rename	नाम बदलें
+Remove folder	फ़ोल्डर हटाएँ
+Moving	खिसकाया जा रहा है
+Syncing	सिंक हो रहा है
+Syncing · pair {0}	सिंक हो रहा है · जोड़ी {0}
+You can stop at any time: whatever is half-copied is cleaned up, and the rest happens next time.	आप कभी भी रोक सकते हैं: आधी कॉपी हुई चीज़ साफ़ हो जाती है, और बाकी अगली बार होता है।
+ · {0} of {1}	 · {0} / {1}
+ · about {0} left	 · लगभग {0} बाकी
+ · {0} couldn't be done	 · {0} नहीं हो सके
+…the log has the full list.	…पूरी सूची लॉग में है।
+Open {0}	{0} खोलें
+All done.	सब पूरा।
+Done. Anything that couldn't be done will be tried again next time.	पूरा। जो नहीं हो सका वह अगली बार फिर कोशिश होगा।
+Log	लॉग
+Nothing has run yet.	अभी तक कुछ नहीं चला।
+Every run of every pair: from this window, on a schedule, by live sync or from a notification.	हर जोड़ी का हर चलना: इस विंडो से, शेड्यूल पर, लाइव सिंक से या सूचना से।
+Open the logs folder	लॉग फ़ोल्डर खोलें
+{0}: done, both copies kept of {1}	{0}: पूरा, {1} की दोनों कॉपी रखी
+{0}: done	{0}: पूरा
+{0}: done, with problems	{0}: पूरा, समस्याओं के साथ
+{0}: didn't sync	{0}: सिंक नहीं हुआ
+{0}: stopped	{0}: रोका गया
+{0}: paused	{0}: रुका हुआ
+Settings · KUDUSYNC	सेटिंग्स · KUDUSYNC
+Appearance	रूप
+Same as Windows	Windows जैसा ही
+Language	भाषा
+In the background	पृष्ठभूमि में
+Run KUDUSYNC in the notification area when Windows starts	Windows शुरू होने पर KUDUSYNC को सूचना क्षेत्र में चलाएँ
+Needed for live sync and for notifications when a pair's drive is plugged in. Schedules work without it.	लाइव सिंक और जोड़ी की ड्राइव लगने पर सूचनाओं के लिए ज़रूरी। शेड्यूल इसके बिना भी चलते हैं।
+After a scheduled or automatic sync, notify me	शेड्यूल या अपने आप हुए सिंक के बाद मुझे सूचना दें
+Always	हमेशा
+Only about problems	केवल समस्याओं के बारे में
+Never	कभी नहीं
+Live sync only speaks up about problems.	लाइव सिंक केवल समस्याओं के बारे में बताता है।
+Pause a scheduled or automatic sync that would delete more than half of the files	आधी से ज़्यादा फ़ाइलें हटाने वाले शेड्यूल या अपने आप हुए सिंक को रोकें
+A sync that would empty a folder completely (for example when the source drive is blank) always waits for you.	फ़ोल्डर को पूरा खाली करने वाला सिंक (जैसे जब स्रोत ड्राइव खाली हो) हमेशा आपका इंतज़ार करता है।
+File Explorer	फ़ाइल एक्सप्लोरर
+Add "Sync with KUDUSYNC" and "Back up this folder" to folders' right-click menu	फ़ोल्डरों के राइट-क्लिक मेनू में "Sync with KUDUSYNC" और "Back up this folder" जोड़ें
+For your Windows account only. On Windows 11 it's under "Show more options".	केवल आपके Windows खाते के लिए। Windows 11 में यह "Show more options" के अंदर है।
+Updates	अपडेट
+Check for a new KUDUSYNC version when it starts	शुरू होने पर KUDUSYNC का नया संस्करण जाँचें
+Only asks GitHub for the latest version number. Nothing is downloaded without asking.	GitHub से केवल नवीनतम संस्करण संख्या पूछी जाती है। बिना पूछे कुछ भी डाउनलोड नहीं होता।
+About KUDUSYNC	KUDUSYNC के बारे में
+Close	बंद करें
+Version {0} · Keep folders in step	संस्करण {0} · फ़ोल्डर एक जैसे रखें
+Azeem, with Claude and	Azeem, with Claude and
+Made by	Made by
+Licence	लाइसेंस
+MIT · free and open source	MIT · मुफ़्त और ओपन सोर्स
+View	देखें
+Source code	सोर्स कोड
+Your data	आपका डेटा
+Kept next to the program (portable)	प्रोग्राम के पास रखा जाता है (पोर्टेबल)
+Pairs and logs are kept on this PC only	जोड़ियाँ और लॉग केवल इस पीसी पर रखे जाते हैं
+Third-party	तीसरे पक्ष के
+Third-party notices	तीसरे पक्ष की सूचनाएँ
+KUDUSYNC never deletes a file without keeping a copy first, unless you tell a pair not to. Replaced and deleted files go to a "_KUDUSYNC History" folder and are cleaned up after the number of days you choose.	जब तक आप किसी जोड़ी को मना न करें, KUDUSYNC पहले कॉपी रखे बिना कभी कोई फ़ाइल नहीं हटाता। बदली और हटाई गई फ़ाइलें "_KUDUSYNC History" फ़ोल्डर में जाती हैं और आपके चुने दिनों के बाद साफ़ होती हैं।
+Check for updates	अपडेट जाँचें
+Couldn't find any published version yet.	अभी तक कोई प्रकाशित संस्करण नहीं मिला।
+KUDUSYNC {0} is available. Open the download page?	KUDUSYNC {0} उपलब्ध है। डाउनलोड पेज खोलें?
+You have the latest version.	आपके पास नवीनतम संस्करण है।
+Couldn't check for updates. Check your internet connection and try again.	अपडेट जाँचे नहीं जा सके। अपना इंटरनेट कनेक्शन जाँचें और फिर से कोशिश करें।
+Import from SyncToy · KUDUSYNC	SyncToy से आयात · KUDUSYNC
+These folder pairs were found in SyncToy's settings. Echo becomes Mirror, Contribute becomes Update, and Synchronize becomes Two-way sync.	ये फ़ोल्डर जोड़ियाँ SyncToy की सेटिंग्स में मिलीं। Echo मिरर बनता है, Contribute अपडेट, और Synchronize दोनों तरफ़ सिंक।
+Already in KUDUSYNC	पहले से KUDUSYNC में
+SyncToy's settings couldn't be read: {0}	SyncToy की सेटिंग्स पढ़ी नहीं जा सकीं: {0}
+No folder pairs were found in SyncToy's settings.	SyncToy की सेटिंग्स में कोई फ़ोल्डर जोड़ी नहीं मिली।
+Import	आयात करें
+Sign in to {0}	{0} में साइन इन करें
+Saved in Windows Credential Manager for your account, so scheduled syncs can sign in too. KUDUSYNC never stores it itself.	आपके खाते के लिए Windows Credential Manager में सहेजा जाता है, ताकि शेड्यूल किए सिंक भी साइन इन कर सकें। KUDUSYNC इसे खुद कभी नहीं रखता।
+User name (like NAS\\azeem or azeem@example.com)	उपयोगकर्ता नाम (जैसे NAS\\azeem या azeem@example.com)
+Password	पासवर्ड
+Test and save	जाँचें और सहेजें
+Sign in · KUDUSYNC	साइन इन · KUDUSYNC
+Checking…	जाँच हो रही है…
+Couldn't sign in: {0}	साइन इन नहीं हो सका: {0}
+Keep for 7 days	7 दिन रखें
+Keep for 30 days	30 दिन रखें
+Keep for 90 days	90 दिन रखें
+Keep for a year	एक साल रखें
+Keep forever	हमेशा रखें
+Don't keep them (delete permanently)	इन्हें न रखें (हमेशा के लिए हटाएँ)
+Only when I run it	केवल जब मैं चलाऊँ
+On certain days	कुछ दिनों पर
+Every few hours	हर कुछ घंटों में
+When I sign in to Windows	जब मैं Windows में साइन इन करूँ
+Skip hidden files and folders	छिपी फ़ाइलें और फ़ोल्डर छोड़ें
+Skip Windows system files	Windows सिस्टम फ़ाइलें छोड़ें
+Keep them in a folder of my choice	इन्हें मेरी पसंद के फ़ोल्डर में रखें
+Check every copy against the original (slower, catches failing drives)	हर कॉपी को मूल से जाँचें (धीमा, खराब होती ड्राइव पकड़ता है)
+Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)	फ़ाइलों की सामग्री की भी तुलना करें, ताकि आकार और तारीख न बदलने वाले बदलाव पकड़े जाएँ (धीमा: दोनों तरफ़ की फ़ाइलें पढ़ता है)
+When a file is renamed or moved, rename it on the other side instead of copying it again	जब फ़ाइल का नाम बदले या खिसके, तो फिर से कॉपी करने के बजाय दूसरी तरफ़ नाम बदलें
+Live sync: sync a short while after files change	लाइव सिंक: फ़ाइलें बदलने के थोड़ी देर बाद सिंक करें
+Show a notification when the drive is plugged in	ड्राइव लगने पर सूचना दिखाएँ
+Include in "Sync all"	"सब सिंक करें" में शामिल करें
+New folder pair	नई फ़ोल्डर जोड़ी
+Edit {0}	{0} बदलें
+{0} · KUDUSYNC	{0} · KUDUSYNC
+Edit folder pair	फ़ोल्डर जोड़ी बदलें
+Name	नाम
+What to do	क्या करना है
+Which files	कौन-सी फ़ाइलें
+Include files matching (separate with ;)	इनसे मेल खाने वाली फ़ाइलें शामिल करें (; से अलग करें)
+Leave out files matching	इनसे मेल खाने वाली फ़ाइलें छोड़ें
+Files that are left out are never copied or deleted, on either side.	छोड़ी गई फ़ाइलें किसी भी तरफ़ कभी कॉपी या हटाई नहीं जातीं।
+Files a sync replaces or deletes are moved to a "_KUDUSYNC History" folder on that drive first, so a mistake can be undone.	सिंक जिन फ़ाइलों को बदलता या हटाता है वे पहले उसी ड्राइव के "_KUDUSYNC History" फ़ोल्डर में जाती हैं, ताकि गलती सुधारी जा सके।
+{0} days	{0} दिन
+Browse…	ब्राउज़ करें…
+Choose where to keep replaced and deleted files	बदली और हटाई गई फ़ाइलें कहाँ रखनी हैं चुनें
+Checks	जाँच
+Running automatically	अपने आप चलना
+at	समय
+Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. They run while you're signed in to Windows (a locked screen is fine). If the PC was off or you were signed out, the sync runs as soon as you're back.	शेड्यूल Windows Task Scheduler का इस्तेमाल करते हैं, इसलिए KUDUSYNC बंद होने पर भी चलते हैं। वे तब चलते हैं जब आप Windows में साइन इन हों (लॉक स्क्रीन ठीक है)। अगर पीसी बंद था या आप साइन आउट थे, तो लौटते ही सिंक चलता है।
+{0} later	{0} बाद
+Create pair	जोड़ी बनाएँ
+Files are moved out of here.	फ़ाइलें यहाँ से खिसकाई जाती हैं।
+Copied from here. Nothing in it is changed.	यहाँ से कॉपी होती हैं। इसमें कुछ नहीं बदलता।
+Made into an exact copy of the source.	स्रोत की हूबहू कॉपी बनाया जाता है।
+Gets new and changed files. Nothing here is deleted.	नई और बदली फ़ाइलें मिलती हैं। यहाँ से कुछ नहीं हटता।
+Files are moved to here.	फ़ाइलें यहाँ खिसकाई जाती हैं।
+Turn it on	चालू करें
+Live sync and drive notifications need KUDUSYNC running in the notification area (it starts with Windows and uses very little).	लाइव सिंक और ड्राइव सूचनाओं के लिए KUDUSYNC का सूचना क्षेत्र में चलना ज़रूरी है (यह Windows के साथ शुरू होता है और बहुत कम लेता है)।
+Give the pair a name.	जोड़ी को नाम दें।
+There's already a pair called "{0}".	"{0}" नाम की जोड़ी पहले से है।
+Choose both folders ({0} and {1}).	दोनों फ़ोल्डर चुनें ({0} और {1})।
+The two folders are the same, or one is inside the other. Choose two separate folders.	दोनों फ़ोल्डर एक ही हैं, या एक दूसरे के अंदर है। दो अलग फ़ोल्डर चुनें।
+The source folder {0} doesn't exist.	स्रोत फ़ोल्डर {0} मौजूद नहीं है।
+Choose at least one day for the schedule.	शेड्यूल के लिए कम से कम एक दिन चुनें।
+Enter the time like 21:00.	समय 21:00 की तरह लिखें।
+Choose the folder for replaced and deleted files, or untick that option.	बदली और हटाई गई फ़ाइलों के लिए फ़ोल्डर चुनें, या उस विकल्प का टिक हटाएँ।
+{0} can't be reached right now. Does it need a user name and password?\n\nChoose Yes to sign in, or No to save the pair anyway (it'll be tried when the pair runs).	{0} तक अभी नहीं पहुँचा जा सकता। क्या इसे उपयोगकर्ता नाम और पासवर्ड चाहिए?\n\nसाइन इन के लिए हाँ, या फिर भी जोड़ी सहेजने के लिए नहीं चुनें (जोड़ी चलने पर कोशिश होगी)।
+Choose the {0} folder	{0} फ़ोल्डर चुनें
+Sign in…	साइन इन…
+· uses your Windows login	· आपका Windows लॉगिन इस्तेमाल करता है
+Change login…	लॉगिन बदलें…
+That drive isn't connected.	वह ड्राइव जुड़ी नहीं है।
+· recognised even if its letter changes	· अक्षर बदलने पर भी पहचानी जाती है
+· the folder will be created	· फ़ोल्डर बन जाएगा
+{0} ran into a problem it couldn't get past, and has to close.	{0} में ऐसी समस्या आई जिससे वह आगे नहीं बढ़ सका, इसलिए इसे बंद होना पड़ेगा।
+Started	Started
+Open KUDUSYNC	KUDUSYNC खोलें
+Sync all pairs now	अभी सभी जोड़ियाँ सिंक करें
+Pause live sync	लाइव सिंक रोकें
+Stop running in the notification area	सूचना क्षेत्र में चलना बंद करें
+KUDUSYNC tray	KUDUSYNC tray
+Resume live sync	लाइव सिंक फिर शुरू करें
+KUDUSYNC · live sync paused	KUDUSYNC · लाइव सिंक रुका हुआ
+KUDUSYNC · live sync on for {0}	KUDUSYNC · {0} के लिए लाइव सिंक चालू
+Watching {0} live pair(s): {1}	Watching {0} live pair(s): {1}
+Live sync: {0}	Live sync: {0}
+Live sync finished: {0}: {1} · {2}	Live sync finished: {0}: {1} · {2}
+{0} synced	{0} सिंक हुईं
+{0} had problems	{0} में समस्याएँ आईं
+Drive removed: {0}	Drive removed: {0}
+Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}	Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}
+{0} is connected	{0} जुड़ गई
+Click to sync {0}.	{0} सिंक करने के लिए क्लिक करें।
+Can't watch {0}: {1}	Can't watch {0}: {1}
+No folder chosen	कोई फ़ोल्डर नहीं चुना
+Earlier versions · {0}	पिछले संस्करण · {0}
+Earlier versions of {0}	{0} के पिछले संस्करण
+Find a file	फ़ाइल ढूँढें
+Choose a folder...	फ़ोल्डर चुनें...
+Choose a new, empty folder for the copy	कॉपी के लिए नया, खाली फ़ोल्डर चुनें
+Make the copy	कॉपी बनाएँ
+Which sync	कौन-सा सिंक
+The backup as it was	बैकअप जैसा था
+Makes a copy of the whole backup as it was just before a sync, in a new folder. The backup itself isn't changed. Files added since then (and never replaced) are in the copy too, as they are now.	किसी सिंक से ठीक पहले बैकअप जैसा था, उसकी पूरी कॉपी नए फ़ोल्डर में बनाता है। बैकअप खुद नहीं बदलता। उसके बाद जोड़ी गई (और कभी न बदली) फ़ाइलें भी कॉपी में होती हैं, जैसी अब हैं।
+{0} Earlier versions can be seen when it's there.	{0} जब यह मौजूद हो तब पिछले संस्करण देखे जा सकते हैं।
+Reading the kept versions...	रखे गए संस्करण पढ़े जा रहे हैं...
+This pair doesn't keep the files a sync replaces or deletes, so there are no earlier versions. You can change that with Edit.	यह जोड़ी सिंक द्वारा बदली या हटाई फ़ाइलें नहीं रखती, इसलिए पिछले संस्करण नहीं हैं। आप इसे बदलें से बदल सकते हैं।
+No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here ({0}).	अभी तक कोई पिछला संस्करण नहीं। जब सिंक कोई फ़ाइल बदलता या हटाता है, पुरानी यहाँ रखी जाती है ({0})।
+{0} of {1} ({2}), from {3}	{1} के {0} ({2}), {3} से
+earlier version	पिछला संस्करण
+1 file deleted since	तब से 1 फ़ाइल हटाई गई
+{0} files deleted since	तब से {0} फ़ाइलें हटाई गईं
+Just before the sync on {0}	{0} के सिंक से ठीक पहले
+No file has those words.	उन शब्दों वाली कोई फ़ाइल नहीं।
+(top folder)	(सबसे ऊपर का फ़ोल्डर)
+· not in the backup now (deleted)	· अब बैकअप में नहीं (हटाई गई)
+Until {0}	{0} तक
+{0} · last changed {1}	{0} · आखिरी बार बदली {1}
+Open a copy to look at it	देखने के लिए कॉपी खोलें
+Put back	वापस रखें
+Put this version back in its usual place	यह संस्करण उसकी सामान्य जगह वापस रखें
+Show in its folder	उसके फ़ोल्डर में दिखाएँ
+KUDUSYNC versions	KUDUSYNC versions
+It couldn't be opened: {0}	यह खुल नहीं सका: {0}
+This pair is being synced right now. Try again when it's finished.	यह जोड़ी अभी सिंक हो रही है। पूरा होने पर फिर कोशिश करें।
+Put back the version of "{0}" from before {1}?\n\nThe file there now is kept with the earlier versions first, so you can go back to it.	"{0}" का {1} से पहले वाला संस्करण वापस रखें?\n\nअभी वहाँ की फ़ाइल पहले पिछले संस्करणों के साथ रखी जाती है, ताकि आप उस पर लौट सकें।
+It couldn't be put back: {0}	यह वापस नहीं रखा जा सका: {0}
+Choose which sync first.	पहले कौन-सा सिंक चुनें।
+Working out what was there...	पता लगाया जा रहा है कि वहाँ क्या था...
+Copying: {0} of {1} files	कॉपी हो रहा है: {0} / {1} फ़ाइलें
+Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	पूरा: {0} को {1} में कॉपी किया, जैसा बैकअप {2} के सिंक से पहले था।{3}
+ {0} couldn't be copied (first: {1}).	 {0} कॉपी नहीं हो सके (पहला: {1})।
+Stopped. The files copied so far are in the folder.	रोका गया। अब तक कॉपी हुई फ़ाइलें फ़ोल्डर में हैं।
+{0} conflict	{0} टकराव
+{0} conflicts	{0} टकराव
+{0} link	{0} लिंक
+{0} links	{0} लिंक
+{0} item	{0} चीज़
+{0} items	{0} चीज़ें
+{0} file	{0} फ़ाइल
+{0} files	{0} फ़ाइलें
+{0} pair	{0} जोड़ी
+{0} pairs	{0} जोड़ियाँ
+{0} step	{0} चरण
+{0} steps	{0} चरण
+{0} earlier version	{0} पिछला संस्करण
+{0} earlier versions	{0} पिछले संस्करण
+{0} sync	{0} सिंक
+{0} syncs	{0} सिंक
+{0} version	{0} संस्करण
+{0} versions	{0} संस्करण

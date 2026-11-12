@@ -177,12 +177,12 @@ namespace Kudusync.Views
             {
                 _summary.Text = _pair.KeepDays < 0
                     ? "This pair doesn't keep the files a sync replaces or deletes, so there are no earlier versions. You can change that with Edit."
-                    : "No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here (" + _pair.KeepText.ToLowerInvariant() + ").";
+                    : Lang.T("No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here ({0}).", _pair.KeepText.ToLower(System.Globalization.CultureInfo.CurrentCulture));
             }
             else
             {
-                _summary.Text = $"{Format.Count(versions.Count, "earlier version")} of {Format.Count(versions.Files.Count, "file")} ({Format.Size(versions.Bytes)}), "
-                                + $"from {Format.Count(versions.Runs.Count, "sync")}" + (_deleted.Count > 0 ? $"; {Format.Count(_deleted.Count, "file was", "files were")} deleted since" : string.Empty)
+                _summary.Text = Lang.T("{0} of {1} ({2}), from {3}", Format.Count(versions.Count, "earlier version"), Format.Count(versions.Files.Count, "file"), Format.Size(versions.Bytes), Format.Count(versions.Runs.Count, "sync"))
+                                + (_deleted.Count > 0 ? "; " + Lang.T(_deleted.Count == 1 ? "1 file deleted since" : "{0} files deleted since", _deleted.Count.ToString("N0")) : string.Empty)
                                 + " · " + _pair.KeepText;
             }
             foreach (var run in versions.Runs)

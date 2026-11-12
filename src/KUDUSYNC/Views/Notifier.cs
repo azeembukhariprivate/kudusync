@@ -19,11 +19,12 @@ namespace Kudusync.Views
         {
             switch (r.Status)
             {
-                case RunStatus.Ok: return r.Conflicts > 0 ? $"{r.PairName}: done, both copies kept of {Format.Count(r.Conflicts, "file")}" : $"{r.PairName}: done";
-                case RunStatus.Warnings: return $"{r.PairName}: done, with problems";
-                case RunStatus.Failed: return $"{r.PairName}: didn't sync";
-                case RunStatus.Stopped: return $"{r.PairName}: stopped";
-                default: return $"{r.PairName}: paused";
+                // Notifications aren't windows, so their texts are put into the language here.
+                case RunStatus.Ok: return r.Conflicts > 0 ? Lang.T("{0}: done, both copies kept of {1}", r.PairName, Format.Count(r.Conflicts, "file")) : Lang.T("{0}: done", r.PairName);
+                case RunStatus.Warnings: return Lang.T("{0}: done, with problems", r.PairName);
+                case RunStatus.Failed: return Lang.T("{0}: didn't sync", r.PairName);
+                case RunStatus.Stopped: return Lang.T("{0}: stopped", r.PairName);
+                default: return Lang.T("{0}: paused", r.PairName);
             }
         }
 

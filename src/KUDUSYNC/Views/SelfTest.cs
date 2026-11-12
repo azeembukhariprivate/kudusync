@@ -775,6 +775,30 @@ namespace Kudusync.Views
             });
             Step("Settings window", () => ShowAndClose(new SettingsWindow(main)));
             Step("About window", () => ShowAndClose(About.Build(main)));
+            foreach (var (code, heading) in new[] { ("ml", "ക്രമീകരണങ്ങൾ"), ("hi", "सेटिंग्स"), ("ar", "الإعدادات") })
+                Step("In another language: " + code, () =>
+                {
+                    LangUi.Use(code);
+                    try
+                    {
+                        Expect(Lang.Current == code, "the language to be loaded from the app");
+                        var w = new SettingsWindow(main);
+                        OffScreen(w);
+                        w.Show();
+                        Pump();
+                        var texts = LangTexts(w);
+                        Expect(texts.Any(t => t != null && t.Contains(heading)), "the settings window in the language: " + string.Join(" | ", texts.Take(8)));
+                        Expect(!texts.Contains("Settings") && !texts.Contains("Appearance") && !texts.Contains("Updates"), "no English headings left: " + string.Join(" | ", texts.Take(12)));
+                        Expect(w.FlowDirection == (code == "ar" ? FlowDirection.RightToLeft : FlowDirection.LeftToRight), "Arabic windows mirrored, others not");
+                        Screenshots.One(w, "Settings in " + code);
+                        w.Close();
+                        Pump();
+                    }
+                    finally
+                    {
+                        LangUi.Use("en");
+                    }
+                });
             Step("Delete the pair", () =>
             {
                 main.DeletePair(main.Pairs[0], false);
@@ -798,6 +822,21 @@ namespace Kudusync.Views
                 try { Diskpart($"select vdisk file=\"{vhd}\"", "detach vdisk"); }
                 catch { /* already detached */ }
             }
+        }
+
+        /// <summary>Every text a window shows (its title too), for checking it's in the chosen language.</summary>
+        private static List<string> LangTexts(Window w)
+        {
+            var list = new List<string> { w.Title };
+            void Walk(DependencyObject o)
+            {
+                if (o is System.Windows.Controls.TextBlock t) list.Add(t.Text);
+                else if (o is System.Windows.Controls.ContentControl c && c.Content is string text) list.Add(text);
+                foreach (var child in LogicalTreeHelper.GetChildren(o))
+                    if (child is DependencyObject d) Walk(d);
+            }
+            Walk(w);
+            return list;
         }
     }
 }

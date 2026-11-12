@@ -33,16 +33,19 @@ namespace Kudusync.Views
                 if (image == MessageBoxImage.Warning) SelfTest.Errors.Add("Error message shown: " + message);
                 return buttons == MessageBoxButton.OK ? MessageBoxResult.OK : MessageBoxResult.No;
             }
+            message = Lang.T(message);
+            title = Lang.T(title);
+            var options = Lang.RightToLeft ? MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : MessageBoxOptions.None;
             return owner != null && owner.IsVisible
-                ? MessageBox.Show(owner, message, title, buttons, image)
-                : MessageBox.Show(message, title, buttons, image);
+                ? MessageBox.Show(owner, message, title, buttons, image, MessageBoxResult.None, options)
+                : MessageBox.Show(message, title, buttons, image, MessageBoxResult.None, options);
         }
 
         public static string PickFolder(Window owner, string description, string start = null)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog
                    {
-                       Description = description,
+                       Description = Lang.T(description),
                        ShowNewFolderButton = true,
                        SelectedPath = start != null && System.IO.Directory.Exists(start) ? start : string.Empty
                    })
@@ -53,13 +56,13 @@ namespace Kudusync.Views
 
         public static List<string> PickFiles(Window owner, string title)
         {
-            var dialog = new Microsoft.Win32.OpenFileDialog { Title = title, Filter = "All files|*.*", Multiselect = true };
+            var dialog = new Microsoft.Win32.OpenFileDialog { Title = Lang.T(title), Filter = Filter("All files|*.*"), Multiselect = true };
             return Show(dialog, owner) ? dialog.FileNames.ToList() : new List<string>();
         }
 
         public static string PickFile(Window owner, string title, string filter)
         {
-            var dialog = new Microsoft.Win32.OpenFileDialog { Title = title, Filter = filter, CheckFileExists = true };
+            var dialog = new Microsoft.Win32.OpenFileDialog { Title = Lang.T(title), Filter = Filter(filter), CheckFileExists = true };
             return Show(dialog, owner) ? dialog.FileName : null;
         }
 
@@ -67,13 +70,22 @@ namespace Kudusync.Views
         {
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = title,
+                Title = Lang.T(title),
                 FileName = fileName,
-                Filter = filter,
+                Filter = Filter(filter),
                 OverwritePrompt = true,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             };
             return Show(dialog, owner) ? dialog.FileName : null;
+        }
+
+        /// <summary>The names in a file dialog's list of kinds ("Text files|*.txt|All files|*.*") in the language in use.</summary>
+        private static string Filter(string filter)
+        {
+            if (Lang.IsEnglish || string.IsNullOrEmpty(filter)) return filter;
+            var parts = filter.Split('|');
+            for (var i = 0; i < parts.Length; i += 2) parts[i] = Lang.T(parts[i]);
+            return string.Join("|", parts);
         }
 
         private static bool Show(Microsoft.Win32.CommonDialog dialog, Window owner) =>

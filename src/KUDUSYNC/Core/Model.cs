@@ -97,11 +97,12 @@ namespace Kudusync.Core
             var time = DateTime.Today.Add(TimeOfDay).ToString("HH:mm");
             switch (Kind)
             {
-                case ScheduleKind.Daily: return "Every day at " + time;
-                case ScheduleKind.Weekly: return DayNames() + " at " + time;
-                case ScheduleKind.EveryHours: return Hours == 1 ? "Every hour" : $"Every {Hours} hours";
-                case ScheduleKind.AtLogon: return "When you sign in to Windows";
-                default: return "Only when you run it";
+                // Shown in many places put together with other texts, so each is in the language in use here.
+                case ScheduleKind.Daily: return Lang.T("Every day at {0}", time);
+                case ScheduleKind.Weekly: return Lang.T("{0} at {1}", DayNames(), time);
+                case ScheduleKind.EveryHours: return Hours == 1 ? Lang.T("Every hour") : Lang.T("Every {0} hours", Hours);
+                case ScheduleKind.AtLogon: return Lang.T("When you sign in to Windows");
+                default: return Lang.T("Only when you run it");
             }
         }
 
@@ -142,14 +143,14 @@ namespace Kudusync.Core
 
         public string DayNames()
         {
-            if ((Days & 0x7F) == 0x7F) return "Every day";
-            if ((Days & 0x7F) == 0b0111110) return "Weekdays";
-            if ((Days & 0x7F) == 0b1000001) return "Weekends";
+            if ((Days & 0x7F) == 0x7F) return Lang.T("Every day");
+            if ((Days & 0x7F) == 0b0111110) return Lang.T("Weekdays");
+            if ((Days & 0x7F) == 0b1000001) return Lang.T("Weekends");
             var names = new System.Collections.Generic.List<string>();
             // Monday first, Sunday last.
             for (var i = 1; i <= 7; i++)
-                if ((Days & (1 << (i % 7))) != 0) names.Add(ShortDays[i % 7]);
-            return names.Count == 0 ? "No days" : string.Join(", ", names);
+                if ((Days & (1 << (i % 7))) != 0) names.Add(Lang.T(ShortDays[i % 7]));
+            return names.Count == 0 ? Lang.T("No days") : string.Join(", ", names);
         }
     }
 
@@ -243,10 +244,10 @@ namespace Kudusync.Core
         {
             switch (mode)
             {
-                case SyncMode.Mirror: return "Mirror";
-                case SyncMode.Update: return "Update";
-                case SyncMode.TwoWay: return "Two-way sync";
-                default: return "Move";
+                case SyncMode.Mirror: return Lang.T("Mirror");
+                case SyncMode.Update: return Lang.T("Update");
+                case SyncMode.TwoWay: return Lang.T("Two-way sync");
+                default: return Lang.T("Move");
             }
         }
 
@@ -265,9 +266,9 @@ namespace Kudusync.Core
         {
             get
             {
-                if (KeepDays < 0) return "Not kept (deleted permanently)";
-                if (KeepDays == 0) return "Kept forever";
-                return KeepDays == 1 ? "Kept for 1 day" : $"Kept for {KeepDays} days";
+                if (KeepDays < 0) return Lang.T("Not kept (deleted permanently)");
+                if (KeepDays == 0) return Lang.T("Kept forever");
+                return KeepDays == 1 ? Lang.T("Kept for 1 day") : Lang.T("Kept for {0} days", KeepDays);
             }
         }
     }

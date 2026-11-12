@@ -42,18 +42,19 @@ namespace Kudusync.Core
         {
             get
             {
-                if (Status == RunStatus.Skipped || (Status == RunStatus.Failed && Changes == 0)) return Message ?? "Didn't run";
+                // Shown in windows, notifications and logs: each piece in the language in use.
+                if (Status == RunStatus.Skipped || (Status == RunStatus.Failed && Changes == 0)) return Lang.T(Message) ?? Lang.T("Didn't run");
                 var parts = new List<string>();
-                if (Moved > 0) parts.Add(Moved + " moved");
-                if (Copied > 0) parts.Add(Copied + " copied");
-                if (Updated > 0) parts.Add(Updated + " updated");
-                if (Renamed > 0) parts.Add(Renamed + " renamed");
-                if (Deleted > 0) parts.Add(Deleted + " deleted");
-                if (Conflicts > 0) parts.Add(Format.Count(Conflicts, "conflict") + " (both kept)");
-                if (Failed > 0) parts.Add(Failed + " couldn't be done");
-                var text = parts.Count == 0 ? "Already in step, nothing to do" : string.Join(", ", parts);
+                if (Moved > 0) parts.Add(Lang.T("{0} moved", Moved));
+                if (Copied > 0) parts.Add(Lang.T("{0} copied", Copied));
+                if (Updated > 0) parts.Add(Lang.T("{0} updated", Updated));
+                if (Renamed > 0) parts.Add(Lang.T("{0} renamed", Renamed));
+                if (Deleted > 0) parts.Add(Lang.T("{0} deleted", Deleted));
+                if (Conflicts > 0) parts.Add(Lang.T("{0} (both kept)", Format.Count(Conflicts, "conflict")));
+                if (Failed > 0) parts.Add(Lang.T("{0} couldn't be done", Failed));
+                var text = parts.Count == 0 ? Lang.T("Already in step, nothing to do") : string.Join(", ", parts);
                 if (Bytes > 0) text += " · " + Format.Size(Bytes);
-                if (Status == RunStatus.Stopped) text = "Stopped: " + text;
+                if (Status == RunStatus.Stopped) text = Lang.T("Stopped: {0}", text);
                 return text;
             }
         }
@@ -64,11 +65,11 @@ namespace Kudusync.Core
             {
                 switch (Status)
                 {
-                    case RunStatus.Ok: return "Done";
-                    case RunStatus.Warnings: return "Done, with problems";
-                    case RunStatus.Failed: return "Failed";
-                    case RunStatus.Stopped: return "Stopped";
-                    default: return "Skipped";
+                    case RunStatus.Ok: return Lang.T("Done");
+                    case RunStatus.Warnings: return Lang.T("Done, with problems");
+                    case RunStatus.Failed: return Lang.T("Failed");
+                    case RunStatus.Stopped: return Lang.T("Stopped");
+                    default: return Lang.T("Skipped");
                 }
             }
         }

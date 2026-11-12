@@ -1,0 +1,524 @@
+Error: {0}	പിശക്: {0}
+Something went wrong:\n\n{0}	എന്തോ പിശക് സംഭവിച്ചു:\n\n{0}
+Azeem Bukhari	Azeem Bukhari
+less than a second	ഒരു സെക്കൻഡിൽ താഴെ
+{0} h {1} min	{0} മണിക്കൂർ {1} മിനിറ്റ്
+{0} min {1} s	{0} മിനിറ്റ് {1} സെക്കൻഡ്
+{0}.damaged	{0}.damaged
+{0}.saving	{0}.saving
+Stopped.	നിർത്തി.
+Not empty, so it was left in place	ശൂന്യമല്ല, അതിനാൽ അവിടെ തന്നെ വിട്ടു
+It's no longer there.	അത് ഇപ്പോൾ അവിടെ ഇല്ല.
+A file called "{0}" is already there.	"{0}" എന്ന പേരിൽ ഒരു ഫയൽ ഇതിനകം അവിടെയുണ്ട്.
+Not enough free space in {0}.	{0}-ൽ ആവശ്യത്തിന് ഒഴിഞ്ഞ സ്ഥലമില്ല.
+It changed while it was being copied. It'll be copied next time.	പകർത്തുന്നതിനിടെ അത് മാറി. അടുത്ത തവണ പകർത്തും.
+The copy didn't match the original when it was read back (the drive may be failing). It'll be tried again next time.	തിരികെ വായിച്ചപ്പോൾ പകർപ്പ് ഒറിജിനലുമായി ചേർന്നില്ല (ഡ്രൈവ് കേടാകുന്നുണ്ടാകാം). അടുത്ത തവണ വീണ്ടും ശ്രമിക്കും.
+Copied, but couldn't be removed from the source: {0}	പകർത്തി, പക്ഷേ സോഴ്സിൽ നിന്ന് നീക്കാനായില്ല: {0}
+There's a file called "{0}" where a folder is needed.	ഒരു ഫോൾഡർ വേണ്ടിടത്ത് "{0}" എന്ന ഫയലുണ്ട്.
+not enough space	ആവശ്യത്തിന് സ്ഥലമില്ല
+In use by another program. It'll be tried again next time.	മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുന്നു. അടുത്ത തവണ വീണ്ടും ശ്രമിക്കും.
+Access denied (it may be read-only, or need permissions you don't have).	അനുമതി നിഷേധിച്ചു (വായിക്കാൻ മാത്രമുള്ളതാകാം, അല്ലെങ്കിൽ നിങ്ങൾക്കില്ലാത്ത അനുമതികൾ വേണ്ടിവരാം).
+The path is too long for that drive.	ആ ഡ്രൈവിന് വഴി വളരെ നീളമുള്ളതാണ്.
+Copied	പകർത്തി
+Updated	പുതുക്കി
+Removed from the source	സോഴ്സിൽ നിന്ന് നീക്കി
+Deleted (kept as an old version)	ഇല്ലാതാക്കി (പഴയ പതിപ്പായി സൂക്ഷിച്ചു)
+Deleted	ഇല്ലാതാക്കി
+Renamed	പേരുമാറ്റി
+Created folder	ഫോൾഡർ ഉണ്ടാക്കി
+Removed folder	ഫോൾഡർ നീക്കി
+FAILED  {0} in {1}: {2} — {3}	FAILED  {0} in {1}: {2} — {3}
+Left    {0} in {1} — {2}	Left    {0} in {1} — {2}
+{0} in {1}: {2}{3}	{0} in {1}: {2}{3}
+ ({0} bytes)	 ({0} bytes)
+System Volume Information	System Volume Information
+The folder itself	ഫോൾഡർ തന്നെ
+Folder not found: {0}	ഫോൾഡർ കണ്ടെത്തിയില്ല: {0}
+Access is denied.	അനുമതി നിഷേധിച്ചു.
+Folder 1	ഫോൾഡർ 1
+Folder 2	ഫോൾഡർ 2
+USB drive	USB ഡ്രൈവ്
+Network drive	നെറ്റ്‌വർക്ക് ഡ്രൈവ്
+Disc	ഡിസ്ക്
+Local disk	ലോക്കൽ ഡിസ്ക്
+No folder chosen.	ഫോൾഡറൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല.
+Drive {0} isn't connected.	ഡ്രൈവ് {0} കണക്റ്റ് ചെയ്തിട്ടില്ല.
+The drive	ഡ്രൈവ്
+{0} (was {1}) isn't connected. {2} is now a different drive, so KUDUSYNC won't use it. If you formatted or replaced the drive, edit the pair and choose the folder again.	{0} (മുമ്പ് {1}) കണക്റ്റ് ചെയ്തിട്ടില്ല. {2} ഇപ്പോൾ മറ്റൊരു ഡ്രൈവാണ്, അതിനാൽ KUDUSYNC അത് ഉപയോഗിക്കില്ല. ഡ്രൈവ് ഫോർമാറ്റ് ചെയ്യുകയോ മാറ്റുകയോ ചെയ്തെങ്കിൽ, ജോഡി എഡിറ്റ് ചെയ്ത് ഫോൾഡർ വീണ്ടും തിരഞ്ഞെടുക്കുക.
+{0} ({1}) isn't connected.	{0} ({1}) കണക്റ്റ് ചെയ്തിട്ടില്ല.
+Not chosen	തിരഞ്ഞെടുത്തിട്ടില്ല
+Network share {0}	നെറ്റ്‌വർക്ക് ഷെയർ {0}
+Drive {0}	ഡ്രൈവ് {0}
+~$*; *.tmp; Thumbs.db	~$*; *.tmp; Thumbs.db
+Every day at {0}	എല്ലാ ദിവസവും {0}-ന്
+{0} at {1}	{0} {1}-ന്
+Every hour	ഓരോ മണിക്കൂറിലും
+Every {0} hours	ഓരോ {0} മണിക്കൂറിലും
+When you sign in to Windows	നിങ്ങൾ വിൻഡോസിൽ സൈൻ ഇൻ ചെയ്യുമ്പോൾ
+Only when you run it	നിങ്ങൾ പ്രവർത്തിപ്പിക്കുമ്പോൾ മാത്രം
+Sun	ഞായർ
+Mon	തിങ്കൾ
+Tue	ചൊവ്വ
+Wed	ബുധൻ
+Thu	വ്യാഴം
+Fri	വെള്ളി
+Sat	ശനി
+Every day	എല്ലാ ദിവസവും
+Weekdays	പ്രവൃത്തി ദിവസങ്ങൾ
+Weekends	വാരാന്ത്യങ്ങൾ
+No days	ദിവസങ്ങളില്ല
+Source	സോഴ്സ്
+Destination	ലക്ഷ്യം
+Mirror	മിറർ
+Update	പുതുക്കൽ
+Two-way sync	ഇരുവശത്തേക്കുമുള്ള സിങ്ക്
+Move	മാറ്റുക
+The destination becomes an exact copy of the source. Files removed from the source are removed from the destination too.	ലക്ഷ്യം സോഴ്സിന്റെ കൃത്യമായ പകർപ്പാകും. സോഴ്സിൽ നിന്ന് നീക്കിയ ഫയലുകൾ ലക്ഷ്യത്തിൽ നിന്നും നീക്കും.
+New and changed files are copied to the destination. Nothing is ever deleted there.	പുതിയതും മാറ്റിയതുമായ ഫയലുകൾ ലക്ഷ്യത്തിലേക്ക് പകർത്തും. അവിടെ ഒന്നും ഒരിക്കലും ഇല്ലാതാക്കില്ല.
+Changes on either side are copied to the other, deletions included. If a file changed on both sides, both copies are kept.	ഏത് വശത്തെ മാറ്റങ്ങളും, ഇല്ലാതാക്കലുകൾ ഉൾപ്പെടെ, മറുവശത്തേക്ക് പകർത്തും. ഒരു ഫയൽ ഇരുവശത്തും മാറിയാൽ രണ്ട് പകർപ്പുകളും സൂക്ഷിക്കും.
+Files are copied to the destination and then removed from the source.	ഫയലുകൾ ലക്ഷ്യത്തിലേക്ക് പകർത്തി പിന്നെ സോഴ്സിൽ നിന്ന് നീക്കും.
+Not kept (deleted permanently)	സൂക്ഷിക്കുന്നില്ല (എന്നേക്കുമായി ഇല്ലാതാക്കും)
+Kept forever	എന്നേക്കും സൂക്ഷിക്കും
+Kept for 1 day	1 ദിവസം സൂക്ഷിക്കും
+Kept for {0} days	{0} ദിവസം സൂക്ഷിക്കും
+KUDUSYNC login for {0}	KUDUSYNC login for {0}
+This isn't a network path.	ഇതൊരു നെറ്റ്‌വർക്ക് വഴിയല്ല.
+Couldn't sign in to {0}: {1}. Edit the pair to update the login.	{0}-ൽ സൈൻ ഇൻ ചെയ്യാനായില്ല: {1}. ലോഗിൻ പുതുക്കാൻ ജോഡി എഡിറ്റ് ചെയ്യുക.
+Couldn't connect to {0}: {1}.	{0}-ലേക്ക് കണക്റ്റ് ചെയ്യാനായില്ല: {1}.
+Couldn't reach {0}. Check that it's switched on and connected to the network (if it needs a login, edit the pair and sign in).	{0}-ൽ എത്താനായില്ല. അത് ഓണാണെന്നും നെറ്റ്‌വർക്കിൽ കണക്റ്റ് ചെയ്തിട്ടുണ്ടെന്നും നോക്കുക (ലോഗിൻ വേണമെങ്കിൽ ജോഡി എഡിറ്റ് ചെയ്ത് സൈൻ ഇൻ ചെയ്യുക).
+Couldn't reach {0}.	{0}-ൽ എത്താനായില്ല.
+This isn't a .NET binary-serialized file.	This isn't a .NET binary-serialized file.
+Unsupported serialization format version.	Unsupported serialization format version.
+The file nests its data too deeply.	The file nests its data too deeply.
+Unknown class reference.	Unknown class reference.
+Unsupported array shape.	Unsupported array shape.
+Array too large.	Array too large.
+Unsupported record type {0}.	Unsupported record type {0}.
+The file ended too early.	The file ended too early.
+The file is damaged.	The file is damaged.
+Too many members.	Too many members.
+Unsupported value type {0}.	Unsupported value type {0}.
+_KUDUSYNC History	_KUDUSYNC History
+Pair	ജോഡി
+New folder	പുതിയ ഫോൾഡർ
+Name's capitalisation changed	പേരിലെ വലിയക്ഷരം/ചെറിയക്ഷരം മാറി
+Same size and time, but different contents	ഒരേ വലുപ്പവും സമയവും, പക്ഷേ ഉള്ളടക്കം വ്യത്യസ്തം
+Different from the source (the destination's copy is newer)	സോഴ്സിൽ നിന്ന് വ്യത്യസ്തം (ലക്ഷ്യത്തിലെ പകർപ്പ് പുതിയതാണ്)
+Changed	മാറി
+Not in the source	സോഴ്സിൽ ഇല്ല
+Renamed or moved in the source	സോഴ്സിൽ പേരുമാറ്റുകയോ നീക്കുകയോ ചെയ്തു
+New	പുതിയത്
+Its files were moved	അതിലെ ഫയലുകൾ മാറ്റി
+Moved	മാറ്റി
+Already in the destination	ലക്ഷ്യത്തിൽ ഇതിനകമുണ്ട്
+Moved (replaces the destination's copy)	മാറ്റി (ലക്ഷ്യത്തിലെ പകർപ്പിന് പകരം)
+Deleted in {0}	{0}-ൽ ഇല്ലാതാക്കി
+Changed in {0}	{0}-ൽ മാറി
+Changed in {0} after it was deleted in {1}: the change is kept	{1}-ൽ ഇല്ലാതാക്കിയശേഷം {0}-ൽ മാറി: മാറ്റം സൂക്ഷിക്കുന്നു
+New in {0}	{0}-ൽ പുതിയത്
+Different files with the same name on both sides	ഇരുവശത്തും ഒരേ പേരിൽ വ്യത്യസ്ത ഫയലുകൾ
+Changed on both sides	ഇരുവശത്തും മാറി
+{2}: the older copy (in {0}) is kept as "{1}"	{2}: പഴയ പകർപ്പ് ({0}-ൽ) "{1}" ആയി സൂക്ഷിക്കുന്നു
+{0}: the newer copy keeps the name	{0}: പുതിയ പകർപ്പ് പേര് നിലനിർത്തുന്നു
+{0}: the older copy, kept on both sides	{0}: പഴയ പകർപ്പ്, ഇരുവശത്തും സൂക്ഷിക്കുന്നു
+Renamed or moved in {0}	{0}-ൽ പേരുമാറ്റുകയോ നീക്കുകയോ ചെയ്തു
+{0} (conflict {1}{2}){3}	{0} (പൊരുത്തക്കേട് {1}{2}){3}
+Didn't run	പ്രവർത്തിച്ചില്ല
+{0} moved	{0} മാറ്റി
+{0} copied	{0} പകർത്തി
+{0} updated	{0} പുതുക്കി
+{0} renamed	{0} പേരുമാറ്റി
+{0} deleted	{0} ഇല്ലാതാക്കി
+{0} (both kept)	{0} (രണ്ടും സൂക്ഷിച്ചു)
+{0} couldn't be done	{0} ചെയ്യാനായില്ല
+Already in step, nothing to do	ഇതിനകം ഒരുപോലെ, ചെയ്യാനൊന്നുമില്ല
+Stopped: {0}	നിർത്തി: {0}
+Done	കഴിഞ്ഞു
+Done, with problems	കഴിഞ്ഞു, പ്രശ്നങ്ങളോടെ
+Failed	പരാജയപ്പെട്ടു
+Stopped	നിർത്തി
+Skipped	ഒഴിവാക്കി
+{0} {1}.txt	{0} {1}.txt
+KUDUSYNC {0} · {1}	KUDUSYNC {0} · {1}
+Mode:        {0}	Mode:        {0}
+Started by:  {0}	Started by:  {0}
+Started:     {0}	Started:     {0}
+Finished:    {0}	Finished:    {0}
+Result:      {0} · {1}	Result:      {0} · {1}
+Note: {0}	Note: {0}
+You	നിങ്ങൾ
+Schedule	ഷെഡ്യൂൾ
+Live sync	ലൈവ് സിങ്ക്
+Drive plugged in	ഡ്രൈവ് ഘടിപ്പിച്ചു
+Right-click menu	റൈറ്റ്-ക്ലിക്ക് മെനു
+Paused for safety: {0} Open KUDUSYNC and run it yourself if this is right.	സുരക്ഷയ്ക്കായി നിർത്തിവച്ചു: {0} ഇത് ശരിയാണെങ്കിൽ KUDUSYNC തുറന്ന് നിങ്ങൾ തന്നെ പ്രവർത്തിപ്പിക്കുക.
+KUDUSYNC -	KUDUSYNC -
+Sunday	ഞായറാഴ്ച
+Monday	തിങ്കളാഴ്ച
+Tuesday	ചൊവ്വാഴ്ച
+Wednesday	ബുധനാഴ്ച
+Thursday	വ്യാഴാഴ്ച
+Friday	വെള്ളിയാഴ്ച
+Saturday	ശനിയാഴ്ച
+This pair has no schedule.	ഈ ജോഡിക്ക് ഷെഡ്യൂളില്ല.
+Runs the KUDUSYNC pair "{0}" ({1}).	KUDUSYNC ജോഡി "{0}" പ്രവർത്തിപ്പിക്കുന്നു ({1}).
+{0}.xml	{0}.xml
+Windows Task Scheduler said: {0}	Windows Task Scheduler പറഞ്ഞത്: {0}
+Task Scheduler is only on Windows.	Task Scheduler വിൻഡോസിൽ മാത്രമേ ഉള്ളൂ.
+Task Scheduler didn't respond.	Task Scheduler പ്രതികരിച്ചില്ല.
+"{0}" is already running.	"{0}" ഇതിനകം പ്രവർത്തിക്കുന്നു.
+The two folders are the same, or one is inside the other ({0} and {1}). Edit the pair to choose different folders.	രണ്ട് ഫോൾഡറുകളും ഒന്നുതന്നെയാണ്, അല്ലെങ്കിൽ ഒന്ന് മറ്റേതിനുള്ളിലാണ് ({0}, {1}). വ്യത്യസ്ത ഫോൾഡറുകൾ തിരഞ്ഞെടുക്കാൻ ജോഡി എഡിറ്റ് ചെയ്യുക.
+The source folder {0} wasn't found.	സോഴ്സ് ഫോൾഡർ {0} കണ്ടെത്തിയില്ല.
+The folder {0} wasn't found. (It was there at the last sync, so KUDUSYNC won't treat everything in it as deleted.)	{0} എന്ന ഫോൾഡർ കണ്ടെത്തിയില്ല. (കഴിഞ്ഞ സിങ്കിൽ അത് ഉണ്ടായിരുന്നു, അതിനാൽ അതിലുള്ളതെല്ലാം ഇല്ലാതാക്കിയതായി KUDUSYNC കണക്കാക്കില്ല.)
+Couldn't compare the contents of {0}: {1}	{0}-ന്റെ ഉള്ളടക്കം താരതമ്യം ചെയ്യാനായില്ല: {1}
+{0}: couldn't read {1}. Nothing in that folder was changed.	{0}: {1} വായിക്കാനായില്ല. ആ ഫോൾഡറിൽ ഒന്നും മാറ്റിയില്ല.
+{0}: {1} to other folders skipped.	{0}: മറ്റ് ഫോൾഡറുകളിലേക്കുള്ള {1} ഒഴിവാക്കി.
+{0} left alone because a file on one side has the same name as a folder on the other: {1}	ഒരു വശത്തെ ഫയലിന് മറുവശത്തെ ഫോൾഡറിന്റെ അതേ പേരായതിനാൽ {0} തൊട്ടില്ല: {1}
+The {0} folder is empty, so this would delete all {1} in the {2}. If the folder was emptied by mistake, or a drive isn't working, don't go ahead.	{0} ഫോൾഡർ ശൂന്യമാണ്, അതിനാൽ ഇത് {2}-ലെ എല്ലാ {1} ഇല്ലാതാക്കും. ഫോൾഡർ അബദ്ധത്തിൽ ശൂന്യമായതോ ഒരു ഡ്രൈവ് പ്രവർത്തിക്കാത്തതോ ആണെങ്കിൽ മുന്നോട്ട് പോകരുത്.
+This would delete {0}, more than half of the {1} in the {2}.	ഇത് {0} ഇല്ലാതാക്കും, {2}-ലെ {1}-ന്റെ പകുതിയിലധികം.
+The {0} needs {1} but only has {2} free. Files that don't fit will be skipped.	{0}-ന് {1} വേണം, പക്ഷേ {2} മാത്രമേ ഒഴിവുള്ളൂ. ചേരാത്ത ഫയലുകൾ ഒഴിവാക്കും.
+Couldn't save the record of this sync: {0}	ഈ സിങ്കിന്റെ രേഖ സേവ് ചെയ്യാനായില്ല: {0}
+{0}.lock	{0}.lock
+Theme	തീം
+Notify	അറിയിക്കുക
+Sync with KUDUSYNC	KUDUSYNC ഉപയോഗിച്ച് സിങ്ക് ചെയ്യുക
+Back up this folder with KUDUSYNC…	ഈ ഫോൾഡർ KUDUSYNC ഉപയോഗിച്ച് ബാക്കപ്പ് ചെയ്യുക…
+"{0}" --tray	"{0}" --tray
+Echo	Echo
+Contribute	Contribute
+Synchronize	Synchronize
+Microsoft	Microsoft
+This file isn't SyncToy settings that can be read.	ഈ ഫയൽ വായിക്കാനാവുന്ന SyncToy ക്രമീകരണങ്ങളല്ല.
+SyncToy pair	SyncToy ജോഡി
+Missing theme resource {0}	Missing theme resource {0}
+Light	ഇളം നിറം
+Styles	Styles
+Dark	ഇരുണ്ട നിറം
+Application	Application
+Choose a folder for the copy.	പകർപ്പിനായി ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക.
+Choose a folder outside the backup, so the copy and the backup stay apart.	ബാക്കപ്പിന് പുറത്തുള്ള ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക, അപ്പോൾ പകർപ്പും ബാക്കപ്പും വേറിട്ടുനിൽക്കും.
+Choose a folder outside the kept versions.	സൂക്ഷിച്ച പതിപ്പുകൾക്ക് പുറത്തുള്ള ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക.
+Choose an empty folder (or a new one), so nothing in it is mixed up or replaced.	ഒഴിഞ്ഞ (അല്ലെങ്കിൽ പുതിയ) ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക, അപ്പോൾ അതിലൊന്നും കലരുകയോ മാറ്റപ്പെടുകയോ ഇല്ല.
+Error message shown: {0}	Error message shown: {0}
+All files	എല്ലാ ഫയലുകളും
+Save	സേവ് ചെയ്യുക
+Cancel	റദ്ദാക്കുക
+KUDUSYNC	KUDUSYNC
+Folder pairs	ഫോൾഡർ ജോഡികൾ
+Import from SyncToy	SyncToy-യിൽ നിന്ന് ഇംപോർട്ട് ചെയ്യുക
+History	ചരിത്രം
+Settings	ക്രമീകരണങ്ങൾ
+About	വിവരം
+A sync is still running. Stop it and close KUDUSYNC?	ഒരു സിങ്ക് ഇപ്പോഴും നടക്കുന്നു. അത് നിർത്തി KUDUSYNC അടയ്ക്കണോ?
+KUDUSYNC {0} is available	KUDUSYNC {0} ലഭ്യമാണ്
+New pair	പുതിയ ജോഡി
+ · next scheduled: {0}, {1}	 · അടുത്ത ഷെഡ്യൂൾ: {0}, {1}
+Sync all	എല്ലാം സിങ്ക് ചെയ്യുക
+Runs every pair that's included in "Sync all", one after another	"എല്ലാം സിങ്ക് ചെയ്യുക"-ൽ ഉൾപ്പെടുത്തിയ ഓരോ ജോഡിയും ഒന്നിനുപിറകെ ഒന്നായി പ്രവർത്തിപ്പിക്കുന്നു
+today	ഇന്ന്
+tomorrow	നാളെ
+Not run yet	ഇതുവരെ പ്രവർത്തിച്ചിട്ടില്ല
+· Live	· ലൈവ്
+Keep your folders in step	നിങ്ങളുടെ ഫോൾഡറുകൾ ഒരുപോലെ നിലനിർത്തുക
+Pick two folders (on this PC, a USB drive or a network share) and how to keep them in step: mirror, update, two-way sync or move. Run them when you like, on a schedule, or as files change.	രണ്ട് ഫോൾഡറുകൾ (ഈ പിസിയിൽ, ഒരു USB ഡ്രൈവിൽ അല്ലെങ്കിൽ നെറ്റ്‌വർക്ക് ഷെയറിൽ) തിരഞ്ഞെടുക്കുക, അവയെ എങ്ങനെ ഒരുപോലെ നിലനിർത്തണമെന്നും: മിറർ, പുതുക്കൽ, ഇരുവശത്തേക്കുമുള്ള സിങ്ക് അല്ലെങ്കിൽ മാറ്റൽ. ഇഷ്ടമുള്ളപ്പോഴോ ഷെഡ്യൂൾ അനുസരിച്ചോ ഫയലുകൾ മാറുമ്പോഴോ പ്രവർത്തിപ്പിക്കാം.
+Create a folder pair	ഒരു ഫോൾഡർ ജോഡി ഉണ്ടാക്കുക
+No folder pairs yet	ഇതുവരെ ഫോൾഡർ ജോഡികളില്ല
+Edit	എഡിറ്റ് ചെയ്യുക
+More	കൂടുതൽ
+{0} · started by {1}	{0} · തുടങ്ങിയത് {1}
+Open the log	ലോഗ് തുറക്കുക
+Last run	അവസാന പ്രവർത്തനം
+ · next {0}	 · അടുത്തത് {0}
+Runs	പ്രവർത്തനങ്ങൾ
+On: syncs {0} after files change{1}	ഓൺ: ഫയലുകൾ മാറി {0} കഴിഞ്ഞ് സിങ്ക് ചെയ്യും{1}
+(needs KUDUSYNC in the notification area: see Settings)	(KUDUSYNC അറിയിപ്പ് ഭാഗത്ത് വേണം: ക്രമീകരണങ്ങൾ കാണുക)
+Shows a notification when {0} is plugged in	{0} ഘടിപ്പിക്കുമ്പോൾ ഒരു അറിയിപ്പ് കാണിക്കും
+Files	ഫയലുകൾ
+Open	തുറക്കുക
+Open ({0})	തുറക്കുക ({0})
+Replaced and deleted files	മാറ്റിയതും ഇല്ലാതാക്കിയതുമായ ഫയലുകൾ
+every copy is checked against the original	ഓരോ പകർപ്പും ഒറിജിനലുമായി പരിശോധിക്കും
+files are compared by contents, not just size and date	ഫയലുകൾ വലുപ്പവും തീയതിയും മാത്രമല്ല, ഉള്ളടക്കവും താരതമ്യം ചെയ്യും
+renamed files are renamed, not copied again	പേരുമാറ്റിയ ഫയലുകളുടെ പേര് മാറ്റും, വീണ്ടും പകർത്തില്ല
+not included in "Sync all"	"എല്ലാം സിങ്ക് ചെയ്യുക"-ൽ ഉൾപ്പെടുത്തിയിട്ടില്ല
+Also	കൂടാതെ
+Sync now	ഇപ്പോൾ സിങ്ക് ചെയ്യുക
+Preview	മുൻകാഴ്ച
+Earlier versions	പഴയ പതിപ്പുകൾ
+Running elsewhere right now (on a schedule or in the notification area)…	ഇപ്പോൾ മറ്റൊരിടത്ത് പ്രവർത്തിക്കുന്നു (ഷെഡ്യൂളിലോ അറിയിപ്പ് ഭാഗത്തോ)…
+{0} seconds	{0} സെക്കൻഡ്
+a minute	ഒരു മിനിറ്റ്
+{0} minutes	{0} മിനിറ്റ്
+Only {0}	{0} മാത്രം
+except {0}	{0} ഒഴികെ
+leaving out the folders {0}	{0} ഫോൾഡറുകൾ ഒഴിവാക്കി
+skipping hidden files	മറഞ്ഞ ഫയലുകൾ ഒഴിവാക്കി
+skipping system files	സിസ്റ്റം ഫയലുകൾ ഒഴിവാക്കി
+Not connected	കണക്റ്റ് ചെയ്തിട്ടില്ല
+Problem	പ്രശ്നം
+ · {0} free	 · {0} ഒഴിവുണ്ട്
+ · signed in as {0}	 · {0} ആയി സൈൻ ഇൻ ചെയ്തു
+The folder will be created when the pair runs.	ജോഡി പ്രവർത്തിക്കുമ്പോൾ ഫോൾഡർ ഉണ്ടാക്കും.
+Duplicate	പകർപ്പെടുക്കുക
+Forget what was synced (start afresh)	സിങ്ക് ചെയ്തത് മറക്കുക (പുതുതായി തുടങ്ങുക)
+Delete pair	ജോഡി ഇല്ലാതാക്കുക
+{0} backup	{0} ബാക്കപ്പ്
+Drive {0} backup	ഡ്രൈവ് {0} ബാക്കപ്പ്
+The pair was saved, but its schedule couldn't be set up.\n\n{0}	ജോഡി സേവ് ചെയ്തു, പക്ഷേ അതിന്റെ ഷെഡ്യൂൾ സജ്ജമാക്കാനായില്ല.\n\n{0}
+{0} (copy)	{0} (പകർപ്പ്)
+Forget what "{0}" last synced?\n\nThe next run is then treated as the first one: nothing is deleted, files that differ are kept on both sides, and renamed files are copied again.	"{0}" അവസാനം സിങ്ക് ചെയ്തത് മറക്കണോ?\n\nഅപ്പോൾ അടുത്ത പ്രവർത്തനം ആദ്യത്തേതായി കണക്കാക്കും: ഒന്നും ഇല്ലാതാക്കില്ല, വ്യത്യാസമുള്ള ഫയലുകൾ ഇരുവശത്തും സൂക്ഷിക്കും, പേരുമാറ്റിയ ഫയലുകൾ വീണ്ടും പകർത്തും.
+Delete the pair "{0}"?\n\nNo files are deleted: both folders stay as they are.	"{0}" എന്ന ജോഡി ഇല്ലാതാക്കണോ?\n\nഫയലുകളൊന്നും ഇല്ലാതാക്കില്ല: രണ്ട് ഫോൾഡറുകളും അതേപടി നിൽക്കും.
+No folder pair uses {0} yet.\n\nCreate one to back it up?	ഒരു ഫോൾഡർ ജോഡിയും ഇതുവരെ {0} ഉപയോഗിക്കുന്നില്ല.\n\nഅത് ബാക്കപ്പ് ചെയ്യാൻ ഒന്ന് ഉണ്ടാക്കണോ?
+Imported {0}. Check each one before running it: SyncToy's last-sync information can't be imported, so the first run of a two-way pair keeps both copies of files that differ.	{0} ഇംപോർട്ട് ചെയ്തു. പ്രവർത്തിപ്പിക്കുന്നതിനുമുമ്പ് ഓരോന്നും പരിശോധിക്കുക: SyncToy-യുടെ അവസാന സിങ്ക് വിവരം ഇംപോർട്ട് ചെയ്യാനാവില്ല, അതിനാൽ ഇരുവശത്തേക്കുമുള്ള ജോഡിയുടെ ആദ്യ പ്രവർത്തനം വ്യത്യാസമുള്ള ഫയലുകളുടെ രണ്ട് പകർപ്പുകളും സൂക്ഷിക്കും.
+{0} of {1}	{0} / {1}
+{0} looked at	{0} നോക്കി
+"{0}" needs a look before it runs:\n\n{1}	"{0}" പ്രവർത്തിക്കുന്നതിനുമുമ്പ് ഒന്ന് നോക്കണം:\n\n{1}
+{0}\n\nGo ahead anyway? (Choose No to see the preview instead.)	{0}\n\nഎന്നിട്ടും മുന്നോട്ട് പോകണോ? (പകരം മുൻകാഴ്ച കാണാൻ അല്ല തിരഞ്ഞെടുക്കുക.)
+Stopped before anything was changed.	ഒന്നും മാറ്റുന്നതിനുമുമ്പ് നിർത്തി.
+Starting…	തുടങ്ങുന്നു…
+Comparing	താരതമ്യം ചെയ്യുന്നു
+Comparing · pair {0}	താരതമ്യം ചെയ്യുന്നു · ജോഡി {0}
+Looking at both folders. Nothing is changed yet.	രണ്ട് ഫോൾഡറുകളും നോക്കുന്നു. ഇതുവരെ ഒന്നും മാറ്റിയിട്ടില്ല.
+Stop	നിർത്തുക
+Preview · pair {0}	മുൻകാഴ്ച · ജോഡി {0}
+to move	മാറ്റാനുള്ളത്
+new	പുതിയത്
+changed	മാറിയത്
+renamed	പേരുമാറ്റിയത്
+deleted (kept as old versions)	ഇല്ലാതാക്കിയത് (പഴയ പതിപ്പുകളായി സൂക്ഷിക്കും)
+deleted	ഇല്ലാതാക്കിയത്
+changed on both sides	ഇരുവശത്തും മാറിയത്
+already copied (removed from the source)	ഇതിനകം പകർത്തിയത് (സോഴ്സിൽ നിന്ന് നീക്കി)
+to copy	പകർത്താനുള്ളത്
+All	എല്ലാം
+Both changed	രണ്ടും മാറി
+Folders	ഫോൾഡറുകൾ
+Already in step	ഇതിനകം ഒരുപോലെ
+Both folders match. There's nothing to do.	രണ്ട് ഫോൾഡറുകളും ഒരുപോലെയാണ്. ചെയ്യാനൊന്നുമില്ല.
+Move now	ഇപ്പോൾ മാറ്റുക
+Untick anything you don't want done this time. It'll be offered again next time.	ഇത്തവണ വേണ്ടാത്തതിന്റെ ടിക്ക് നീക്കുക. അടുത്ത തവണ വീണ്ടും കാണിക്കും.
+Back	പിന്നോട്ട്
+Showing the first {0}; all {1} will be done.	ആദ്യത്തെ {0} കാണിക്കുന്നു; എല്ലാ {1}-ഉം ചെയ്യും.
+Untick to skip this time	ഇത്തവണ ഒഴിവാക്കാൻ ടിക്ക് നീക്കുക
+{0} · in {1}	{0} · {1}-ൽ
+Keep both	രണ്ടും സൂക്ഷിക്കുക
+Copy (both kept)	പകർത്തുക (രണ്ടും സൂക്ഷിക്കും)
+Move (replace)	മാറ്റുക (പകരം വയ്ക്കുക)
+Already copied	ഇതിനകം പകർത്തി
+Delete	ഇല്ലാതാക്കുക
+Rename	പേരുമാറ്റുക
+Remove folder	ഫോൾഡർ നീക്കുക
+Moving	മാറ്റുന്നു
+Syncing	സിങ്ക് ചെയ്യുന്നു
+Syncing · pair {0}	സിങ്ക് ചെയ്യുന്നു · ജോഡി {0}
+You can stop at any time: whatever is half-copied is cleaned up, and the rest happens next time.	എപ്പോൾ വേണമെങ്കിലും നിർത്താം: പാതി പകർത്തിയതെന്തും വൃത്തിയാക്കും, ബാക്കി അടുത്ത തവണ നടക്കും.
+ · {0} of {1}	 · {0} / {1}
+ · about {0} left	 · ഏകദേശം {0} ബാക്കി
+ · {0} couldn't be done	 · {0} ചെയ്യാനായില്ല
+…the log has the full list.	…ലോഗിൽ മുഴുവൻ പട്ടികയുണ്ട്.
+Open {0}	{0} തുറക്കുക
+All done.	എല്ലാം കഴിഞ്ഞു.
+Done. Anything that couldn't be done will be tried again next time.	കഴിഞ്ഞു. ചെയ്യാനാവാത്തതെല്ലാം അടുത്ത തവണ വീണ്ടും ശ്രമിക്കും.
+Log	ലോഗ്
+Nothing has run yet.	ഇതുവരെ ഒന്നും പ്രവർത്തിച്ചിട്ടില്ല.
+Every run of every pair: from this window, on a schedule, by live sync or from a notification.	ഓരോ ജോഡിയുടെയും ഓരോ പ്രവർത്തനവും: ഈ വിൻഡോയിൽ നിന്നോ ഷെഡ്യൂളിലോ ലൈവ് സിങ്കിലോ ഒരു അറിയിപ്പിൽ നിന്നോ.
+Open the logs folder	ലോഗ് ഫോൾഡർ തുറക്കുക
+{0}: done, both copies kept of {1}	{0}: കഴിഞ്ഞു, {1}-ന്റെ രണ്ട് പകർപ്പുകളും സൂക്ഷിച്ചു
+{0}: done	{0}: കഴിഞ്ഞു
+{0}: done, with problems	{0}: കഴിഞ്ഞു, പ്രശ്നങ്ങളോടെ
+{0}: didn't sync	{0}: സിങ്ക് ചെയ്തില്ല
+{0}: stopped	{0}: നിർത്തി
+{0}: paused	{0}: നിർത്തിവച്ചു
+Settings · KUDUSYNC	ക്രമീകരണങ്ങൾ · KUDUSYNC
+Appearance	രൂപം
+Same as Windows	വിൻഡോസിലേതു പോലെ
+Language	ഭാഷ
+In the background	പശ്ചാത്തലത്തിൽ
+Run KUDUSYNC in the notification area when Windows starts	വിൻഡോസ് തുടങ്ങുമ്പോൾ KUDUSYNC അറിയിപ്പ് ഭാഗത്ത് പ്രവർത്തിപ്പിക്കുക
+Needed for live sync and for notifications when a pair's drive is plugged in. Schedules work without it.	ലൈവ് സിങ്കിനും ഒരു ജോഡിയുടെ ഡ്രൈവ് ഘടിപ്പിക്കുമ്പോഴുള്ള അറിയിപ്പുകൾക്കും വേണം. ഷെഡ്യൂളുകൾ ഇതില്ലാതെയും പ്രവർത്തിക്കും.
+After a scheduled or automatic sync, notify me	ഷെഡ്യൂൾ ചെയ്തതോ തനിയെയുള്ളതോ ആയ സിങ്കിനുശേഷം എന്നെ അറിയിക്കുക
+Always	എപ്പോഴും
+Only about problems	പ്രശ്നങ്ങളെക്കുറിച്ച് മാത്രം
+Never	ഒരിക്കലുമില്ല
+Live sync only speaks up about problems.	ലൈവ് സിങ്ക് പ്രശ്നങ്ങളെക്കുറിച്ച് മാത്രമേ പറയൂ.
+Pause a scheduled or automatic sync that would delete more than half of the files	പകുതിയിലധികം ഫയലുകൾ ഇല്ലാതാക്കുന്ന ഷെഡ്യൂൾ ചെയ്തതോ തനിയെയുള്ളതോ ആയ സിങ്ക് നിർത്തിവയ്ക്കുക
+A sync that would empty a folder completely (for example when the source drive is blank) always waits for you.	ഒരു ഫോൾഡർ മുഴുവൻ ശൂന്യമാക്കുന്ന സിങ്ക് (ഉദാഹരണത്തിന് സോഴ്സ് ഡ്രൈവ് ഒഴിഞ്ഞതാകുമ്പോൾ) എപ്പോഴും നിങ്ങൾക്കായി കാത്തിരിക്കും.
+File Explorer	ഫയൽ എക്സ്പ്ലോറർ
+Add "Sync with KUDUSYNC" and "Back up this folder" to folders' right-click menu	ഫോൾഡറുകളുടെ റൈറ്റ്-ക്ലിക്ക് മെനുവിൽ "Sync with KUDUSYNC", "Back up this folder" എന്നിവ ചേർക്കുക
+For your Windows account only. On Windows 11 it's under "Show more options".	നിങ്ങളുടെ വിൻഡോസ് അക്കൗണ്ടിന് മാത്രം. വിൻഡോസ് 11-ൽ ഇത് "Show more options"-ന് കീഴിലാണ്.
+Updates	അപ്ഡേറ്റുകൾ
+Check for a new KUDUSYNC version when it starts	തുറക്കുമ്പോൾ KUDUSYNC-ന്റെ പുതിയ പതിപ്പുണ്ടോ എന്ന് നോക്കുക
+Only asks GitHub for the latest version number. Nothing is downloaded without asking.	ഏറ്റവും പുതിയ പതിപ്പിന്റെ നമ്പർ മാത്രമേ GitHub-നോട് ചോദിക്കൂ. ചോദിക്കാതെ ഒന്നും ഡൗൺലോഡ് ചെയ്യില്ല.
+About KUDUSYNC	KUDUSYNC-നെക്കുറിച്ച്
+Close	അടയ്ക്കുക
+Version {0} · Keep folders in step	പതിപ്പ് {0} · ഫോൾഡറുകൾ ഒരുപോലെ നിലനിർത്തുക
+Azeem, with Claude and	Azeem, with Claude and
+Made by	Made by
+Licence	ലൈസൻസ്
+MIT · free and open source	MIT · സൗജന്യവും ഓപ്പൺ സോഴ്സും
+View	കാണുക
+Source code	സോഴ്സ് കോഡ്
+Your data	നിങ്ങളുടെ ഡാറ്റ
+Kept next to the program (portable)	പ്രോഗ്രാമിന്റെ അടുത്ത് സൂക്ഷിക്കുന്നു (പോർട്ടബിൾ)
+Pairs and logs are kept on this PC only	ജോഡികളും ലോഗുകളും ഈ പിസിയിൽ മാത്രം സൂക്ഷിക്കുന്നു
+Third-party	മറ്റുള്ളവരുടേത്
+Third-party notices	മറ്റുള്ളവരുടെ ഭാഗങ്ങളുടെ അറിയിപ്പുകൾ
+KUDUSYNC never deletes a file without keeping a copy first, unless you tell a pair not to. Replaced and deleted files go to a "_KUDUSYNC History" folder and are cleaned up after the number of days you choose.	നിങ്ങൾ ഒരു ജോഡിയോട് പറഞ്ഞാലല്ലാതെ, ആദ്യം ഒരു പകർപ്പ് സൂക്ഷിക്കാതെ KUDUSYNC ഒരിക്കലും ഒരു ഫയൽ ഇല്ലാതാക്കില്ല. മാറ്റിയതും ഇല്ലാതാക്കിയതുമായ ഫയലുകൾ ഒരു "_KUDUSYNC History" ഫോൾഡറിലേക്ക് പോകും, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ദിവസങ്ങൾക്കുശേഷം വൃത്തിയാക്കും.
+Check for updates	അപ്ഡേറ്റുകൾ പരിശോധിക്കുക
+Couldn't find any published version yet.	പ്രസിദ്ധീകരിച്ച പതിപ്പൊന്നും ഇതുവരെ കണ്ടെത്തിയില്ല.
+KUDUSYNC {0} is available. Open the download page?	KUDUSYNC {0} ലഭ്യമാണ്. ഡൗൺലോഡ് പേജ് തുറക്കണോ?
+You have the latest version.	നിങ്ങളുടെ കയ്യിലുള്ളത് ഏറ്റവും പുതിയ പതിപ്പാണ്.
+Couldn't check for updates. Check your internet connection and try again.	അപ്ഡേറ്റുകൾ പരിശോധിക്കാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ നോക്കിയിട്ട് വീണ്ടും ശ്രമിക്കുക.
+Import from SyncToy · KUDUSYNC	SyncToy-യിൽ നിന്ന് ഇംപോർട്ട് · KUDUSYNC
+These folder pairs were found in SyncToy's settings. Echo becomes Mirror, Contribute becomes Update, and Synchronize becomes Two-way sync.	ഈ ഫോൾഡർ ജോഡികൾ SyncToy-യുടെ ക്രമീകരണങ്ങളിൽ കണ്ടെത്തി. Echo മിറർ ആകും, Contribute പുതുക്കൽ ആകും, Synchronize ഇരുവശത്തേക്കുമുള്ള സിങ്ക് ആകും.
+Already in KUDUSYNC	ഇതിനകം KUDUSYNC-ൽ ഉണ്ട്
+SyncToy's settings couldn't be read: {0}	SyncToy-യുടെ ക്രമീകരണങ്ങൾ വായിക്കാനായില്ല: {0}
+No folder pairs were found in SyncToy's settings.	SyncToy-യുടെ ക്രമീകരണങ്ങളിൽ ഫോൾഡർ ജോഡികളൊന്നും കണ്ടെത്തിയില്ല.
+Import	ഇംപോർട്ട് ചെയ്യുക
+Sign in to {0}	{0}-ൽ സൈൻ ഇൻ ചെയ്യുക
+Saved in Windows Credential Manager for your account, so scheduled syncs can sign in too. KUDUSYNC never stores it itself.	നിങ്ങളുടെ അക്കൗണ്ടിനായി Windows Credential Manager-ൽ സേവ് ചെയ്യും, അതിനാൽ ഷെഡ്യൂൾ ചെയ്ത സിങ്കുകൾക്കും സൈൻ ഇൻ ചെയ്യാം. KUDUSYNC അത് സ്വയം ഒരിക്കലും സൂക്ഷിക്കില്ല.
+User name (like NAS\\azeem or azeem@example.com)	ഉപയോക്തൃനാമം (NAS\\azeem അല്ലെങ്കിൽ azeem@example.com പോലെ)
+Password	പാസ്‌വേഡ്
+Test and save	പരിശോധിച്ച് സേവ് ചെയ്യുക
+Sign in · KUDUSYNC	സൈൻ ഇൻ · KUDUSYNC
+Checking…	പരിശോധിക്കുന്നു…
+Couldn't sign in: {0}	സൈൻ ഇൻ ചെയ്യാനായില്ല: {0}
+Keep for 7 days	7 ദിവസം സൂക്ഷിക്കുക
+Keep for 30 days	30 ദിവസം സൂക്ഷിക്കുക
+Keep for 90 days	90 ദിവസം സൂക്ഷിക്കുക
+Keep for a year	ഒരു വർഷം സൂക്ഷിക്കുക
+Keep forever	എന്നേക്കും സൂക്ഷിക്കുക
+Don't keep them (delete permanently)	അവ സൂക്ഷിക്കരുത് (എന്നേക്കുമായി ഇല്ലാതാക്കുക)
+Only when I run it	ഞാൻ പ്രവർത്തിപ്പിക്കുമ്പോൾ മാത്രം
+On certain days	ചില ദിവസങ്ങളിൽ
+Every few hours	കുറച്ച് മണിക്കൂറുകൾ കൂടുമ്പോൾ
+When I sign in to Windows	ഞാൻ വിൻഡോസിൽ സൈൻ ഇൻ ചെയ്യുമ്പോൾ
+Skip hidden files and folders	മറഞ്ഞ ഫയലുകളും ഫോൾഡറുകളും ഒഴിവാക്കുക
+Skip Windows system files	വിൻഡോസ് സിസ്റ്റം ഫയലുകൾ ഒഴിവാക്കുക
+Keep them in a folder of my choice	ഞാൻ തിരഞ്ഞെടുക്കുന്ന ഫോൾഡറിൽ അവ സൂക്ഷിക്കുക
+Check every copy against the original (slower, catches failing drives)	ഓരോ പകർപ്പും ഒറിജിനലുമായി പരിശോധിക്കുക (പതുക്കെ, കേടാകുന്ന ഡ്രൈവുകൾ കണ്ടെത്തും)
+Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)	ഫയലിന്റെ ഉള്ളടക്കവും താരതമ്യം ചെയ്യുക, വലുപ്പവും തീയതിയും മാറാത്ത മാറ്റങ്ങൾ കണ്ടെത്താൻ (പതുക്കെ: ഇരുവശത്തെയും ഫയലുകൾ വായിക്കും)
+When a file is renamed or moved, rename it on the other side instead of copying it again	ഒരു ഫയൽ പേരുമാറ്റുകയോ നീക്കുകയോ ചെയ്താൽ, വീണ്ടും പകർത്തുന്നതിനു പകരം മറുവശത്ത് പേരുമാറ്റുക
+Live sync: sync a short while after files change	ലൈവ് സിങ്ക്: ഫയലുകൾ മാറി കുറച്ചുനേരം കഴിഞ്ഞ് സിങ്ക് ചെയ്യുക
+Show a notification when the drive is plugged in	ഡ്രൈവ് ഘടിപ്പിക്കുമ്പോൾ ഒരു അറിയിപ്പ് കാണിക്കുക
+Include in "Sync all"	"എല്ലാം സിങ്ക് ചെയ്യുക"-ൽ ഉൾപ്പെടുത്തുക
+New folder pair	പുതിയ ഫോൾഡർ ജോഡി
+Edit {0}	{0} എഡിറ്റ് ചെയ്യുക
+{0} · KUDUSYNC	{0} · KUDUSYNC
+Edit folder pair	ഫോൾഡർ ജോഡി എഡിറ്റ് ചെയ്യുക
+Name	പേര്
+What to do	എന്ത് ചെയ്യണം
+Which files	ഏതൊക്കെ ഫയലുകൾ
+Include files matching (separate with ;)	ഇവയുമായി ചേരുന്ന ഫയലുകൾ ഉൾപ്പെടുത്തുക (; കൊണ്ട് വേർതിരിക്കുക)
+Leave out files matching	ഇവയുമായി ചേരുന്ന ഫയലുകൾ ഒഴിവാക്കുക
+Files that are left out are never copied or deleted, on either side.	ഒഴിവാക്കിയ ഫയലുകൾ ഇരുവശത്തും ഒരിക്കലും പകർത്തുകയോ ഇല്ലാതാക്കുകയോ ഇല്ല.
+Files a sync replaces or deletes are moved to a "_KUDUSYNC History" folder on that drive first, so a mistake can be undone.	ഒരു സിങ്ക് മാറ്റുകയോ ഇല്ലാതാക്കുകയോ ചെയ്യുന്ന ഫയലുകൾ ആദ്യം ആ ഡ്രൈവിലെ ഒരു "_KUDUSYNC History" ഫോൾഡറിലേക്ക് മാറ്റും, അതിനാൽ ഒരു തെറ്റ് പഴയപടിയാക്കാം.
+{0} days	{0} ദിവസം
+Browse…	ബ്രൗസ് ചെയ്യുക…
+Choose where to keep replaced and deleted files	മാറ്റിയതും ഇല്ലാതാക്കിയതുമായ ഫയലുകൾ എവിടെ സൂക്ഷിക്കണമെന്ന് തിരഞ്ഞെടുക്കുക
+Checks	പരിശോധനകൾ
+Running automatically	തനിയെ പ്രവർത്തിക്കൽ
+at	സമയം
+Schedules use Windows Task Scheduler, so they run even when KUDUSYNC is closed. They run while you're signed in to Windows (a locked screen is fine). If the PC was off or you were signed out, the sync runs as soon as you're back.	ഷെഡ്യൂളുകൾ Windows Task Scheduler ഉപയോഗിക്കുന്നു, അതിനാൽ KUDUSYNC അടച്ചിരിക്കുമ്പോഴും പ്രവർത്തിക്കും. നിങ്ങൾ വിൻഡോസിൽ സൈൻ ഇൻ ചെയ്തിരിക്കുമ്പോൾ പ്രവർത്തിക്കും (പൂട്ടിയ സ്ക്രീൻ പ്രശ്നമല്ല). പിസി ഓഫായിരുന്നെങ്കിലോ നിങ്ങൾ സൈൻ ഔട്ട് ചെയ്തിരുന്നെങ്കിലോ, തിരികെ വരുമ്പോൾ ഉടൻ സിങ്ക് നടക്കും.
+{0} later	{0} കഴിഞ്ഞ്
+Create pair	ജോഡി ഉണ്ടാക്കുക
+Files are moved out of here.	ഫയലുകൾ ഇവിടെ നിന്ന് മാറ്റും.
+Copied from here. Nothing in it is changed.	ഇവിടെ നിന്ന് പകർത്തും. ഇതിലൊന്നും മാറ്റില്ല.
+Made into an exact copy of the source.	സോഴ്സിന്റെ കൃത്യമായ പകർപ്പാക്കും.
+Gets new and changed files. Nothing here is deleted.	പുതിയതും മാറിയതുമായ ഫയലുകൾ ലഭിക്കും. ഇവിടെ ഒന്നും ഇല്ലാതാക്കില്ല.
+Files are moved to here.	ഫയലുകൾ ഇങ്ങോട്ട് മാറ്റും.
+Turn it on	ഓണാക്കുക
+Live sync and drive notifications need KUDUSYNC running in the notification area (it starts with Windows and uses very little).	ലൈവ് സിങ്കിനും ഡ്രൈവ് അറിയിപ്പുകൾക്കും KUDUSYNC അറിയിപ്പ് ഭാഗത്ത് പ്രവർത്തിക്കണം (അത് വിൻഡോസിനൊപ്പം തുടങ്ങുന്നു, വളരെ കുറച്ചേ ഉപയോഗിക്കൂ).
+Give the pair a name.	ജോഡിക്ക് ഒരു പേര് നൽകുക.
+There's already a pair called "{0}".	"{0}" എന്ന ജോഡി ഇതിനകമുണ്ട്.
+Choose both folders ({0} and {1}).	രണ്ട് ഫോൾഡറുകളും തിരഞ്ഞെടുക്കുക ({0}, {1}).
+The two folders are the same, or one is inside the other. Choose two separate folders.	രണ്ട് ഫോൾഡറുകളും ഒന്നുതന്നെയാണ്, അല്ലെങ്കിൽ ഒന്ന് മറ്റേതിനുള്ളിലാണ്. വേറിട്ട രണ്ട് ഫോൾഡറുകൾ തിരഞ്ഞെടുക്കുക.
+The source folder {0} doesn't exist.	സോഴ്സ് ഫോൾഡർ {0} നിലവിലില്ല.
+Choose at least one day for the schedule.	ഷെഡ്യൂളിന് ഒരു ദിവസമെങ്കിലും തിരഞ്ഞെടുക്കുക.
+Enter the time like 21:00.	21:00 പോലെ സമയം നൽകുക.
+Choose the folder for replaced and deleted files, or untick that option.	മാറ്റിയതും ഇല്ലാതാക്കിയതുമായ ഫയലുകൾക്കുള്ള ഫോൾഡർ തിരഞ്ഞെടുക്കുക, അല്ലെങ്കിൽ ആ ഓപ്ഷന്റെ ടിക്ക് നീക്കുക.
+{0} can't be reached right now. Does it need a user name and password?\n\nChoose Yes to sign in, or No to save the pair anyway (it'll be tried when the pair runs).	{0}-ൽ ഇപ്പോൾ എത്താനാവുന്നില്ല. ഇതിന് ഉപയോക്തൃനാമവും പാസ്‌വേഡും വേണോ?\n\nസൈൻ ഇൻ ചെയ്യാൻ അതെ, അല്ലെങ്കിൽ എന്നിട്ടും ജോഡി സേവ് ചെയ്യാൻ അല്ല തിരഞ്ഞെടുക്കുക (ജോഡി പ്രവർത്തിക്കുമ്പോൾ ശ്രമിക്കും).
+Choose the {0} folder	{0} ഫോൾഡർ തിരഞ്ഞെടുക്കുക
+Sign in…	സൈൻ ഇൻ…
+· uses your Windows login	· നിങ്ങളുടെ വിൻഡോസ് ലോഗിൻ ഉപയോഗിക്കുന്നു
+Change login…	ലോഗിൻ മാറ്റുക…
+That drive isn't connected.	ആ ഡ്രൈവ് കണക്റ്റ് ചെയ്തിട്ടില്ല.
+· recognised even if its letter changes	· അക്ഷരം മാറിയാലും തിരിച്ചറിയും
+· the folder will be created	· ഫോൾഡർ ഉണ്ടാക്കും
+{0} ran into a problem it couldn't get past, and has to close.	{0}-ന് മറികടക്കാൻ കഴിയാത്ത ഒരു പ്രശ്നം ഉണ്ടായി; അതിനാൽ അടയ്ക്കേണ്ടിവരുന്നു.
+Started	Started
+Open KUDUSYNC	KUDUSYNC തുറക്കുക
+Sync all pairs now	എല്ലാ ജോഡികളും ഇപ്പോൾ സിങ്ക് ചെയ്യുക
+Pause live sync	ലൈവ് സിങ്ക് നിർത്തിവയ്ക്കുക
+Stop running in the notification area	അറിയിപ്പ് ഭാഗത്ത് പ്രവർത്തിക്കുന്നത് നിർത്തുക
+KUDUSYNC tray	KUDUSYNC tray
+Resume live sync	ലൈവ് സിങ്ക് തുടരുക
+KUDUSYNC · live sync paused	KUDUSYNC · ലൈവ് സിങ്ക് നിർത്തിവച്ചു
+KUDUSYNC · live sync on for {0}	KUDUSYNC · {0}-ന് ലൈവ് സിങ്ക് ഓൺ
+Watching {0} live pair(s): {1}	Watching {0} live pair(s): {1}
+Live sync: {0}	Live sync: {0}
+Live sync finished: {0}: {1} · {2}	Live sync finished: {0}: {1} · {2}
+{0} synced	{0} സിങ്ക് ചെയ്തു
+{0} had problems	{0}-ന് പ്രശ്നങ്ങളുണ്ടായി
+Drive removed: {0}	Drive removed: {0}
+Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}	Drive arrived: {0} [{1}]: {2} pair(s) can sync: {3}
+{0} is connected	{0} കണക്റ്റ് ചെയ്തു
+Click to sync {0}.	{0} സിങ്ക് ചെയ്യാൻ ക്ലിക്ക് ചെയ്യുക.
+Can't watch {0}: {1}	Can't watch {0}: {1}
+No folder chosen	ഫോൾഡറൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല
+Earlier versions · {0}	പഴയ പതിപ്പുകൾ · {0}
+Earlier versions of {0}	{0}-ന്റെ പഴയ പതിപ്പുകൾ
+Find a file	ഒരു ഫയൽ കണ്ടെത്തുക
+Choose a folder...	ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക...
+Choose a new, empty folder for the copy	പകർപ്പിനായി ഒരു പുതിയ, ഒഴിഞ്ഞ ഫോൾഡർ തിരഞ്ഞെടുക്കുക
+Make the copy	പകർപ്പ് ഉണ്ടാക്കുക
+Which sync	ഏത് സിങ്ക്
+The backup as it was	ബാക്കപ്പ് മുമ്പ് എങ്ങനെയായിരുന്നോ അങ്ങനെ
+Makes a copy of the whole backup as it was just before a sync, in a new folder. The backup itself isn't changed. Files added since then (and never replaced) are in the copy too, as they are now.	ഒരു സിങ്കിന് തൊട്ടുമുമ്പ് ബാക്കപ്പ് എങ്ങനെയായിരുന്നോ അതിന്റെ മുഴുവൻ പകർപ്പ് ഒരു പുതിയ ഫോൾഡറിൽ ഉണ്ടാക്കുന്നു. ബാക്കപ്പ് തന്നെ മാറില്ല. അതിനുശേഷം ചേർത്ത (ഒരിക്കലും മാറ്റാത്ത) ഫയലുകളും ഇപ്പോഴുള്ളതുപോലെ പകർപ്പിലുണ്ടാകും.
+{0} Earlier versions can be seen when it's there.	{0} അത് ഉള്ളപ്പോൾ പഴയ പതിപ്പുകൾ കാണാം.
+Reading the kept versions...	സൂക്ഷിച്ച പതിപ്പുകൾ വായിക്കുന്നു...
+This pair doesn't keep the files a sync replaces or deletes, so there are no earlier versions. You can change that with Edit.	ഈ ജോഡി ഒരു സിങ്ക് മാറ്റുന്നതോ ഇല്ലാതാക്കുന്നതോ ആയ ഫയലുകൾ സൂക്ഷിക്കുന്നില്ല, അതിനാൽ പഴയ പതിപ്പുകളില്ല. എഡിറ്റിൽ അത് മാറ്റാം.
+No earlier versions yet. When a sync replaces or deletes a file, the old one is kept here ({0}).	ഇതുവരെ പഴയ പതിപ്പുകളില്ല. ഒരു സിങ്ക് ഒരു ഫയൽ മാറ്റുകയോ ഇല്ലാതാക്കുകയോ ചെയ്യുമ്പോൾ പഴയത് ഇവിടെ സൂക്ഷിക്കും ({0}).
+{0} of {1} ({2}), from {3}	{1}-ന്റെ {0} ({2}), {3}-ൽ നിന്ന്
+earlier version	പഴയ പതിപ്പ്
+1 file deleted since	അതിനുശേഷം 1 ഫയൽ ഇല്ലാതാക്കി
+{0} files deleted since	അതിനുശേഷം {0} ഫയലുകൾ ഇല്ലാതാക്കി
+Just before the sync on {0}	{0}-ലെ സിങ്കിന് തൊട്ടുമുമ്പ്
+No file has those words.	ആ വാക്കുകളുള്ള ഫയലില്ല.
+(top folder)	(മുകളിലെ ഫോൾഡർ)
+· not in the backup now (deleted)	· ഇപ്പോൾ ബാക്കപ്പിൽ ഇല്ല (ഇല്ലാതാക്കി)
+Until {0}	{0} വരെ
+{0} · last changed {1}	{0} · അവസാനം മാറിയത് {1}
+Open a copy to look at it	നോക്കാൻ ഒരു പകർപ്പ് തുറക്കുക
+Put back	തിരികെ വയ്ക്കുക
+Put this version back in its usual place	ഈ പതിപ്പ് അതിന്റെ സാധാരണ സ്ഥലത്ത് തിരികെ വയ്ക്കുക
+Show in its folder	അതിന്റെ ഫോൾഡറിൽ കാണിക്കുക
+KUDUSYNC versions	KUDUSYNC versions
+It couldn't be opened: {0}	അത് തുറക്കാനായില്ല: {0}
+This pair is being synced right now. Try again when it's finished.	ഈ ജോഡി ഇപ്പോൾ സിങ്ക് ചെയ്യുകയാണ്. കഴിഞ്ഞശേഷം വീണ്ടും ശ്രമിക്കുക.
+Put back the version of "{0}" from before {1}?\n\nThe file there now is kept with the earlier versions first, so you can go back to it.	{1}-ന് മുമ്പുള്ള "{0}"-ന്റെ പതിപ്പ് തിരികെ വയ്ക്കണോ?\n\nഇപ്പോൾ അവിടെയുള്ള ഫയൽ ആദ്യം പഴയ പതിപ്പുകൾക്കൊപ്പം സൂക്ഷിക്കും, അതിനാൽ അതിലേക്ക് മടങ്ങാം.
+It couldn't be put back: {0}	അത് തിരികെ വയ്ക്കാനായില്ല: {0}
+Choose which sync first.	ആദ്യം ഏത് സിങ്ക് എന്ന് തിരഞ്ഞെടുക്കുക.
+Working out what was there...	അവിടെ എന്തായിരുന്നുവെന്ന് കണ്ടെത്തുന്നു...
+Copying: {0} of {1} files	പകർത്തുന്നു: {0} / {1} ഫയലുകൾ
+Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	കഴിഞ്ഞു: {2}-ലെ സിങ്കിനു മുമ്പുള്ള ബാക്കപ്പ് പോലെ {0} {1}-ലേക്ക് പകർത്തി.{3}
+ {0} couldn't be copied (first: {1}).	 {0} പകർത്താനായില്ല (ആദ്യത്തേത്: {1}).
+Stopped. The files copied so far are in the folder.	നിർത്തി. ഇതുവരെ പകർത്തിയ ഫയലുകൾ ഫോൾഡറിലുണ്ട്.
+{0} conflict	{0} പൊരുത്തക്കേട്
+{0} conflicts	{0} പൊരുത്തക്കേടുകൾ
+{0} link	{0} ലിങ്ക്
+{0} links	{0} ലിങ്കുകൾ
+{0} item	{0} ഇനം
+{0} items	{0} ഇനങ്ങൾ
+{0} file	{0} ഫയൽ
+{0} files	{0} ഫയലുകൾ
+{0} pair	{0} ജോഡി
+{0} pairs	{0} ജോഡികൾ
+{0} step	{0} ഘട്ടം
+{0} steps	{0} ഘട്ടങ്ങൾ
+{0} earlier version	{0} പഴയ പതിപ്പ്
+{0} earlier versions	{0} പഴയ പതിപ്പുകൾ
+{0} sync	{0} സിങ്ക്
+{0} syncs	{0} സിങ്കുകൾ
+{0} version	{0} പതിപ്പ്
+{0} versions	{0} പതിപ്പുകൾ

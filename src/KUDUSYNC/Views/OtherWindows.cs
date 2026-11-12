@@ -38,6 +38,9 @@ namespace Kudusync.Views
             }
             root.Children.Add(themes);
 
+            root.Children.Add(Ui.Heading("Language", 14).Margin(0, 16, 0, 6));
+            root.Children.Add(LangUi.Picker());
+
             root.Children.Add(Ui.Heading("In the background", 14).Margin(0, 16, 0, 4));
             var tray = new CheckBox { Content = "Run KUDUSYNC in the notification area when Windows starts", IsChecked = Settings.TrayAtStartup };
             tray.Click += (s, e) =>
