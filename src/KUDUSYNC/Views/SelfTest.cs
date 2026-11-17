@@ -721,7 +721,8 @@ namespace Kudusync.Views
                 DataStore.SavePairs(DataStore.LoadPairs().Select(p => p.Id == pair.Id ? pair : p));
                 try
                 {
-                    RunLog.Add(new RunResult { PairId = pair.Id, PairName = pair.Name, Trigger = Triggers.Scheduled, Started = DateTime.Now.AddMinutes(-3), Finished = DateTime.Now.AddMinutes(-1),
+                    // It finishes now, after the syncs the steps before ran by hand (a later good run would put it right).
+                    RunLog.Add(new RunResult { PairId = pair.Id, PairName = pair.Name, Trigger = Triggers.Scheduled, Started = DateTime.Now.AddMinutes(-1), Finished = DateTime.Now.AddSeconds(1),
                                                Status = RunStatus.Warnings, Failed = 2, Problems = new List<string> { "budget.xlsx: it's open in another program" } });
                     main.ShowAlerts();
                     Pump();
