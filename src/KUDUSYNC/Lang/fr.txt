@@ -1,5 +1,16 @@
 Error: {0}	Erreur : {0}
 Something went wrong:\n\n{0}	Un problème est survenu :\n\n{0}
+"{0}" didn't back up	« {0} » n'a pas été sauvegardé
+"{0}" hasn't backed up for a while	« {0} » n'a pas été sauvegardé depuis un moment
+"{0}" backed up, with problems	« {0} » a été sauvegardé, avec des problèmes
+The scheduled backup on {0} didn't work: {1}	La sauvegarde prévue le {0} n'a pas fonctionné : {1}
+Last backed up {0}. It should run: {1}.	Dernière sauvegarde : {0}. Elle devrait avoir lieu : {1}.
+It hasn't backed up since it was scheduled. It should run: {0}.	Aucune sauvegarde depuis qu'elle a été programmée. Elle devrait avoir lieu : {0}.
+The scheduled backup on {0} ran, but {1} couldn't be copied.	La sauvegarde prévue le {0} a eu lieu, mais {1} n'ont pas pu être copiés.
+For example: {0}	Par exemple : {0}
+see its history for what went wrong.	voir son historique pour savoir ce qui n'a pas marché.
+Its last try said: {0}	Sa dernière tentative a dit : {0}
+{0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	moins d'une seconde
 {0} h {1} min	{0} h {1} min
@@ -210,6 +221,11 @@ History	Historique
 Settings	Paramètres
 About	À propos
 A sync is still running. Stop it and close KUDUSYNC?	Une synchronisation est encore en cours. L'arrêter et fermer KUDUSYNC ?
+Back up now	Sauvegarder maintenant
+Run it again	Relancer
+What happened	Ce qui s'est passé
+Put away	Ranger
+…and {0} more backups to look at.	…et {0} autres sauvegardes à regarder.
 KUDUSYNC {0} is available	KUDUSYNC {0} est disponible
 New pair	Nouvelle paire
  · next scheduled: {0}, {1}	 · prochaine programmée : {0}, {1}
@@ -446,12 +462,17 @@ That drive isn't connected.	Ce disque n'est pas branché.
 · recognised even if its letter changes	· reconnu même si sa lettre change
 · the folder will be created	· le dossier sera créé
 {0} ran into a problem it couldn't get past, and has to close.	{0} a rencontré un problème qu'il n'a pas pu surmonter et doit se fermer.
-Started	Started
 Open KUDUSYNC	Ouvrir KUDUSYNC
+URL Protocol	URL Protocol
+Started	Started
 Sync all pairs now	Synchroniser toutes les paires maintenant
 Pause live sync	Mettre en pause la synchronisation en direct
 Stop running in the notification area	Ne plus tourner dans la zone de notification
 KUDUSYNC tray	KUDUSYNC tray
+Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
+Alerts: {0}	Alerts: {0}
+KUDUSYNC · {0}	KUDUSYNC · {0}
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} sauvegardes à regarder
 Resume live sync	Reprendre la synchronisation en direct
 KUDUSYNC · live sync paused	KUDUSYNC · synchronisation en direct en pause
 KUDUSYNC · live sync on for {0}	KUDUSYNC · synchronisation en direct active pour {0}
@@ -504,14 +525,14 @@ Copying: {0} of {1} files	Copie : {0} fichiers sur {1}
 Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	Terminé : {0} copiés dans {1}, comme était la sauvegarde avant la synchronisation du {2}.{3}
  {0} couldn't be copied (first: {1}).	 {0} n'ont pas pu être copiés (le premier : {1}).
 Stopped. The files copied so far are in the folder.	Arrêté. Les fichiers copiés jusqu'ici sont dans le dossier.
+{0} file	{0} fichier
+{0} files	{0} fichiers
 {0} conflict	{0} conflit
 {0} conflicts	{0} conflits
 {0} link	{0} lien
 {0} links	{0} liens
 {0} item	{0} élément
 {0} items	{0} éléments
-{0} file	{0} fichier
-{0} files	{0} fichiers
 {0} pair	{0} paire
 {0} pairs	{0} paires
 {0} step	{0} étape

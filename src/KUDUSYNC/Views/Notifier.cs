@@ -53,6 +53,27 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>The short notification about an alert, when Windows can't show a lasting one; a click opens KUDUSYNC.</summary>
+        public static void ShowAlertAndWait(Alert alert)
+        {
+            using (var icon = new NotifyIcon { Icon = AppIcon(), Text = "KUDUSYNC", Visible = true })
+            using (var context = new ApplicationContext())
+            using (var timer = new Timer { Interval = 15000 })
+            {
+                icon.BalloonTipClicked += (s, e) =>
+                {
+                    OpenApp(Toasts.Link);
+                    context.ExitThread();
+                };
+                icon.BalloonTipClosed += (s, e) => context.ExitThread();
+                timer.Tick += (s, e) => context.ExitThread();
+                timer.Start();
+                icon.ShowBalloonTip(12000, alert.Title, Trim(alert.Text), alert.IsRed ? ToolTipIcon.Error : ToolTipIcon.Warning);
+                System.Windows.Forms.Application.Run(context);
+                icon.Visible = false;
+            }
+        }
+
         public static string Trim(string text) => string.IsNullOrEmpty(text) ? " " : text.Length > 250 ? text.Substring(0, 247) + "…" : text;
 
         public static void OpenHistory()

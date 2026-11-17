@@ -41,6 +41,7 @@ namespace Kudusync.Views
 
             var root = new Grid();
             root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             root.RowDefinitions.Add(new RowDefinition());
             root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
@@ -62,9 +63,10 @@ namespace Kudusync.Views
             root.Children.Add(new Border { Child = header, BorderThickness = new Thickness(0, 0, 0, 1) }
                 .Res(Border.BackgroundProperty, "SurfaceBg").Res(Border.BorderBrushProperty, "BorderBrush").At(0));
 
-            root.Children.Add(_page.At(1));
+            root.Children.Add(_alerts.At(1));
+            root.Children.Add(_page.At(2));
             root.Children.Add(new Border { Child = _footer, Padding = new Thickness(16, 12, 16, 12), BorderThickness = new Thickness(0, 1, 0, 0) }
-                .Res(Border.BackgroundProperty, "SurfaceBg").Res(Border.BorderBrushProperty, "BorderBrush").At(2));
+                .Res(Border.BackgroundProperty, "SurfaceBg").Res(Border.BorderBrushProperty, "BorderBrush").At(3));
             Content = root;
 
             _list.SelectionChanged += (s, e) =>
@@ -83,7 +85,11 @@ namespace Kudusync.Views
                 await CheckForUpdates();
                 await Task.Run(() => Schedules.Refresh(_pairs));
             };
-            Activated += (s, e) => { if (_page.Content == _pairsPage) RefreshRuns(); };
+            Activated += (s, e) =>
+            {
+                if (_page.Content == _pairsPage) RefreshRuns();
+                ShowAlerts();
+            };
             Closing += (s, e) =>
             {
                 if (IsBusy && !Dialogs.Confirm(this, "A sync is still running. Stop it and close KUDUSYNC?"))
@@ -127,6 +133,72 @@ namespace Kudusync.Views
             if (newPair != null) NewPair(Paths.Normalize(newPair));
             else if (syncFolder != null) SyncFolder(Paths.Normalize(syncFolder));
             else if (Has("--history")) ShowHistory();
+            else if (args.Any(a => a.StartsWith("kudusync:", StringComparison.OrdinalIgnoreCase)))
+            {
+                // A lasting notification was clicked: the banners say what needs looking at.
+                ShowPairs();
+                ShowAlerts();
+            }
+        }
+
+        // ================================================================== backups that need looking at
+
+        private readonly StackPanel _alerts = new StackPanel();
+
+        /// <summary>What the alerts banner shows now (for the self-test).</summary>
+        public IReadOnlyList<Alert> ShownAlerts { get; private set; } = new List<Alert>();
+
+        /// <summary>
+        /// A banner above everything for each scheduled backup that failed, ran with problems, or hasn't run for a while. It
+        /// stays until it's opened ("What happened"), the backup is run again, or it's put away.
+        /// </summary>
+        public void ShowAlerts()
+        {
+            List<Alert> alerts;
+            try { alerts = Alerts.Current(DateTime.Now); }
+            catch (Exception) { alerts = new List<Alert>(); }
+            ShownAlerts = alerts;
+            _alerts.Children.Clear();
+            foreach (var alert in alerts.Take(3))
+            {
+                var a = alert;
+                var pair = _pairs.FirstOrDefault(p => p.Id == a.PairId);
+                var text = Ui.Column(Ui.Text(a.Title, 13.5, bold: true, wrap: true), Ui.Text(a.Text, 12.5, wrap: true).Margin(0, 2, 0, 0));
+                var buttons = new WrapPanel { Margin = new Thickness(0, 8, 0, 0) };
+                if (pair != null)
+                {
+                    var again = Ui.Button(a.Level == AlertLevel.Missed ? "Back up now" : "Run it again", "IconPlay", "SecondaryButton", (s, e) =>
+                    {
+                        if (IsBusy) return;
+                        Looked(a);
+                        RunPairs(new List<FolderPair> { pair }, false);
+                    });
+                    buttons.Children.Add(Ui.Small(again).Margin(0, 0, 6, 0));
+                }
+                if (a.Run != null)
+                    buttons.Children.Add(Ui.Small(Ui.Button("What happened", "IconHistory", "GhostButton", (s, e) =>
+                    {
+                        if (IsBusy) return;
+                        Looked(a);
+                        ShowHistory();
+                    })).Margin(0, 0, 6, 0));
+                buttons.Children.Add(Ui.Small(Ui.Button("Put away", "IconClose", "GhostButton", (s, e) => Looked(a))));
+                text.Children.Add(buttons);
+                var banner = Ui.Banner(a.IsRed ? "IconWarn" : "IconInfo", text, a.IsRed ? "BadBg" : "WarnBg", a.IsRed ? "BadText" : "WarnText");
+                banner.Margin = new Thickness(16, 10, 16, 0);
+                _alerts.Children.Add(banner);
+            }
+            if (alerts.Count > 3)
+                _alerts.Children.Add(Ui.Subtle(Lang.T("…and {0} more backups to look at.", alerts.Count - 3), 12).Margin(20, 6, 16, 0));
+            _alerts.Margin = new Thickness(0, 0, 0, alerts.Count > 0 ? 6 : 0);
+        }
+
+        /// <summary>An alert was looked at: it goes from the banner, the notification centre and the tray icon.</summary>
+        private void Looked(Alert alert)
+        {
+            Alerts.MarkSeen(alert.PairId, DateTime.Now);
+            Toasts.Remove(alert.PairId);
+            ShowAlerts();
         }
 
         // ================================================================== frame

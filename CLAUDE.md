@@ -41,6 +41,14 @@ out\KUDUSYNC\KUDUSYNC.exe --self-test        (Windows only; needs administrator 
   `CopyAsItWas` writes that into a new, empty folder outside the backup (`CheckTarget`); `PutBack` keeps the current file
   first (`History` with `always`, even for pairs that keep nothing). The window is `Views/VersionsWindow.cs`.
 
+- Backups that need looking at (1.4): `Core/Alerts.cs` finds them from the pairs and the run history (`Find`): the
+  last run was a scheduled one that failed or was paused (red) or ran with problems (orange); or the pair hasn't really
+  backed up (Ok or Warnings) since two scheduled times went by (`MissedSince`, with 30 minutes' grace; from when the
+  schedule was first seen, `AlertState.Watched`). `alerts.json` keeps what was looked at (`Seen`) and notified
+  (`Notified`). `Views/Toasts.cs` shows Windows notifications that stay in the notification centre (its name and a
+  "kudusync:" link registered for the current user; the short notification when Windows can't); the scheduled run, the
+  tray (every 5 minutes: icon with a red/orange dot) and the main window's banner (`ShowAlerts`) use them.
+
 - Other languages (1.3): the shared `Lang`/`LangUi` (kudu-common) put each window into the chosen language as it's shown.
   Texts made in code for lists, the tray menu and its balloons, notifications, schedules and the run summary call
   `Lang.T` (`Model.cs`, `RunLog.cs`, `Locations.cs`, `Tray.cs`, `Notifier.cs`); the log files' own labels stay in English. Texts are in

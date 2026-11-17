@@ -113,6 +113,7 @@ namespace Kudusync.Views
             _runs = RunLog.All();
             if (results.Count == 0) ShowPairs();
             else ShowResults(results);
+            ShowAlerts(); // a backup that went well puts its alert right
         }
 
         private static RunResult Failed(FolderPair pair, string trigger, DateTime started, string message, RunStatus status)

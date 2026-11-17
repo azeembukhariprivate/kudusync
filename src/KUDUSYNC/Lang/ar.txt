@@ -1,5 +1,16 @@
 Error: {0}	خطأ: {0}
 Something went wrong:\n\n{0}	حدث خطأ ما:\n\n{0}
+"{0}" didn't back up	لم يتم نسخ "{0}" احتياطيًا
+"{0}" hasn't backed up for a while	لم يُنسخ "{0}" احتياطيًا منذ مدة
+"{0}" backed up, with problems	تم نسخ "{0}" احتياطيًا، مع مشكلات
+The scheduled backup on {0} didn't work: {1}	النسخ الاحتياطي المجدول في {0} لم ينجح: {1}
+Last backed up {0}. It should run: {1}.	آخر نسخ احتياطي في {0}. يجب أن يعمل: {1}.
+It hasn't backed up since it was scheduled. It should run: {0}.	لم يُنسخ احتياطيًا منذ جدولته. يجب أن يعمل: {0}.
+The scheduled backup on {0} ran, but {1} couldn't be copied.	النسخ الاحتياطي المجدول في {0} عمل، لكن تعذّر نسخ {1}.
+For example: {0}	مثلًا: {0}
+see its history for what went wrong.	راجع سجله لمعرفة ما الخطأ.
+Its last try said: {0}	قالت محاولته الأخيرة: {0}
+{0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	أقل من ثانية
 {0} h {1} min	{0} س {1} د
@@ -210,6 +221,11 @@ History	السجل
 Settings	الإعدادات
 About	حول
 A sync is still running. Stop it and close KUDUSYNC?	لا تزال هناك مزامنة قيد التشغيل. هل تريد إيقافها وإغلاق KUDUSYNC؟
+Back up now	انسخ احتياطيًا الآن
+Run it again	شغّله مرة أخرى
+What happened	ماذا حدث
+Put away	إخفاء
+…and {0} more backups to look at.	…و{0} نسخ احتياطية أخرى للمراجعة.
 KUDUSYNC {0} is available	يتوفر KUDUSYNC {0}
 New pair	زوج جديد
  · next scheduled: {0}, {1}	 · الموعد القادم: {0}، {1}
@@ -446,12 +462,17 @@ That drive isn't connected.	هذا القرص غير موصول.
 · recognised even if its letter changes	· يُعرف حتى لو تغيّر حرفه
 · the folder will be created	· سيُنشأ المجلد
 {0} ran into a problem it couldn't get past, and has to close.	واجه {0} مشكلة لم يستطع تجاوزها، ويجب أن يُغلق.
-Started	Started
 Open KUDUSYNC	فتح KUDUSYNC
+URL Protocol	URL Protocol
+Started	Started
 Sync all pairs now	مزامنة كل الأزواج الآن
 Pause live sync	إيقاف المزامنة المباشرة مؤقتًا
 Stop running in the notification area	التوقف عن العمل في منطقة الإعلامات
 KUDUSYNC tray	KUDUSYNC tray
+Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
+Alerts: {0}	Alerts: {0}
+KUDUSYNC · {0}	KUDUSYNC · {0}
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} نسخ احتياطية تحتاج إلى مراجعة
 Resume live sync	استئناف المزامنة المباشرة
 KUDUSYNC · live sync paused	KUDUSYNC · المزامنة المباشرة متوقفة مؤقتًا
 KUDUSYNC · live sync on for {0}	KUDUSYNC · المزامنة المباشرة تعمل لـ {0}
@@ -504,14 +525,14 @@ Copying: {0} of {1} files	جارٍ النسخ: {0} من {1} ملفات
 Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	تم: نُسخ {0} إلى {1}، كما كانت النسخة الاحتياطية قبل مزامنة {2}.{3}
  {0} couldn't be copied (first: {1}).	 تعذّر نسخ {0} (أولها: {1}).
 Stopped. The files copied so far are in the folder.	توقف. الملفات المنسوخة حتى الآن موجودة في المجلد.
+{0} file	{0} ملف
+{0} files	{0} ملفات
 {0} conflict	{0} تعارض
 {0} conflicts	{0} تعارضات
 {0} link	{0} رابط
 {0} links	{0} روابط
 {0} item	{0} عنصر
 {0} items	{0} عناصر
-{0} file	{0} ملف
-{0} files	{0} ملفات
 {0} pair	{0} زوج
 {0} pairs	{0} أزواج
 {0} step	{0} خطوة

@@ -46,6 +46,111 @@ namespace Kudusync.Tests
             return _failed == 0 ? 0 : 1;
         }
 
+        // ================================================================== alerts about scheduled backups
+
+        private static FolderPair Daily(string id, string time = "21:00") =>
+            new FolderPair { Id = id, Name = "Photos " + id, Schedule = new Schedule { Kind = ScheduleKind.Daily, Time = time } };
+
+        private static RunResult Ran(string pairId, DateTime finished, RunStatus status, string trigger = Triggers.Scheduled, string message = null, int failed = 0) =>
+            new RunResult { PairId = pairId, PairName = "Photos " + pairId, Trigger = trigger, Started = finished.AddMinutes(-2), Finished = finished, Status = status, Message = message, Failed = failed,
+                            Problems = failed > 0 ? new List<string> { "IMG_0001.JPG: it's open in another program" } : new List<string>() };
+
+        private static void TestAlertsForFailedAndProblemBackups()
+        {
+            var now = new DateTime(2026, 11, 18, 9, 0, 0);
+            var state = new AlertState();
+            var pairs = new List<FolderPair> { Daily("a"), Daily("b"), Daily("c"), Daily("d"), new FolderPair { Id = "e", Name = "By hand", Schedule = new Schedule() } };
+            state.Watched["a"] = state.Watched["b"] = state.Watched["c"] = state.Watched["d"] = now.AddDays(-30);
+            var runs = new List<RunResult>
+            {
+                Ran("a", now.AddHours(-12), RunStatus.Failed, message: "The drive E: isn't there."),
+                Ran("b", now.AddHours(-12), RunStatus.Warnings, failed: 3),
+                Ran("c", now.AddHours(-12), RunStatus.Failed), Ran("c", now.AddHours(-1), RunStatus.Ok, Triggers.Manual), // put right by hand since
+                Ran("d", now.AddHours(-12), RunStatus.Skipped, message: "Paused for safety: it would delete every file."),
+                Ran("e", now.AddHours(-12), RunStatus.Failed, Triggers.Manual)
+            };
+            var alerts = Alerts.Find(pairs, runs, now, state);
+            Equal("a:Failed b:Problems d:Failed", string.Join(" ", alerts.Select(x => x.PairId + ":" + x.Level).OrderBy(x => x)), "a failed, b had problems, c was put right, d was paused, e isn't scheduled");
+            var a = alerts.First(x => x.PairId == "a");
+            Check(a.IsRed && a.Text.Contains("The drive E: isn't there.") && a.Title.Contains("Photos a"), "says what went wrong: " + a.Text);
+            var b = alerts.First(x => x.PairId == "b");
+            Check(!b.IsRed && b.Text.Contains("3 files") && b.Text.Contains("IMG_0001.JPG"), "problems are orange, with how many and an example: " + b.Text);
+            Check(alerts.First().IsRed, "red ones first");
+
+            // Looked at: they go, until something new happens.
+            state.Seen["a"] = now;
+            Check(!Alerts.Find(pairs, runs, now, state).Any(x => x.PairId == "a"), "gone once looked at");
+            runs.Add(Ran("a", now.AddHours(1), RunStatus.Failed, message: "Again."));
+            Check(Alerts.Find(pairs, runs, now.AddHours(2), state).Any(x => x.PairId == "a" && x.Text.Contains("Again.")), "back when it fails again");
+            Check(Alerts.Find(pairs, runs, now, state).Select(x => x.Key).Distinct().Count() == Alerts.Find(pairs, runs, now, state).Count, "each has its own key");
+            Equal(Alerts.Find(pairs, runs, now, state)[0].Key, Alerts.Find(pairs, runs, now, state)[0].Key, "the same alert keeps its key");
+        }
+
+        private static void TestAlertsForMissedBackups()
+        {
+            var watched = new DateTime(2026, 11, 1, 12, 0, 0);
+            var pair = Daily("m", "21:00");
+            var state = new AlertState();
+            state.Watched["m"] = watched;
+            var runs = new List<RunResult> { Ran("m", new DateTime(2026, 11, 15, 21, 3, 0), RunStatus.Ok) };
+            List<Alert> At(DateTime now) => Alerts.Find(new[] { pair }, runs, now, state);
+
+            Check(!At(new DateTime(2026, 11, 16, 23, 0, 0)).Any(), "one time missed: not yet (it may have been one evening off)");
+            Check(!At(new DateTime(2026, 11, 17, 21, 10, 0)).Any(), "the second time, a little grace to finish");
+            var missed = At(new DateTime(2026, 11, 17, 22, 0, 0));
+            Check(missed.Count == 1 && missed[0].Level == AlertLevel.Missed && missed[0].IsRed, "missed twice: an alert");
+            Equal(new DateTime(2026, 11, 17, 21, 0, 0), missed[0].When, "about the last time it should have run");
+            Check(missed[0].Text.Contains("Every day at 21:00") && missed[0].LastDone == new DateTime(2026, 11, 15, 21, 3, 0), "says when it last backed up and when it should run: " + missed[0].Text);
+            Equal(new DateTime(2026, 11, 19, 21, 0, 0), At(new DateTime(2026, 11, 20, 8, 0, 0))[0].When, "later still: about the latest missed time");
+
+            // Tries that didn't back up (the drive wasn't there) don't count as backing up, and say why.
+            runs.Add(Ran("m", new DateTime(2026, 11, 16, 21, 0, 0), RunStatus.Skipped, message: "The drive F: isn't plugged in."));
+            runs.Add(Ran("m", new DateTime(2026, 11, 17, 21, 0, 0), RunStatus.Skipped, message: "The drive F: isn't plugged in."));
+            var skipped = At(new DateTime(2026, 11, 17, 22, 0, 0));
+            Check(skipped.Count == 1 && skipped[0].Level == AlertLevel.Missed && skipped[0].Text.Contains("isn't plugged in"), "skipped tries are still missed backups, with the reason: " + skipped[0].Text);
+
+            // A backup by hand counts; so does looking at the alert.
+            runs.Add(Ran("m", new DateTime(2026, 11, 17, 23, 0, 0), RunStatus.Ok, Triggers.Manual));
+            Check(!At(new DateTime(2026, 11, 18, 8, 0, 0)).Any(), "a backup by hand puts it right");
+            state.Seen["m"] = new DateTime(2026, 11, 21, 8, 0, 0);
+            Check(!At(new DateTime(2026, 11, 21, 9, 0, 0)).Any(), "looked at: gone");
+            Check(At(new DateTime(2026, 11, 22, 22, 0, 0)).Any(), "back when more are missed");
+
+            // Just scheduled: nothing missed yet, however long ago it last ran.
+            var fresh = new AlertState();
+            var old = new List<RunResult> { Ran("m", new DateTime(2025, 1, 1), RunStatus.Ok, Triggers.Manual) };
+            Check(!Alerts.Find(new[] { pair }, old, new DateTime(2026, 11, 18, 9, 0, 0), fresh).Any(), "a pair scheduled today hasn't missed anything");
+            Equal(new DateTime(2026, 11, 18, 9, 0, 0), fresh.Watched["m"], "from now on it's watched");
+
+            // Other schedules.
+            var weekly = new Schedule { Kind = ScheduleKind.Weekly, Days = 1 << (int)DayOfWeek.Monday, Time = "10:00" };
+            var monday = new DateTime(2026, 11, 16, 10, 0, 0);
+            Check(Alerts.MissedSince(weekly, monday.AddMinutes(5), monday.AddDays(7).AddHours(2)) == null, "weekly: one Monday missed is fine");
+            Equal(monday.AddDays(14), Alerts.MissedSince(weekly, monday.AddMinutes(5), monday.AddDays(14).AddHours(1)), "two Mondays: missed");
+            var hours = new Schedule { Kind = ScheduleKind.EveryHours, Hours = 4 };
+            Check(Alerts.MissedSince(hours, monday, monday.AddHours(5)) == null && Alerts.MissedSince(hours, monday, monday.AddHours(9)) != null, "every 4 hours: missed after two");
+            Check(Alerts.MissedSince(new Schedule { Kind = ScheduleKind.AtLogon }, monday, monday.AddDays(30)) == null, "at sign-in can't be missed by the clock");
+        }
+
+        private static void TestAlertsAreRemembered()
+        {
+            var pair = Daily("r");
+            DataStore.SavePairs(new[] { pair });
+            var state = Alerts.Load();
+            state.Watched["r"] = new DateTime(2026, 11, 1);
+            Alerts.Save(state);
+            RunLog.Add(Ran("r", DateTime.Now.AddMinutes(-5), RunStatus.Failed, message: "Couldn't reach the network share."));
+            var first = Alerts.TakeNew(DateTime.Now);
+            Check(first.Any(a => a.PairId == "r" && a.Level == AlertLevel.Failed), "a new alert to notify");
+            Check(!Alerts.TakeNew(DateTime.Now).Any(a => a.PairId == "r" && a.Level == AlertLevel.Failed), "notified once only");
+            Check(Alerts.Current(DateTime.Now).Any(a => a.PairId == "r"), "but it stays until it's looked at");
+            Alerts.MarkSeen("r", DateTime.Now.AddSeconds(1));
+            Check(!Alerts.Current(DateTime.Now.AddSeconds(2)).Any(a => a.PairId == "r" && a.Level == AlertLevel.Failed), "looked at");
+            Equal(new DateTime(2026, 11, 1), Alerts.Load().Watched["r"], "watched times are kept");
+            DataStore.SavePairs(new FolderPair[0]);
+            RunLog.Forget("r");
+        }
+
         // ================================================================== helpers
 
         private static void Check(bool condition, string what)

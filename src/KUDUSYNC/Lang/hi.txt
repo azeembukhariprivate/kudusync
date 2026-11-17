@@ -1,5 +1,16 @@
 Error: {0}	त्रुटि: {0}
 Something went wrong:\n\n{0}	कुछ गड़बड़ हो गई:\n\n{0}
+"{0}" didn't back up	"{0}" का बैकअप नहीं हुआ
+"{0}" hasn't backed up for a while	"{0}" का कुछ समय से बैकअप नहीं हुआ
+"{0}" backed up, with problems	"{0}" का बैकअप हुआ, समस्याओं के साथ
+The scheduled backup on {0} didn't work: {1}	{0} का निर्धारित बैकअप नहीं हो पाया: {1}
+Last backed up {0}. It should run: {1}.	आख़िरी बैकअप {0} को हुआ। इसे चलना चाहिए: {1}।
+It hasn't backed up since it was scheduled. It should run: {0}.	निर्धारित होने के बाद से इसका बैकअप नहीं हुआ। इसे चलना चाहिए: {0}।
+The scheduled backup on {0} ran, but {1} couldn't be copied.	{0} का निर्धारित बैकअप चला, पर {1} कॉपी नहीं हो सकीं।
+For example: {0}	उदाहरण के लिए: {0}
+see its history for what went wrong.	क्या गलत हुआ, यह इसके इतिहास में देखें।
+Its last try said: {0}	इसकी आख़िरी कोशिश ने कहा: {0}
+{0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	एक सेकंड से कम
 {0} h {1} min	{0} घंटे {1} मिनट
@@ -210,6 +221,11 @@ History	इतिहास
 Settings	सेटिंग्स
 About	जानकारी
 A sync is still running. Stop it and close KUDUSYNC?	एक सिंक अभी चल रहा है। उसे रोककर KUDUSYNC बंद करें?
+Back up now	अभी बैकअप लें
+Run it again	फिर से चलाएँ
+What happened	क्या हुआ
+Put away	हटा दें
+…and {0} more backups to look at.	…और देखने के लिए {0} बैकअप।
 KUDUSYNC {0} is available	KUDUSYNC {0} उपलब्ध है
 New pair	नई जोड़ी
  · next scheduled: {0}, {1}	 · अगला शेड्यूल: {0}, {1}
@@ -446,12 +462,17 @@ That drive isn't connected.	वह ड्राइव जुड़ी नही�
 · recognised even if its letter changes	· अक्षर बदलने पर भी पहचानी जाती है
 · the folder will be created	· फ़ोल्डर बन जाएगा
 {0} ran into a problem it couldn't get past, and has to close.	{0} में ऐसी समस्या आई जिससे वह आगे नहीं बढ़ सका, इसलिए इसे बंद होना पड़ेगा।
-Started	Started
 Open KUDUSYNC	KUDUSYNC खोलें
+URL Protocol	URL Protocol
+Started	Started
 Sync all pairs now	अभी सभी जोड़ियाँ सिंक करें
 Pause live sync	लाइव सिंक रोकें
 Stop running in the notification area	सूचना क्षेत्र में चलना बंद करें
 KUDUSYNC tray	KUDUSYNC tray
+Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
+Alerts: {0}	Alerts: {0}
+KUDUSYNC · {0}	KUDUSYNC · {0}
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} बैकअप देखने हैं
 Resume live sync	लाइव सिंक फिर शुरू करें
 KUDUSYNC · live sync paused	KUDUSYNC · लाइव सिंक रुका हुआ
 KUDUSYNC · live sync on for {0}	KUDUSYNC · {0} के लिए लाइव सिंक चालू
@@ -504,14 +525,14 @@ Copying: {0} of {1} files	कॉपी हो रहा है: {0} / {1} फ़
 Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	पूरा: {0} को {1} में कॉपी किया, जैसा बैकअप {2} के सिंक से पहले था।{3}
  {0} couldn't be copied (first: {1}).	 {0} कॉपी नहीं हो सके (पहला: {1})।
 Stopped. The files copied so far are in the folder.	रोका गया। अब तक कॉपी हुई फ़ाइलें फ़ोल्डर में हैं।
+{0} file	{0} फ़ाइल
+{0} files	{0} फ़ाइलें
 {0} conflict	{0} टकराव
 {0} conflicts	{0} टकराव
 {0} link	{0} लिंक
 {0} links	{0} लिंक
 {0} item	{0} चीज़
 {0} items	{0} चीज़ें
-{0} file	{0} फ़ाइल
-{0} files	{0} फ़ाइलें
 {0} pair	{0} जोड़ी
 {0} pairs	{0} जोड़ियाँ
 {0} step	{0} चरण

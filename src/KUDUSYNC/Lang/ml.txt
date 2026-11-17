@@ -1,5 +1,16 @@
 Error: {0}	പിശക്: {0}
 Something went wrong:\n\n{0}	എന്തോ പിശക് സംഭവിച്ചു:\n\n{0}
+"{0}" didn't back up	"{0}" ബാക്കപ്പ് ചെയ്തില്ല
+"{0}" hasn't backed up for a while	"{0}" കുറച്ചുനാളായി ബാക്കപ്പ് ചെയ്തിട്ടില്ല
+"{0}" backed up, with problems	"{0}" ബാക്കപ്പ് ചെയ്തു, പ്രശ്നങ്ങളോടെ
+The scheduled backup on {0} didn't work: {1}	{0}-നുള്ള ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നില്ല: {1}
+Last backed up {0}. It should run: {1}.	അവസാനം ബാക്കപ്പ് ചെയ്തത് {0}. ഇത് നടക്കേണ്ടത്: {1}.
+It hasn't backed up since it was scheduled. It should run: {0}.	ഷെഡ്യൂൾ ചെയ്തതിനുശേഷം ഇത് ബാക്കപ്പ് ചെയ്തിട്ടില്ല. ഇത് നടക്കേണ്ടത്: {0}.
+The scheduled backup on {0} ran, but {1} couldn't be copied.	{0}-നുള്ള ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നു, പക്ഷേ {1} പകർത്താനായില്ല.
+For example: {0}	ഉദാഹരണത്തിന്: {0}
+see its history for what went wrong.	എന്താണ് പറ്റിയതെന്ന് അതിന്റെ ചരിത്രത്തിൽ നോക്കുക.
+Its last try said: {0}	അതിന്റെ അവസാന ശ്രമം പറഞ്ഞത്: {0}
+{0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	ഒരു സെക്കൻഡിൽ താഴെ
 {0} h {1} min	{0} മണിക്കൂർ {1} മിനിറ്റ്
@@ -210,6 +221,11 @@ History	ചരിത്രം
 Settings	ക്രമീകരണങ്ങൾ
 About	വിവരം
 A sync is still running. Stop it and close KUDUSYNC?	ഒരു സിങ്ക് ഇപ്പോഴും നടക്കുന്നു. അത് നിർത്തി KUDUSYNC അടയ്ക്കണോ?
+Back up now	ഇപ്പോൾ ബാക്കപ്പ് ചെയ്യുക
+Run it again	വീണ്ടും നടത്തുക
+What happened	എന്താണ് സംഭവിച്ചത്
+Put away	മാറ്റിവെക്കുക
+…and {0} more backups to look at.	…കൂടാതെ നോക്കേണ്ട {0} ബാക്കപ്പുകൾ കൂടി.
 KUDUSYNC {0} is available	KUDUSYNC {0} ലഭ്യമാണ്
 New pair	പുതിയ ജോഡി
  · next scheduled: {0}, {1}	 · അടുത്ത ഷെഡ്യൂൾ: {0}, {1}
@@ -446,12 +462,17 @@ That drive isn't connected.	ആ ഡ്രൈവ് കണക്റ്റ് ച�
 · recognised even if its letter changes	· അക്ഷരം മാറിയാലും തിരിച്ചറിയും
 · the folder will be created	· ഫോൾഡർ ഉണ്ടാക്കും
 {0} ran into a problem it couldn't get past, and has to close.	{0}-ന് മറികടക്കാൻ കഴിയാത്ത ഒരു പ്രശ്നം ഉണ്ടായി; അതിനാൽ അടയ്ക്കേണ്ടിവരുന്നു.
-Started	Started
 Open KUDUSYNC	KUDUSYNC തുറക്കുക
+URL Protocol	URL Protocol
+Started	Started
 Sync all pairs now	എല്ലാ ജോഡികളും ഇപ്പോൾ സിങ്ക് ചെയ്യുക
 Pause live sync	ലൈവ് സിങ്ക് നിർത്തിവയ്ക്കുക
 Stop running in the notification area	അറിയിപ്പ് ഭാഗത്ത് പ്രവർത്തിക്കുന്നത് നിർത്തുക
 KUDUSYNC tray	KUDUSYNC tray
+Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
+Alerts: {0}	Alerts: {0}
+KUDUSYNC · {0}	KUDUSYNC · {0}
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} ബാക്കപ്പുകൾ നോക്കേണ്ടതുണ്ട്
 Resume live sync	ലൈവ് സിങ്ക് തുടരുക
 KUDUSYNC · live sync paused	KUDUSYNC · ലൈവ് സിങ്ക് നിർത്തിവച്ചു
 KUDUSYNC · live sync on for {0}	KUDUSYNC · {0}-ന് ലൈവ് സിങ്ക് ഓൺ
@@ -504,14 +525,14 @@ Copying: {0} of {1} files	പകർത്തുന്നു: {0} / {1} ഫയല
 Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	കഴിഞ്ഞു: {2}-ലെ സിങ്കിനു മുമ്പുള്ള ബാക്കപ്പ് പോലെ {0} {1}-ലേക്ക് പകർത്തി.{3}
  {0} couldn't be copied (first: {1}).	 {0} പകർത്താനായില്ല (ആദ്യത്തേത്: {1}).
 Stopped. The files copied so far are in the folder.	നിർത്തി. ഇതുവരെ പകർത്തിയ ഫയലുകൾ ഫോൾഡറിലുണ്ട്.
+{0} file	{0} ഫയൽ
+{0} files	{0} ഫയലുകൾ
 {0} conflict	{0} പൊരുത്തക്കേട്
 {0} conflicts	{0} പൊരുത്തക്കേടുകൾ
 {0} link	{0} ലിങ്ക്
 {0} links	{0} ലിങ്കുകൾ
 {0} item	{0} ഇനം
 {0} items	{0} ഇനങ്ങൾ
-{0} file	{0} ഫയൽ
-{0} files	{0} ഫയലുകൾ
 {0} pair	{0} ജോഡി
 {0} pairs	{0} ജോഡികൾ
 {0} step	{0} ഘട്ടം

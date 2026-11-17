@@ -34,13 +34,23 @@ namespace Kudusync.Views
         private bool _paused;
         private Forms.ToolStripMenuItem _pauseItem;
         private EventWaitHandle _stopSignal;
+        private DispatcherTimer _alertTimer;
+        private System.Drawing.Icon _plainIcon, _alertIcon;
+        private string _liveText = "KUDUSYNC";
+        private List<Alert> _alerts = new List<Alert>();
+
+        /// <summary>The backups that need looking at, as the tray icon shows them (for the self-test).</summary>
+        public IReadOnlyList<Alert> ShownAlerts => _alerts;
+        public string IconText => _icon?.Text;
+        public bool IconMarked => _icon != null && _alertIcon != null && ReferenceEquals(_icon.Icon, _alertIcon);
 
         public static string LogFile => Path.Combine(DataStore.Folder, "tray.log");
 
         public void Start()
         {
             Log("Started");
-            _icon = new Forms.NotifyIcon { Icon = Notifier.AppIcon(Forms.SystemInformation.SmallIconSize.Width), Text = "KUDUSYNC", Visible = true };
+            _plainIcon = Notifier.AppIcon(Forms.SystemInformation.SmallIconSize.Width);
+            _icon = new Forms.NotifyIcon { Icon = _plainIcon, Text = "KUDUSYNC", Visible = true };
             var menu = new Forms.ContextMenuStrip();
             menu.Items.Add(Lang.T("Open KUDUSYNC"), null, (s, e) => Notifier.OpenApp());
             menu.Items.Add(Lang.T("Sync all pairs now"), null, (s, e) => RunPairs(_pairs.Where(p => p.InRunAll).ToList(), Triggers.Manual));
@@ -49,7 +59,7 @@ namespace Kudusync.Views
             menu.Items.Add(new Forms.ToolStripSeparator());
             menu.Items.Add(Lang.T("Stop running in the notification area"), null, (s, e) => Exit());
             _icon.ContextMenuStrip = menu;
-            _icon.DoubleClick += (s, e) => Notifier.OpenApp();
+            _icon.DoubleClick += (s, e) => Notifier.OpenApp(_alerts.Count > 0 ? Toasts.Link : string.Empty);
             _icon.BalloonTipClicked += (s, e) =>
             {
                 var action = _balloonClick;
@@ -84,7 +94,75 @@ namespace Kudusync.Views
             });
 
             Reload();
+
+            // Every few minutes: scheduled backups that failed, had problems or were missed. The first look is soon after
+            // Windows starts, so a backup missed while the PC was off is said straight away.
+            _alertTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(15) };
+            _alertTimer.Tick += (s, e) =>
+            {
+                _alertTimer.Interval = TimeSpan.FromMinutes(5);
+                CheckAlerts();
+            };
+            _alertTimer.Start();
         }
+
+        /// <summary>Notifies new alerts (once each) and shows on the icon whether any are waiting to be looked at.</summary>
+        public void CheckAlerts()
+        {
+            try
+            {
+                var fresh = Alerts.TakeNew(DateTime.Now);
+                if (Settings.Notify != NotifyMode.Never)
+                    foreach (var alert in fresh.Take(3))
+                        if (!Toasts.Show(alert))
+                        {
+                            _balloonClick = () => Notifier.OpenApp(Toasts.Link);
+                            _icon.ShowBalloonTip(12000, alert.Title, Notifier.Trim(alert.Text), alert.IsRed ? Forms.ToolTipIcon.Error : Forms.ToolTipIcon.Warning);
+                        }
+                _alerts = Alerts.Current(DateTime.Now);
+                Log($"Alerts: {_alerts.Count} waiting ({string.Join(", ", _alerts.Select(a => a.PairName + " " + a.Level))}), {fresh.Count} new");
+            }
+            catch (Exception ex)
+            {
+                Log("Alerts: " + ex.Message);
+            }
+            ShowIconState();
+        }
+
+        /// <summary>The icon with a red dot (a backup failed or was missed) or an orange one (one ran with problems).</summary>
+        private void ShowIconState()
+        {
+            _alertIcon?.Dispose();
+            _alertIcon = null;
+            if (_alerts.Count == 0) _icon.Icon = _plainIcon;
+            else
+            {
+                var red = _alerts.Any(a => a.IsRed);
+                using (var bitmap = _plainIcon.ToBitmap())
+                {
+                    using (var g = System.Drawing.Graphics.FromImage(bitmap))
+                    using (var brush = new System.Drawing.SolidBrush(red ? System.Drawing.Color.FromArgb(0xD1, 0x34, 0x38) : System.Drawing.Color.FromArgb(0xE8, 0x8A, 0x00)))
+                    using (var edge = new System.Drawing.Pen(System.Drawing.Color.White, 1))
+                    {
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        var d = bitmap.Width / 2f;
+                        g.FillEllipse(brush, bitmap.Width - d - 0.5f, bitmap.Height - d - 0.5f, d, d);
+                        g.DrawEllipse(edge, bitmap.Width - d - 0.5f, bitmap.Height - d - 0.5f, d, d);
+                    }
+                    var handle = bitmap.GetHicon();
+                    _alertIcon = (System.Drawing.Icon)System.Drawing.Icon.FromHandle(handle).Clone();
+                    DestroyIcon(handle);
+                }
+                _icon.Icon = _alertIcon;
+            }
+            var text = _alerts.Count == 0 ? _liveText
+                : _alerts.Count == 1 ? Lang.T("KUDUSYNC · {0}", _alerts[0].Title)
+                : Lang.T("KUDUSYNC · {0} backups need looking at", _alerts.Count);
+            _icon.Text = text.Length > 63 ? text.Substring(0, 62) + "…" : text;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool DestroyIcon(IntPtr handle);
 
         private static string StopSignalName => "KUDUSYNC-tray-stop-" + DataStore.StableHash(Environment.UserName + "|" + DataStore.Folder);
 
@@ -134,8 +212,9 @@ namespace Kudusync.Views
                     var watch = LiveWatch.TryCreate(pair, RunLive);
                     if (watch != null) _watches.Add(watch);
                 }
-            var text = _paused ? Lang.T("KUDUSYNC · live sync paused") : _watches.Count == 0 ? "KUDUSYNC" : Lang.T("KUDUSYNC · live sync on for {0}", Format.Count(_watches.Count, "pair"));
-            _icon.Text = text.Length > 63 ? text.Substring(0, 63) : text;
+            _liveText = _paused ? Lang.T("KUDUSYNC · live sync paused") : _watches.Count == 0 ? "KUDUSYNC" : Lang.T("KUDUSYNC · live sync on for {0}", Format.Count(_watches.Count, "pair"));
+            if (_liveText.Length > 63) _liveText = _liveText.Substring(0, 63);
+            if (_alerts.Count == 0) _icon.Text = _liveText;
             Log($"Watching {_watches.Count} live pair(s): {string.Join(", ", _watches.Select(w => w.Pair.Name))}");
         }
 
@@ -158,6 +237,7 @@ namespace Kudusync.Views
             {
                 var results = t.Result;
                 foreach (var r in results) Log($"{trigger}: {r.PairName}: {r.StatusText} · {r.Summary}");
+                CheckAlerts(); // a backup run from here may put an alert right
                 if (results.Count == 1)
                 {
                     if (Runner.ShouldNotify(results[0], trigger) || trigger != Triggers.Scheduled) Show(results[0]);

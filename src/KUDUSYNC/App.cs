@@ -14,6 +14,7 @@ namespace Kudusync
         /// KUDUSYNC.exe --sync-folder "D:\x"     run the pairs that use this folder (folders' right-click menu)
         /// KUDUSYNC.exe --new-pair "D:\x"        create a pair backing up this folder (right-click menu)
         /// KUDUSYNC.exe --history                open the list of recent runs (clicking a notification)
+        /// KUDUSYNC.exe kudusync:alerts         open, showing what needs looking at (clicking a lasting notification)
         /// KUDUSYNC.exe --run-scheduled ID       run a pair with no window (Windows Task Scheduler)
         /// KUDUSYNC.exe --tray                   run in the notification area: live sync and drive notifications
         /// KUDUSYNC.exe --register-shell | --unregister   used by the installer
@@ -49,6 +50,7 @@ namespace Kudusync
                 ShellIntegration.SetStartWithWindows(false);
                 Schedules.RemoveAll();
                 Tray.StopRunning();
+                Toasts.Unregister();
                 return 0;
             }
 
@@ -99,7 +101,12 @@ namespace Kudusync
                 return 2;
             }
             var result = Runner.RunUnattended(pair, Triggers.Scheduled);
-            if (Runner.ShouldNotify(result, Triggers.Scheduled)) Notifier.ShowAndWait(result);
+            // A scheduled backup that went wrong, and any other backup missed meanwhile, get a notice that stays.
+            var lasting = result.Status == RunStatus.Failed || result.Status == RunStatus.Warnings ||
+                          (result.Status == RunStatus.Skipped && result.Message != null && result.Message.StartsWith("Paused", StringComparison.Ordinal));
+            try { Toasts.NotifyNew(); }
+            catch (Exception) { lasting = false; }
+            if (!lasting && Runner.ShouldNotify(result, Triggers.Scheduled)) Notifier.ShowAndWait(result);
             return result.Status == RunStatus.Ok || result.Status == RunStatus.Warnings || result.Status == RunStatus.Skipped ? 0 : 1;
         }
 

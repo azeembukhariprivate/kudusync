@@ -22,6 +22,9 @@ namespace Kudusync.Views
     public static class SelfTest
     {
         public static bool Running { get; private set; }
+
+        /// <summary>The self-test shows real lasting notifications only in the step that checks them.</summary>
+        public static bool AllowToasts { get; private set; }
         public static List<string> Errors { get; } = new List<string>();
 
         private static StringBuilder _log;
@@ -572,6 +575,12 @@ namespace Kudusync.Views
             var plugVhd = Vhds.Last();
             var plug = Pair("Plug test", Dir("plug-src"), plugLetter + @"\Backup", SyncMode.Mirror);
             pairs.Add(plug);
+            // A scheduled backup that failed: the tray marks its icon.
+            var watched = Pair("Watched backup", Dir("watched-src"), Dir("watched-dst"), SyncMode.Mirror);
+            watched.Schedule = new Schedule { Kind = ScheduleKind.Daily, Time = "03:00" };
+            pairs.Add(watched);
+            RunLog.Add(new RunResult { PairId = watched.Id, PairName = watched.Name, Trigger = Triggers.Scheduled, Started = DateTime.Now.AddMinutes(-3), Finished = DateTime.Now.AddMinutes(-2),
+                                       Status = RunStatus.Failed, Message = "The drive Q: isn't there." });
             DataStore.SavePairs(pairs);
             Diskpart($"select vdisk file=\"{plugVhd}\"", "detach vdisk");
 
@@ -598,6 +607,9 @@ namespace Kudusync.Views
                 {
                     Diskpart($"select vdisk file=\"{plugVhd}\"", "detach vdisk");
                 }
+
+                WaitFor(() => File.ReadAllText(Tray.LogFile).Contains("Alerts: 1 waiting (Watched backup Failed)"), 60, "the tray to notice the failed backup");
+                Note("tray marked its icon for the failed scheduled backup");
 
                 Tray.StopRunning();
                 Expect(tray.WaitForExit(15000), "the tray stops when asked");
@@ -701,6 +713,52 @@ namespace Kudusync.Views
                 WaitFor(() => !main.IsBusy && main.PageName == "results", 90, "the right-click sync");
                 Expect(main.LastResults.Single().Trigger == Triggers.RightClick && main.LastResults.Single().Status == RunStatus.Ok, "synced from the right-click menu");
             });
+            Step("Backups that need looking at: banner and lasting notification", () =>
+            {
+                var pair = DataStore.LoadPairs().First();
+                var schedule = pair.Schedule?.Clone();
+                pair.Schedule = new Schedule { Kind = ScheduleKind.Daily, Time = "04:00" };
+                DataStore.SavePairs(DataStore.LoadPairs().Select(p => p.Id == pair.Id ? pair : p));
+                try
+                {
+                    RunLog.Add(new RunResult { PairId = pair.Id, PairName = pair.Name, Trigger = Triggers.Scheduled, Started = DateTime.Now.AddMinutes(-3), Finished = DateTime.Now.AddMinutes(-1),
+                                               Status = RunStatus.Warnings, Failed = 2, Problems = new List<string> { "budget.xlsx: it's open in another program" } });
+                    main.ShowAlerts();
+                    Pump();
+                    var alert = main.ShownAlerts.FirstOrDefault(a => a.PairId == pair.Id);
+                    Expect(alert != null && alert.Level == AlertLevel.Problems && alert.Text.Contains("2 files"), "the banner says the backup had problems");
+                    Screenshots.All("Backup with problems: the banner");
+
+                    AllowToasts = true;
+                    try
+                    {
+                        if (Toasts.Show(alert))
+                        {
+                            WaitFor(() => Toasts.InNotificationCentre(pair.Id), 15, "the notification to be in the notification centre");
+                            Note("the lasting notification is in the notification centre");
+                            Toasts.Remove(pair.Id);
+                            WaitFor(() => !Toasts.InNotificationCentre(pair.Id), 15, "the notification to go once looked at");
+                        }
+                        else Note("Windows couldn't show a lasting notification here; the short one is used instead.");
+                    }
+                    finally
+                    {
+                        AllowToasts = false;
+                        Toasts.Unregister();
+                    }
+
+                    Alerts.MarkSeen(pair.Id, DateTime.Now.AddSeconds(1));
+                    main.ShowAlerts();
+                    Pump();
+                    Expect(!main.ShownAlerts.Any(a => a.PairId == pair.Id), "put away: the banner goes");
+                }
+                finally
+                {
+                    pair.Schedule = schedule ?? new Schedule();
+                    DataStore.SavePairs(DataStore.LoadPairs().Select(p => p.Id == pair.Id ? pair : p));
+                }
+            });
+
             Step("History page", () =>
             {
                 main.ShowHistory();

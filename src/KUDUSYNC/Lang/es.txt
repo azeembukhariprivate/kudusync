@@ -1,5 +1,16 @@
 Error: {0}	Error: {0}
 Something went wrong:\n\n{0}	Algo salió mal:\n\n{0}
+"{0}" didn't back up	"{0}" no hizo la copia de seguridad
+"{0}" hasn't backed up for a while	"{0}" lleva un tiempo sin hacer copia de seguridad
+"{0}" backed up, with problems	"{0}" hizo la copia, con problemas
+The scheduled backup on {0} didn't work: {1}	La copia programada del {0} no funcionó: {1}
+Last backed up {0}. It should run: {1}.	Última copia: {0}. Debería hacerse: {1}.
+It hasn't backed up since it was scheduled. It should run: {0}.	No ha hecho ninguna copia desde que se programó. Debería hacerse: {0}.
+The scheduled backup on {0} ran, but {1} couldn't be copied.	La copia programada del {0} se hizo, pero {1} no se pudieron copiar.
+For example: {0}	Por ejemplo: {0}
+see its history for what went wrong.	mira su historial para ver qué falló.
+Its last try said: {0}	Su último intento dijo: {0}
+{0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	menos de un segundo
 {0} h {1} min	{0} h {1} min
@@ -210,6 +221,11 @@ History	Historial
 Settings	Ajustes
 About	Acerca de
 A sync is still running. Stop it and close KUDUSYNC?	Todavía hay una sincronización en curso. ¿Detenerla y cerrar KUDUSYNC?
+Back up now	Hacer la copia ahora
+Run it again	Ejecutarla otra vez
+What happened	Qué pasó
+Put away	Quitar el aviso
+…and {0} more backups to look at.	…y {0} copias más que revisar.
 KUDUSYNC {0} is available	KUDUSYNC {0} está disponible
 New pair	Par nuevo
  · next scheduled: {0}, {1}	 · próxima programada: {0}, {1}
@@ -446,12 +462,17 @@ That drive isn't connected.	Esa unidad no está conectada.
 · recognised even if its letter changes	· se reconoce aunque cambie su letra
 · the folder will be created	· se creará la carpeta
 {0} ran into a problem it couldn't get past, and has to close.	{0} ha encontrado un problema que no ha podido superar y tiene que cerrarse.
-Started	Started
 Open KUDUSYNC	Abrir KUDUSYNC
+URL Protocol	URL Protocol
+Started	Started
 Sync all pairs now	Sincronizar ahora todos los pares
 Pause live sync	Pausar la sincronización en vivo
 Stop running in the notification area	Dejar de ejecutarse en el área de notificación
 KUDUSYNC tray	KUDUSYNC tray
+Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
+Alerts: {0}	Alerts: {0}
+KUDUSYNC · {0}	KUDUSYNC · {0}
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} copias que revisar
 Resume live sync	Reanudar la sincronización en vivo
 KUDUSYNC · live sync paused	KUDUSYNC · sincronización en vivo en pausa
 KUDUSYNC · live sync on for {0}	KUDUSYNC · sincronización en vivo activa para {0}
@@ -504,14 +525,14 @@ Copying: {0} of {1} files	Copiando: {0} de {1} archivos
 Done: {0} copied into {1}, as the backup was before the sync on {2}.{3}	Hecho: {0} copiados en {1}, como estaba la copia de seguridad antes de la sincronización del {2}.{3}
  {0} couldn't be copied (first: {1}).	 No se pudieron copiar {0} (el primero: {1}).
 Stopped. The files copied so far are in the folder.	Detenido. Los archivos copiados hasta ahora están en la carpeta.
+{0} file	{0} archivo
+{0} files	{0} archivos
 {0} conflict	{0} conflicto
 {0} conflicts	{0} conflictos
 {0} link	{0} vínculo
 {0} links	{0} vínculos
 {0} item	{0} elemento
 {0} items	{0} elementos
-{0} file	{0} archivo
-{0} files	{0} archivos
 {0} pair	{0} par
 {0} pairs	{0} pares
 {0} step	{0} paso
