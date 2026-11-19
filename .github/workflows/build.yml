@@ -105,7 +105,7 @@ jobs:
         run: |
           $iscc = Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"
           if (-not (Test-Path $iscc)) {
-            choco install innosetup -y --no-progress | Out-Null
+            choco install innosetup --version 6.7.1 -y --no-progress | Out-Null
           }
           & $iscc "/DMyAppVersion=${{ steps.ver.outputs.version }}" "/DSourceDir=$PWD\out\KUDUSYNC" "/O$PWD\artifacts" installer\KUDUSYNC.iss
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
