@@ -1,3 +1,5 @@
+// Runs a pair without a window (scheduled, from the tray, a drive plugged in, the right-click menu), and the names of
+// what started a run.
 using System;
 using System.IO;
 using System.Linq;
@@ -7,16 +9,22 @@ namespace Kudusync.Core
 {
     public static class Triggers
     {
+        /// <summary>Started by the person.</summary>
         public const string Manual = "You";
+        /// <summary>Started by its schedule.</summary>
         public const string Scheduled = "Schedule";
+        /// <summary>Started because files changed.</summary>
         public const string Live = "Live sync";
+        /// <summary>Started when its drive was plugged in.</summary>
         public const string Plugged = "Drive plugged in";
+        /// <summary>Started from File Explorer's right-click menu.</summary>
         public const string RightClick = "Right-click menu";
     }
 
     /// <summary>Runs a pair with nobody watching: scheduled runs, live sync and runs started from a notification.</summary>
     public static class Runner
     {
+        /// <summary>Runs a pair to the end without asking anything, and keeps the result.</summary>
         public static RunResult RunUnattended(FolderPair pair, string trigger, CancellationToken token = default)
         {
             var result = new RunResult { PairId = pair.Id, PairName = pair.Name, Mode = pair.Mode, Trigger = trigger, Started = DateTime.Now };
@@ -54,6 +62,7 @@ namespace Kudusync.Core
             return Finish(result, pair.Left.Path, pair.Right.Path, pair);
         }
 
+        /// <summary>Notes the result, writes its log, and keeps it.</summary>
         private static RunResult Finish(RunResult result, string left, string right, FolderPair pair)
         {
             result.Finished = DateTime.Now;

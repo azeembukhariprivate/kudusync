@@ -1,3 +1,5 @@
+// The main window: the list of folder pairs with each one's details, alerts, adding, changing and removing pairs, and
+// bringing in SyncToy's pairs.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,20 +19,34 @@ namespace Kudusync.Views
     /// <summary>The main window: the list of folder pairs, a pair's details, and running, previewing and history.</summary>
     public sealed partial class MainWindow : Window
     {
+        /// <summary>Where the page shown is.</summary>
         private readonly ContentControl _page = new ContentControl { Focusable = false };
+        /// <summary>The bar at the bottom.</summary>
         private readonly Grid _footer = new Grid();
+        /// <summary>"A new version is out", shown when there is one.</summary>
         private readonly Button _update = Ui.Link(string.Empty, (s, e) => AppInfo.OpenUrl(AppInfo.ReleasesUrl + "/latest"));
+        /// <summary>Brings in SyncToy's pairs (shown when SyncToy's file is there).</summary>
         private readonly Button _import;
+        /// <summary>The list of pairs.</summary>
         private readonly ListBox _list = new ListBox { SelectionMode = SelectionMode.Single }.Styled("TableList");
+        /// <summary>The pair chosen's details.</summary>
         private readonly ContentControl _details = new ContentControl { Focusable = false };
+        /// <summary>The pairs page.</summary>
         private Grid _pairsPage;
+        /// <summary>Every pair.</summary>
         private List<FolderPair> _pairs = new List<FolderPair>();
+        /// <summary>Every run kept.</summary>
         private List<RunResult> _runs = new List<RunResult>();
+        /// <summary>The pair chosen.</summary>
         private FolderPair _selected;
+        /// <summary>True while the list is being filled (choosing then isn't reacted to).</summary>
         private bool _filling;
+        /// <summary>Fills the list again a moment after runs change.</summary>
         private readonly DispatcherTimer _refresh = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
+        /// <summary>Notices when a run elsewhere (the tray, a schedule) is kept.</summary>
         private FileSystemWatcher _runsWatcher;
 
+        /// <summary>Makes the main window.</summary>
         public MainWindow()
         {
             Width = 1100;
@@ -102,11 +118,16 @@ namespace Kudusync.Views
             Closed += (s, e) => _runsWatcher?.Dispose();
         }
 
+        /// <summary>Every pair (for the self-test).</summary>
         public IReadOnlyList<FolderPair> Pairs => _pairs;
+        /// <summary>The pair chosen.</summary>
         public FolderPair Selected => _selected;
+        /// <summary>The page shown.</summary>
         public object CurrentPage => _page.Content;
+        /// <summary>The page's name ("Pairs", "Running"...), for the self-test.</summary>
         public string PageName { get; private set; }
 
+        /// <summary>Brings the window to the front (when a later start hands over).</summary>
         public void BringToFront()
         {
             if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
@@ -143,6 +164,7 @@ namespace Kudusync.Views
 
         // ================================================================== backups that need looking at
 
+        /// <summary>The alerts above the list.</summary>
         private readonly StackPanel _alerts = new StackPanel();
 
         /// <summary>What the alerts banner shows now (for the self-test).</summary>
@@ -203,6 +225,7 @@ namespace Kudusync.Views
 
         // ================================================================== frame
 
+        /// <summary>Fills the bar at the bottom.</summary>
         internal void SetFooter(UIElement left, params Button[] buttons)
         {
             _footer.Children.Clear();
@@ -217,12 +240,14 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Shows a page.</summary>
         private void SetPage(UIElement page, string name)
         {
             _page.Content = page;
             PageName = name;
         }
 
+        /// <summary>Looks for a new version once (unless switched off) and shows the link when there is one.</summary>
         private async Task CheckForUpdates()
         {
             if (!Settings.CheckForUpdates || SelfTest.Running) return;
@@ -241,6 +266,7 @@ namespace Kudusync.Views
 
         // ================================================================== pairs
 
+        /// <summary>Reads the pairs.</summary>
         private void LoadPairs()
         {
             _pairs = DataStore.LoadPairs();
@@ -249,11 +275,13 @@ namespace Kudusync.Views
             if (_selected == null) _selected = _pairs.FirstOrDefault(p => p.Id == Settings.LastPair) ?? _pairs.FirstOrDefault();
         }
 
+        /// <summary>Keeps the pairs and updates their schedules.</summary>
         private void SavePairs()
         {
             DataStore.SavePairs(_pairs);
         }
 
+        /// <summary>Starts noticing when runs are kept elsewhere.</summary>
         private void WatchRuns()
         {
             // Scheduled runs and the tray write to the run list: refresh the pair's "last run" when that happens.
@@ -274,6 +302,7 @@ namespace Kudusync.Views
             catch (Exception ex) when (ex is IOException || ex is ArgumentException) { }
         }
 
+        /// <summary>Reads the runs again and fills the list.</summary>
         private void RefreshRuns()
         {
             _runs = RunLog.All();
@@ -281,6 +310,7 @@ namespace Kudusync.Views
             ShowDetails();
         }
 
+        /// <summary>Shows the pairs page.</summary>
         public void ShowPairs()
         {
             if (_pairs.Count == 0)
@@ -317,6 +347,7 @@ namespace Kudusync.Views
             UpdatePairsFooter();
         }
 
+        /// <summary>Updates the buttons at the bottom.</summary>
         private void UpdatePairsFooter()
         {
             var next = _pairs.Select(p => new { Pair = p, When = p.Schedule.NextAfter(DateTime.Now) }).Where(x => x.When != null).OrderBy(x => x.When).FirstOrDefault();
@@ -327,12 +358,14 @@ namespace Kudusync.Views
             SetFooter(Ui.Subtle(text, 12.5, false), runAll);
         }
 
+        /// <summary>A time like "today at 21:00", "tomorrow at 09:00" or with its day.</summary>
         private static string When(DateTime t)
         {
             var day = t.Date == DateTime.Today ? "today" : t.Date == DateTime.Today.AddDays(1) ? "tomorrow" : t.ToString("ddd d MMM");
             return day + " at " + t.ToString("HH:mm");
         }
 
+        /// <summary>Fills the list of pairs with each one's last run.</summary>
         private void FillList()
         {
             _filling = true;
@@ -358,12 +391,14 @@ namespace Kudusync.Views
             _filling = false;
         }
 
+        /// <summary>A shorter path for the list.</summary>
         private static string Short(string path)
         {
             if (string.IsNullOrEmpty(path)) return "?";
             return path.Length <= 34 ? path : path.Substring(0, 14) + "…" + path.Substring(path.Length - 18);
         }
 
+        /// <summary>The colour for how a run went.</summary>
         private static string StatusBrush(RunResult r)
         {
             if (r == null) return "OffDot";
@@ -376,6 +411,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>The chip colour for how a run went.</summary>
         private static Tone StatusTone(RunResult r)
         {
             switch (r.Status)
@@ -387,6 +423,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>What's shown when there are no pairs yet.</summary>
         private void ShowWelcome()
         {
             var content = Ui.Column(
@@ -408,6 +445,9 @@ namespace Kudusync.Views
 
         // ================================================================== details
 
+        /// <summary>
+        /// Shows the pair chosen: both folders, the way it syncs, its schedule, filters and last run, with buttons.
+        /// </summary>
         private void ShowDetails()
         {
             var pair = _selected;
@@ -525,11 +565,14 @@ namespace Kudusync.Views
             _details.Content = Ui.Card(panel, 22);
         }
 
+        /// <summary>True when a place is on the Windows drive.</summary>
         private static bool IsSystemDrive(Location l) =>
             string.Equals(Paths.DriveOf(l.Path), Paths.DriveOf(Environment.GetFolderPath(Environment.SpecialFolder.Windows)), StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>A wait in words, like "30 seconds" or "5 minutes".</summary>
         public static string Delay(int seconds) => seconds < 60 ? $"{seconds} seconds" : seconds == 60 ? "a minute" : $"{seconds / 60} minutes";
 
+        /// <summary>The filters in a few words.</summary>
         public static string FilterSummary(Filters f)
         {
             var parts = new List<string>();
@@ -544,6 +587,7 @@ namespace Kudusync.Views
             return string.Join("; ", parts);
         }
 
+        /// <summary>A card for one side: the place, its drive and whether it's there now.</summary>
         private UIElement SideCard(string title, Location location, ResolvedLocation now)
         {
             var icon = location.IsNetwork ? "IconServer" : now.Volume?.Type == DriveType.Removable ? "IconUsb" : "IconDrive";
@@ -579,6 +623,7 @@ namespace Kudusync.Views
             }.Res(Border.BorderBrushProperty, "BorderBrush").Res(Border.BackgroundProperty, "SurfaceAltBg");
         }
 
+        /// <summary>The menu with more for a pair: make a copy, forget what was synced, delete it.</summary>
         private void MoreMenu(FolderPair pair, Button anchor)
         {
             var menu = new ContextMenu { PlacementTarget = anchor, Placement = PlacementMode.Bottom };
@@ -597,6 +642,7 @@ namespace Kudusync.Views
 
         // ================================================================== editing pairs
 
+        /// <summary>Adds a pair (with this folder as the source, when given).</summary>
         public void NewPair(string source)
         {
             var pair = new FolderPair();
@@ -612,6 +658,7 @@ namespace Kudusync.Views
             AfterSave(editor.Result);
         }
 
+        /// <summary>Changes a pair.</summary>
         public void EditPair(FolderPair pair)
         {
             if (IsBusy) return;
@@ -636,6 +683,7 @@ namespace Kudusync.Views
             ShowPairs();
         }
 
+        /// <summary>Makes a copy of a pair.</summary>
         private void DuplicatePair(FolderPair pair)
         {
             var copy = pair.Clone();
@@ -650,6 +698,7 @@ namespace Kudusync.Views
             ShowPairs();
         }
 
+        /// <summary>Forgets what was synced last time (the next run compares afresh), after asking.</summary>
         private void ForgetRecord(FolderPair pair)
         {
             if (!Dialogs.Confirm(this, $"Forget what \"{pair.Name}\" last synced?\n\nThe next run is then treated as the first one: nothing is deleted, files that differ are kept on both sides, and renamed files are copied again.")) return;
@@ -657,6 +706,7 @@ namespace Kudusync.Views
             ShowDetails();
         }
 
+        /// <summary>Removes a pair, its schedule and record (asking first unless told not to).</summary>
         public void DeletePair(FolderPair pair, bool ask = true)
         {
             if (ask && !Dialogs.Confirm(this, $"Delete the pair \"{pair.Name}\"?\n\nNo files are deleted: both folders stay as they are.")) return;
@@ -670,6 +720,7 @@ namespace Kudusync.Views
             ShowPairs();
         }
 
+        /// <summary>True when the pair uses this network folder.</summary>
         private static bool SameShare(FolderPair p, string path)
         {
             var share = Paths.ShareRoot(path);
@@ -692,6 +743,7 @@ namespace Kudusync.Views
             RunPairs(using_, false, Core.Triggers.RightClick);
         }
 
+        /// <summary>Brings in SyncToy's pairs.</summary>
         private void ImportFromSyncToy()
         {
             if (IsBusy) return;

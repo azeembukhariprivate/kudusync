@@ -1,3 +1,4 @@
+// The runs: how each went (counts, problems, who started it), kept in runs.json (the last 500).
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace Kudusync.Core
 {
+    /// <summary>How a run went.</summary>
     public enum RunStatus { Ok, Warnings, Failed, Stopped, Skipped }
 
     /// <summary>What one run of a pair did.</summary>
@@ -36,6 +38,7 @@ namespace Kudusync.Core
         /// <summary>The first few problems, for showing without opening the log.</summary>
         [DataMember] public List<string> Problems { get; set; } = new List<string>();
 
+        /// <summary>How many files it changed.</summary>
         public int Changes => Copied + Updated + Deleted + Renamed + Conflicts + Moved;
 
         public string Summary
@@ -78,14 +81,17 @@ namespace Kudusync.Core
     /// <summary>The list of recent runs (shared by the app, scheduled runs and the tray) and each run's text log.</summary>
     public static class RunLog
     {
+        /// <summary>How many runs are kept.</summary>
         private const int Keep = 500;
 
+        /// <summary>Every run kept, oldest first.</summary>
         public static List<RunResult> All()
         {
             using (DataStore.Lock("runs"))
                 return DataStore.ReadJson<List<RunResult>>(DataStore.RunsFile) ?? new List<RunResult>();
         }
 
+        /// <summary>Keeps a run (the oldest go after 500).</summary>
         public static void Add(RunResult result)
         {
             using (DataStore.Lock("runs"))
@@ -97,9 +103,11 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>A pair's last run, or null.</summary>
         public static RunResult Latest(IEnumerable<RunResult> runs, string pairId) =>
             runs.Where(r => r.PairId == pairId).OrderByDescending(r => r.Started).FirstOrDefault();
 
+        /// <summary>Forgets a pair's runs.</summary>
         public static void Forget(string pairId)
         {
             using (DataStore.Lock("runs"))

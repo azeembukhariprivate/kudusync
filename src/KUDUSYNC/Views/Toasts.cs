@@ -1,3 +1,5 @@
+// Windows notifications that stay in the notification centre: KUDUSYNC's name and icon for them, and a "kudusync:" link
+// that opens the alerts.
 using System;
 using System.IO;
 using System.Linq;
@@ -17,11 +19,16 @@ namespace Kudusync.Views
     /// </summary>
     public static class Toasts
     {
+        /// <summary>The app's id for Windows' notifications.</summary>
         public const string AppId = "Azeem.KUDUSYNC";
+        /// <summary>The link a notification opens.</summary>
         public const string Link = "kudusync:alerts";
+        /// <summary>Where the app's name and icon for notifications are kept.</summary>
         private const string AppIdKey = @"Software\Classes\AppUserModelId\" + AppId;
+        /// <summary>Where the "kudusync:" link is kept.</summary>
         private const string LinkKey = @"Software\Classes\kudusync";
 
+        /// <summary>The icon notifications show.</summary>
         public static string IconFile => Path.Combine(DataStore.Folder, "notification-icon.png");
 
         /// <summary>Shows a lasting notification about an alert. False when Windows couldn't show it.</summary>
@@ -68,6 +75,7 @@ namespace Kudusync.Views
             catch (Exception) { return false; }
         }
 
+        /// <summary>A pair's notification tag (a new one replaces the old).</summary>
         public static string TagOf(string pairId) => "pair-" + DataStore.StableHash(pairId ?? string.Empty);
 
         /// <summary>KUDUSYNC's name and icon for notifications, and the "kudusync:" link a click opens (this user only).</summary>
@@ -116,6 +124,7 @@ namespace Kudusync.Views
                 if (!Show(alert) && !SelfTest.Running) Notifier.ShowAlertAndWait(alert);
         }
 
+        /// <summary>Gives this program the app's id, so its notifications show its name.</summary>
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
         private static extern int SetCurrentProcessExplicitAppUserModelID(string appId);
     }

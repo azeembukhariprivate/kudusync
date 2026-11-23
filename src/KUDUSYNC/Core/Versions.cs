@@ -1,3 +1,5 @@
+// Earlier versions of files: read from a side's history folder, the version as it was at a run, copying them into a new
+// folder, and putting one back.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,6 +18,7 @@ namespace Kudusync.Core
         public DateTime ReplacedAt { get; set; }
         /// <summary>The kept copy.</summary>
         public string FullPath { get; set; }
+        /// <summary>Its size.</summary>
         public long Size { get; set; }
         /// <summary>The file's own "modified" time.</summary>
         public DateTime Modified { get; set; }
@@ -27,8 +30,10 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class Versions
     {
+        /// <summary>Each file's versions, by path, oldest first.</summary>
         private readonly Dictionary<string, List<SavedVersion>> _byFile = new Dictionary<string, List<SavedVersion>>(Paths.Comparer);
 
+        /// <summary>Empty (made by the static method that reads a side).</summary>
         private Versions()
         {
         }
@@ -39,7 +44,9 @@ namespace Kudusync.Core
         /// <summary>Every file with at least one earlier version, A to Z.</summary>
         public IReadOnlyList<string> Files => _byFile.Keys.OrderBy(k => k, Paths.Comparer).ToList();
 
+        /// <summary>How many versions are kept.</summary>
         public int Count => _byFile.Values.Sum(v => v.Count);
+        /// <summary>How many bytes they hold.</summary>
         public long Bytes => _byFile.Values.SelectMany(v => v).Sum(v => v.Size);
 
         /// <summary>A file's earlier versions, newest first.</summary>

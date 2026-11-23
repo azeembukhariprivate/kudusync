@@ -1,3 +1,4 @@
+// Windows notifications at the end of a run, and opening the app from them.
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,12 +10,14 @@ namespace Kudusync.Views
     /// <summary>Windows notifications (shown as toasts on Windows 10 and 11) for runs that happen without a window.</summary>
     public static class Notifier
     {
+        /// <summary>The app's icon at a size (for the tray and notifications).</summary>
         public static Icon AppIcon(int size = 16)
         {
             using (var stream = Dialogs.AppIconStream())
                 return new Icon(stream, new System.Drawing.Size(size, size));
         }
 
+        /// <summary>A run's notification title.</summary>
         public static string Title(RunResult r)
         {
             switch (r.Status)
@@ -28,6 +31,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>The notification's icon for how a run went.</summary>
         public static ToolTipIcon IconFor(RunResult r) =>
             r.Status == RunStatus.Ok ? ToolTipIcon.Info : r.Status == RunStatus.Failed ? ToolTipIcon.Error : ToolTipIcon.Warning;
 
@@ -74,20 +78,24 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A text short enough for a notification (Windows takes up to 255 characters).</summary>
         public static string Trim(string text) => string.IsNullOrEmpty(text) ? " " : text.Length > 250 ? text.Substring(0, 247) + "…" : text;
 
+        /// <summary>Opens the app at the run history.</summary>
         public static void OpenHistory()
         {
             try { Process.Start(new ProcessStartInfo(AppInfo.ExePath, "--history" + DataArg()) { UseShellExecute = false }); }
             catch { /* ignore */ }
         }
 
+        /// <summary>Opens the app with these arguments (keeping the data folder).</summary>
         public static void OpenApp(string args = "")
         {
             try { Process.Start(new ProcessStartInfo(AppInfo.ExePath, (args + DataArg()).Trim()) { UseShellExecute = false }); }
             catch { /* ignore */ }
         }
 
+        /// <summary>The data folder argument, when one was given.</summary>
         private static string DataArg() => string.IsNullOrEmpty(DataStore.OverrideFolder) ? string.Empty : " --data " + Args.Quote(DataStore.OverrideFolder);
     }
 }

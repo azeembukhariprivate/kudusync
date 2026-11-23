@@ -12,8 +12,13 @@ namespace Kudusync.Core
     /// </summary>
     public static class LangCommon
     {
+        /// <summary>The languages of the columns below, in order.</summary>
         private static readonly string[] Codes = { "en", "ml", "hi", "es", "fr", "ar" };
 
+        /// <summary>
+        /// Words every app uses (OK, Cancel, Settings...), with their translation in each language, so no app needs
+        /// them in its own files.
+        /// </summary>
         private static readonly string[][] Rows =
         {
             new[] { "OK", "ശരി", "ठीक है", "Aceptar", "OK", "موافق" },

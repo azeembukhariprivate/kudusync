@@ -1,3 +1,4 @@
+// The smaller windows: Settings, About, bringing in SyncToy's pairs, and signing in to a network folder.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,7 @@ namespace Kudusync.Views
 {
     public sealed class SettingsWindow : Window
     {
+        /// <summary>Makes the Settings window.</summary>
         public SettingsWindow(Window owner)
         {
             Width = 580;
@@ -99,6 +101,7 @@ namespace Kudusync.Views
 
     public static class About
     {
+        /// <summary>Makes the About window.</summary>
         public static Window Build(Window owner)
         {
             var header = Ui.Row(LogoTile.Create(64), Ui.Column(Ui.Text("KUDUSYNC", 20, bold: true), Ui.Subtle("Version " + AppInfo.VersionText + " · Keep folders in step", 12.5))
@@ -160,8 +163,12 @@ namespace Kudusync.Views
             return window;
         }
 
+        /// <summary>Shows the About window.</summary>
         public static void Show(Window owner) => Build(owner).ShowDialog();
 
+        /// <summary>
+        /// Opens a file that came with the app (the licence...), or the app's page online when it isn't there.
+        /// </summary>
         private static void OpenLocal(string name)
         {
             var path = Path.Combine(Path.GetDirectoryName(AppInfo.ExePath) ?? string.Empty, name);
@@ -173,8 +180,12 @@ namespace Kudusync.Views
     /// <summary>Picking which of SyncToy's folder pairs to bring across.</summary>
     public sealed class ImportWindow : Window
     {
+        /// <summary>The pairs brought in.</summary>
         public List<FolderPair> Imported { get; } = new List<FolderPair>();
 
+        /// <summary>
+        /// Makes the window that lists SyncToy's pairs to bring in (from SyncToy's own file, or the one given).
+        /// </summary>
         public ImportWindow(Window owner, List<FolderPair> existing, string file = null)
         {
             Width = 680;
@@ -248,6 +259,9 @@ namespace Kudusync.Views
     /// <summary>A user name and password for a network share, tested and then saved in Windows Credential Manager.</summary>
     public static class LoginWindow
     {
+        /// <summary>
+        /// Asks for the login of a network folder and saves it in Windows' Credential Manager; true when it was saved.
+        /// </summary>
         public static bool Ask(Window owner, string path)
         {
             var share = Paths.ShareRoot(Paths.Normalize(path));

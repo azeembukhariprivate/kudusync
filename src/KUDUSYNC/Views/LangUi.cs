@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Puts every window into the chosen language as it's shown, and again when its content changes, so the apps' code can
+// stay in English. Also keeps the choice of language.
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -25,17 +27,22 @@ namespace Kudusync.Views
     /// </summary>
     public static class LangUi
     {
+        /// <summary>The name of the setting that keeps the language chosen.</summary>
         private const string ValueName = "AppLanguage"; // not "Language": KUDUTEXT keeps the language people speak under that name
+        /// <summary>Where the app's settings are kept in the registry.</summary>
         private static string KeyPath => @"Software\" + AppInfo.Name;
+        /// <summary>True once windows are being watched.</summary>
         private static bool _started;
 
         private sealed class Was
         {
+            /// <summary>The text as it was last put into the language, so it isn't done twice.</summary>
             public string Text;
         }
 
         // What each text was last set to by us, so the same text isn't looked up again and again.
         private static readonly ConditionalWeakTable<object, Was> Done = new ConditionalWeakTable<object, Was>();
+        /// <summary>The windows being watched, each with its watcher (forgotten when the window is gone).</summary>
         private static readonly ConditionalWeakTable<Window, Watch> Watches = new ConditionalWeakTable<Window, Watch>();
 
         /// <summary>The language chosen in Settings: a code, or empty for "the same as Windows".</summary>
@@ -97,6 +104,7 @@ namespace Kudusync.Views
             Lang.Use(code);
         }
 
+        /// <summary>When a window is shown: mirrors it for right-to-left languages and starts watching it.</summary>
         private static void WindowLoaded(object sender, RoutedEventArgs e)
         {
             if (!(sender is Window window) || !ReferenceEquals(e.OriginalSource, sender) || Lang.IsEnglish) return;
@@ -110,12 +118,21 @@ namespace Kudusync.Views
         /// <summary>Looks through a window again each time its layout changes, but not more often than is cheap.</summary>
         private sealed class Watch
         {
+            /// <summary>The window being watched.</summary>
             private readonly Window _window;
+            /// <summary>Looks again a little later, when the layout changed during the wait.</summary>
             private readonly DispatcherTimer _later;
+            /// <summary>When the window was last looked through.</summary>
             private DateTime _last = DateTime.MinValue;
+            /// <summary>The least time between two looks; it grows for big windows, which take longer.</summary>
             private TimeSpan _gap = TimeSpan.FromMilliseconds(120);
+            /// <summary>True during a look, so the changes it makes don't start another one.</summary>
             private bool _looking;
 
+            /// <summary>
+            /// Starts watching a window: each time its layout changes it's looked through again, but not more often
+            /// than is cheap.
+            /// </summary>
             public Watch(Window window)
             {
                 _window = window;
@@ -134,6 +151,7 @@ namespace Kudusync.Views
                 window.Closed += (s, e) => _later.Stop();
             }
 
+            /// <summary>Looks through the window now, putting any new texts into the language.</summary>
             public void Look()
             {
                 if (_looking) return;
@@ -151,6 +169,9 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>
+        /// The text in the chosen language, or null when it's already done or doesn't change (so it isn't set again).
+        /// </summary>
         private static string Fresh(object owner, string now)
         {
             if (string.IsNullOrEmpty(now)) return null;
@@ -171,6 +192,9 @@ namespace Kudusync.Views
                 if (child is DependencyObject d) Apply(d);
         }
 
+        /// <summary>
+        /// Puts one part of a window into the language: its text, content, header, tooltip, or a list's items.
+        /// </summary>
         private static void One(DependencyObject o)
         {
             switch (o)
@@ -243,6 +267,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A button's or label's content when it's plain text.</summary>
         private static void Content(ContentControl c)
         {
             if (!(c.Content is string s) || BindingOperations.IsDataBound(c, ContentControl.ContentProperty)) return;
@@ -250,6 +275,7 @@ namespace Kudusync.Views
             if (other != null) c.Content = other;
         }
 
+        /// <summary>A header (of a tab, a group or a column) when it's plain text.</summary>
         private static void Header(DependencyObject o, DependencyProperty property)
         {
             if (!(o.GetValue(property) is string s) || BindingOperations.IsDataBound(o, property)) return;
@@ -259,10 +285,13 @@ namespace Kudusync.Views
 
         private sealed class Words : IValueConverter
         {
+            /// <summary>Puts the text shown into the language.</summary>
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string s ? Lang.T(s) : value;
+            /// <summary>Nothing to turn back: the text is only shown.</summary>
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value;
         }
 
+        /// <summary>The template that shows a list's words in the language, made once.</summary>
         private static DataTemplate _wordTemplate;
 
         private static DataTemplate WordTemplate

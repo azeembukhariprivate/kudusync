@@ -1,3 +1,5 @@
+// Network folders: the login for each kept in Windows' Credential Manager (never in KUDUSYNC's files), and connecting
+// before a run.
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -8,7 +10,9 @@ namespace Kudusync.Core
 {
     public sealed class SavedLogin
     {
+        /// <summary>The user name.</summary>
         public string User { get; set; }
+        /// <summary>The password.</summary>
         public string Password { get; set; }
     }
 
@@ -18,8 +22,10 @@ namespace Kudusync.Core
     /// </summary>
     public static class NetworkShares
     {
+        /// <summary>The name a share's login is kept under.</summary>
         private static string Target(string share) => "KUDUSYNC:" + share.ToLowerInvariant();
 
+        /// <summary>Keeps a share's login in Credential Manager.</summary>
         public static void SaveLogin(string share, string user, string password)
         {
             share = Paths.ShareRoot(share) ?? share;
@@ -48,6 +54,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>A share's saved login, or null.</summary>
         public static SavedLogin LoadLogin(string share)
         {
             share = Paths.ShareRoot(share) ?? share;
@@ -67,12 +74,14 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Removes a share's saved login.</summary>
         public static void DeleteLogin(string share)
         {
             share = Paths.ShareRoot(share) ?? share;
             if (!string.IsNullOrEmpty(share) && Paths.IsWindows) Native.CredDelete(Target(share), Native.CRED_TYPE_GENERIC, 0);
         }
 
+        /// <summary>True when a share has a saved login.</summary>
         public static bool HasLogin(string share) => LoadLogin(share) != null;
 
         /// <summary>
@@ -120,6 +129,7 @@ namespace Kudusync.Core
             return new Win32Exception(code).Message;
         }
 
+        /// <summary>True when the share can be reached now.</summary>
         private static bool Reachable(string share)
         {
             try { return Directory.Exists(Paths.Long(share + "\\")); }

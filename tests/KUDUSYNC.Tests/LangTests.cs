@@ -1,3 +1,4 @@
+// The tests for the language files: every text there, with the same {0} places.
 using System;
 using System.IO;
 using System.Linq;
@@ -20,13 +21,16 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>Counts a check.</summary>
         private static void Check(bool ok, string what)
         {
             if (!ok) throw new Exception("Check failed: " + what);
         }
 
+        /// <summary>The {0} places in a text, for comparing.</summary>
         private static string Holes(string s) => string.Join(",", Regex.Matches(s, @"\{\d\}").Cast<Match>().Select(m => m.Value).Distinct().OrderBy(x => x));
 
+        /// <summary>Runs the language tests.</summary>
         public static void Run()
         {
             var counts = Lang.All.Where(l => l.Code != "en").Select(l => File.ReadAllLines(Path.Combine(LangDir, l.Code + ".txt")).Length).ToList();

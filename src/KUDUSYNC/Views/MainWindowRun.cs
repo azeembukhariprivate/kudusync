@@ -1,3 +1,5 @@
+// Running pairs from the main window: listing both sides, the preview of what will happen, the progress, the results,
+// and the run history.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,23 +18,36 @@ namespace Kudusync.Views
     /// <summary>Running pairs from the window: comparing, the preview, progress and the results; and the run history.</summary>
     public sealed partial class MainWindow
     {
+        /// <summary>The most rows shown in the preview.</summary>
         private const int PreviewRows = 1000;
 
+        /// <summary>Stops the run going on (null when none is).</summary>
         private CancellationTokenSource _cancel;
+        /// <summary>The person's choice in the preview (go on or not).</summary>
         private TaskCompletionSource<bool> _previewChoice;
 
+        /// <summary>True while running.</summary>
         public bool IsBusy => _cancel != null;
+        /// <summary>The results of the last runs.</summary>
         public List<RunResult> LastResults { get; private set; } = new List<RunResult>();
+        /// <summary>The plan shown (for the self-test).</summary>
         public Plan CurrentPlan { get; private set; }
 
         /// <summary>For the self-test: answer the preview without clicking.</summary>
         public void AnswerPreview(bool go) => _previewChoice?.TrySetResult(go);
+        /// <summary>Stops the run.</summary>
         public void Stop() => _cancel?.Cancel();
 
+        /// <summary>Runs every pair marked for "Run all".</summary>
         private void RunAll() => RunPairs(_pairs.Where(p => p.InRunAll).ToList(), false);
 
+        /// <summary>Runs pairs one after another (with a preview first when asked).</summary>
         public async void RunPairs(List<FolderPair> pairs, bool preview, string trigger = Core.Triggers.Manual) => await RunPairsAsync(pairs, preview, trigger);
 
+        /// <summary>
+        /// Runs pairs one after another: lists each, shows the preview or the safety questions, does it and shows the
+        /// results.
+        /// </summary>
         public async Task RunPairsAsync(List<FolderPair> pairs, bool preview, string trigger = Core.Triggers.Manual)
         {
             if (IsBusy || pairs.Count == 0) return;
@@ -116,6 +131,7 @@ namespace Kudusync.Views
             ShowAlerts(); // a backup that went well puts its alert right
         }
 
+        /// <summary>A result for a run that couldn't start.</summary>
         private static RunResult Failed(FolderPair pair, string trigger, DateTime started, string message, RunStatus status)
         {
             var result = new RunResult { PairId = pair.Id, PairName = pair.Name, Mode = pair.Mode, Trigger = trigger, Started = started, Finished = DateTime.Now, Status = status, Message = message };
@@ -126,6 +142,7 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ comparing
 
+        /// <summary>The page shown while listing a pair's folders.</summary>
         private TextBlock ShowScanning(FolderPair pair, string counter)
         {
             var count = Ui.Subtle("Starting…", 12.5, false);
@@ -146,6 +163,7 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ preview
 
+        /// <summary>Shows the preview and any safety questions; true when the person goes on.</summary>
         private Task<bool> ShowPreview(SyncSession session, List<SafetyIssue> issues, string counter)
         {
             var plan = session.Plan;
@@ -227,6 +245,7 @@ namespace Kudusync.Views
             return _previewChoice.Task;
         }
 
+        /// <summary>Fills the preview's list.</summary>
         private static void FillPreview(ListBox list, Plan plan, FolderPair pair, Func<SyncAction, bool> match, TextBlock note)
         {
             list.Items.Clear();
@@ -235,6 +254,7 @@ namespace Kudusync.Views
             note.Text = matching.Count > PreviewRows ? $"Showing the first {PreviewRows:N0}; all {matching.Count:N0} will be done." : string.Empty;
         }
 
+        /// <summary>A row of the preview: what will happen to a file, with a box to leave it out.</summary>
         private static ListBoxItem PreviewRow(SyncAction a, FolderPair pair)
         {
             var check = new CheckBox { IsChecked = a.Enabled, VerticalAlignment = VerticalAlignment.Center, ToolTip = "Untick to skip this time" };
@@ -255,6 +275,7 @@ namespace Kudusync.Views
             return new ListBoxItem { Content = grid, Padding = new Thickness(8, 6, 12, 6), Tag = a };
         }
 
+        /// <summary>The words and colour for an action.</summary>
         public static (string Text, Tone Tone) KindChip(SyncAction a, FolderPair pair)
         {
             if (a.Conflict) return (a.Kind == ActionKind.Rename ? "Keep both" : "Copy (both kept)", Tone.Warn);
@@ -271,6 +292,7 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ running
 
+        /// <summary>The page shown while running, and how it's updated.</summary>
         private Action<RunProgress> ShowRunning(FolderPair pair, string counter, Plan plan)
         {
             var bar = new ProgressBar { Minimum = 0, Maximum = 1000, Height = 8, Margin = new Thickness(0, 16, 0, 10) };
@@ -315,6 +337,7 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ results
 
+        /// <summary>Shows the results of the runs.</summary>
         private void ShowResults(List<RunResult> results)
         {
             var panel = new StackPanel();
@@ -346,6 +369,7 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ history
 
+        /// <summary>Shows the run history.</summary>
         public void ShowHistory()
         {
             _runs = RunLog.All();

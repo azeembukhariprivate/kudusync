@@ -1,3 +1,5 @@
+// The tray part: the icon by the clock with its menu, live sync, running pairs when their drive is plugged in, and
+// alerts every 5 minutes.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,33 +21,55 @@ namespace Kudusync.Views
     /// </summary>
     public sealed class Tray
     {
+        /// <summary>Windows' message about devices changing.</summary>
         private const int WM_DEVICECHANGE = 0x0219;
+        /// <summary>A device was plugged in.</summary>
         private const int DBT_DEVICEARRIVAL = 0x8000;
+        /// <summary>A device was taken out.</summary>
         private const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+        /// <summary>The device is a drive.</summary>
         private const int DBT_DEVTYP_VOLUME = 2;
 
+        /// <summary>The icon by the clock.</summary>
         private Forms.NotifyIcon _icon;
+        /// <summary>A hidden window that gets Windows' device messages.</summary>
         private HwndSource _window;
+        /// <summary>The pairs watched for live sync.</summary>
         private readonly List<LiveWatch> _watches = new List<LiveWatch>();
+        /// <summary>Every pair.</summary>
         private List<FolderPair> _pairs = new List<FolderPair>();
+        /// <summary>Notices when the pairs change.</summary>
         private FileSystemWatcher _pairsWatcher;
+        /// <summary>Reads the pairs again a moment after they change.</summary>
         private DispatcherTimer _reload;
+        /// <summary>What clicking the last balloon does.</summary>
         private Action _balloonClick;
+        /// <summary>True while paused.</summary>
         private bool _paused;
+        /// <summary>The "Pause" menu item.</summary>
         private Forms.ToolStripMenuItem _pauseItem;
+        /// <summary>Set by another part to close the tray.</summary>
         private EventWaitHandle _stopSignal;
+        /// <summary>Looks for alerts every 5 minutes.</summary>
         private DispatcherTimer _alertTimer;
+        /// <summary>The icon, and the icon with a dot for alerts.</summary>
         private System.Drawing.Icon _plainIcon, _alertIcon;
+        /// <summary>The icon's tooltip.</summary>
         private string _liveText = "KUDUSYNC";
+        /// <summary>The alerts found last.</summary>
         private List<Alert> _alerts = new List<Alert>();
 
         /// <summary>The backups that need looking at, as the tray icon shows them (for the self-test).</summary>
         public IReadOnlyList<Alert> ShownAlerts => _alerts;
+        /// <summary>The icon's tooltip (for the self-test).</summary>
         public string IconText => _icon?.Text;
+        /// <summary>True when the icon shows the alert dot.</summary>
         public bool IconMarked => _icon != null && _alertIcon != null && ReferenceEquals(_icon.Icon, _alertIcon);
 
+        /// <summary>The tray's own log.</summary>
         public static string LogFile => Path.Combine(DataStore.Folder, "tray.log");
 
+        /// <summary>Starts the tray: the icon, the menu, the device messages, live sync and alerts.</summary>
         public void Start()
         {
             Log("Started");
@@ -161,9 +185,11 @@ namespace Kudusync.Views
             _icon.Text = text.Length > 63 ? text.Substring(0, 62) + "…" : text;
         }
 
+        /// <summary>Frees an icon made from a handle.</summary>
         [DllImport("user32.dll")]
         private static extern bool DestroyIcon(IntPtr handle);
 
+        /// <summary>The name of the signal that closes the tray (one per user and data folder).</summary>
         private static string StopSignalName => "KUDUSYNC-tray-stop-" + DataStore.StableHash(Environment.UserName + "|" + DataStore.Folder);
 
         /// <summary>Asks a running tray to close (when it's turned off in Settings, or KUDUSYNC is uninstalled).</summary>
@@ -177,8 +203,10 @@ namespace Kudusync.Views
             catch { /* not running */ }
         }
 
+        /// <summary>Starts the tray part.</summary>
         public static void StartRunning() => Notifier.OpenApp("--tray");
 
+        /// <summary>Closes the tray.</summary>
         private void Exit()
         {
             Log("Stopped");
@@ -194,6 +222,7 @@ namespace Kudusync.Views
             System.Windows.Application.Current.Shutdown();
         }
 
+        /// <summary>Pauses or goes on with live sync and drives.</summary>
         private void SetPaused(bool paused)
         {
             _paused = paused;
@@ -201,6 +230,7 @@ namespace Kudusync.Views
             Reload();
         }
 
+        /// <summary>Reads the pairs again and watches the ones with live sync.</summary>
         private void Reload()
         {
             _pairs = DataStore.LoadPairs();
@@ -218,6 +248,7 @@ namespace Kudusync.Views
             Log($"Watching {_watches.Count} live pair(s): {string.Join(", ", _watches.Select(w => w.Pair.Name))}");
         }
 
+        /// <summary>Runs a pair for live sync (done is called after).</summary>
         private void RunLive(FolderPair pair, Action done)
         {
             Log("Live sync: " + pair.Name);
@@ -230,6 +261,7 @@ namespace Kudusync.Views
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        /// <summary>Runs pairs one after another in the background.</summary>
         private void RunPairs(List<FolderPair> pairs, string trigger)
         {
             if (pairs.Count == 0) return;
@@ -252,6 +284,7 @@ namespace Kudusync.Views
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        /// <summary>Shows how a run went.</summary>
         private void Show(RunResult result)
         {
             _balloonClick = Notifier.OpenHistory;
@@ -263,13 +296,19 @@ namespace Kudusync.Views
         [StructLayout(LayoutKind.Sequential)]
         private struct DEV_BROADCAST_VOLUME
         {
+            /// <summary>The size of this structure.</summary>
             public int Size;
+            /// <summary>What kind of device.</summary>
             public int DeviceType;
+            /// <summary>Not used.</summary>
             public int Reserved;
+            /// <summary>The drive letters, one bit each.</summary>
             public int UnitMask;
+            /// <summary>Flags.</summary>
             public short Flags;
         }
 
+        /// <summary>Gets Windows' messages: a drive plugged in runs the pairs on it.</summary>
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg != WM_DEVICECHANGE || lParam == IntPtr.Zero) return IntPtr.Zero;
@@ -298,6 +337,7 @@ namespace Kudusync.Views
             return IntPtr.Zero;
         }
 
+        /// <summary>Runs the pairs set to run when their drive (found by its serial number) is plugged in.</summary>
         public void DriveArrived(List<string> letters)
         {
             foreach (var letter in letters)
@@ -318,8 +358,10 @@ namespace Kudusync.Views
 
         // ------------------------------------------------------------------ helpers
 
+        /// <summary>Runs an action on the window's thread.</summary>
         private static void Ui(Action action) => System.Windows.Application.Current?.Dispatcher.BeginInvoke(action);
 
+        /// <summary>Writes a line in the tray's log.</summary>
         public static void Log(string line)
         {
             try
@@ -336,14 +378,21 @@ namespace Kudusync.Views
     /// <summary>Watches a live-sync pair's folders and runs it once things have been quiet for its delay.</summary>
     public sealed class LiveWatch : IDisposable
     {
+        /// <summary>Watches each folder of the pair.</summary>
         private readonly List<FileSystemWatcher> _watchers = new List<FileSystemWatcher>();
+        /// <summary>Waits a moment after the last change.</summary>
         private readonly DispatcherTimer _timer;
+        /// <summary>Runs the pair.</summary>
         private readonly Action<FolderPair, Action> _run;
+        /// <summary>True while it runs.</summary>
         private bool _running;
+        /// <summary>True when something changed while it ran (it runs again after).</summary>
         private bool _dirty;
 
+        /// <summary>The pair.</summary>
         public FolderPair Pair { get; }
 
+        /// <summary>Watches a pair.</summary>
         private LiveWatch(FolderPair pair, Action<FolderPair, Action> run)
         {
             Pair = pair;
@@ -352,6 +401,9 @@ namespace Kudusync.Views
             _timer.Tick += (s, e) => Fire();
         }
 
+        /// <summary>
+        /// Watches a pair's folders (both for two-way, the source otherwise), or null when they can't be watched.
+        /// </summary>
         public static LiveWatch TryCreate(FolderPair pair, Action<FolderPair, Action> run)
         {
             var watch = new LiveWatch(pair, run);
@@ -387,6 +439,7 @@ namespace Kudusync.Views
             return null;
         }
 
+        /// <summary>A file changed: waits, then runs (leaving out KUDUSYNC's own files).</summary>
         private void Changed(string path)
         {
             if (path != null && (path.IndexOf(Paths.HistoryName, StringComparison.OrdinalIgnoreCase) >= 0 || path.EndsWith(Paths.TempSuffix, StringComparison.OrdinalIgnoreCase))) return;
@@ -402,6 +455,7 @@ namespace Kudusync.Views
             }));
         }
 
+        /// <summary>Runs the pair (again later when something changed meanwhile).</summary>
         private void Fire()
         {
             _timer.Stop();
@@ -416,6 +470,7 @@ namespace Kudusync.Views
             });
         }
 
+        /// <summary>Stops watching.</summary>
         public void Dispose()
         {
             _timer.Stop();

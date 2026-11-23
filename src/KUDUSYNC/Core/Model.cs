@@ -1,3 +1,4 @@
+// The folder pairs and what each keeps: its two places, the way it syncs, the filters, the schedule and the options.
 using System;
 using System.Runtime.Serialization;
 
@@ -15,6 +16,7 @@ namespace Kudusync.Core
         Move
     }
 
+    /// <summary>When a pair runs by itself: never, daily, weekly, every few hours, or at sign-in.</summary>
     public enum ScheduleKind { None, Daily, Weekly, EveryHours, AtLogon }
 
     /// <summary>A folder on a drive, a USB drive or a network share.</summary>
@@ -32,10 +34,13 @@ namespace Kudusync.Core
 
         [DataMember] public string VolumeLabel { get; set; }
 
+        /// <summary>True for a network folder.</summary>
         public bool IsNetwork => Paths.IsUnc(Path);
 
+        /// <summary>A copy of the place.</summary>
         public Location Clone() => (Location)MemberwiseClone();
 
+        /// <summary>Its path.</summary>
         public override string ToString() => Path ?? string.Empty;
     }
 
@@ -50,10 +55,13 @@ namespace Kudusync.Core
         [DataMember] public bool SkipHidden { get; set; }
         [DataMember] public bool SkipSystem { get; set; }
 
+        /// <summary>What's left out at first: Office's temporary files, *.tmp and Thumbs.db.</summary>
         public const string DefaultExclude = "~$*; *.tmp; Thumbs.db";
 
+        /// <summary>Filters with the usual settings.</summary>
         public Filters() => SetDefaults(default);
 
+        /// <summary>Puts the usual settings in (also after reading an older file).</summary>
         [OnDeserializing]
         private void SetDefaults(StreamingContext context)
         {
@@ -64,6 +72,7 @@ namespace Kudusync.Core
             SkipSystem = true;
         }
 
+        /// <summary>A copy of the filters.</summary>
         public Filters Clone() => (Filters)MemberwiseClone();
     }
 
@@ -77,8 +86,10 @@ namespace Kudusync.Core
         [DataMember] public int Days { get; set; }
         [DataMember] public int Hours { get; set; }
 
+        /// <summary>A schedule with the usual settings.</summary>
         public Schedule() => SetDefaults(default);
 
+        /// <summary>Puts the usual settings in (also after reading an older file).</summary>
         [OnDeserializing]
         private void SetDefaults(StreamingContext context)
         {
@@ -88,10 +99,13 @@ namespace Kudusync.Core
             Hours = 4;
         }
 
+        /// <summary>The time of day it runs (9:00 when the time can't be read).</summary>
         public TimeSpan TimeOfDay => TimeSpan.TryParse(Time, out var t) && t >= TimeSpan.Zero && t < TimeSpan.FromDays(1) ? t : new TimeSpan(21, 0, 0);
 
+        /// <summary>A copy of the schedule.</summary>
         public Schedule Clone() => (Schedule)MemberwiseClone();
 
+        /// <summary>The schedule in words, like "Every day at 21:00".</summary>
         public string Describe()
         {
             var time = DateTime.Today.Add(TimeOfDay).ToString("HH:mm");
@@ -139,8 +153,10 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Short names of the days.</summary>
         public static readonly string[] ShortDays = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
+        /// <summary>The days chosen, in words.</summary>
         public string DayNames()
         {
             if ((Days & 0x7F) == 0x7F) return Lang.T("Every day");
@@ -191,8 +207,10 @@ namespace Kudusync.Core
         [DataMember] public bool InRunAll { get; set; }
         [DataMember] public DateTime Created { get; set; }
 
+        /// <summary>A pair with the usual settings.</summary>
         public FolderPair() => SetDefaults(default);
 
+        /// <summary>Puts the usual settings in (also after reading an older file).</summary>
         [OnDeserializing]
         private void SetDefaults(StreamingContext context)
         {
@@ -215,6 +233,7 @@ namespace Kudusync.Core
             Created = DateTime.UtcNow;
         }
 
+        /// <summary>Fills in what's missing after reading an older file.</summary>
         [OnDeserialized]
         private void Fix(StreamingContext context)
         {
@@ -225,11 +244,15 @@ namespace Kudusync.Core
             if (LiveDelaySeconds < 1) LiveDelaySeconds = 30;
         }
 
+        /// <summary>True when files go one way only (not two-way).</summary>
         public bool IsOneWay => Mode != SyncMode.TwoWay;
 
+        /// <summary>The first side's name.</summary>
         public string LeftTitle => IsOneWay ? "Source" : "Folder 1";
+        /// <summary>The second side's name.</summary>
         public string RightTitle => IsOneWay ? "Destination" : "Folder 2";
 
+        /// <summary>A copy of the pair.</summary>
         public FolderPair Clone()
         {
             var copy = (FolderPair)MemberwiseClone();
@@ -240,6 +263,7 @@ namespace Kudusync.Core
             return copy;
         }
 
+        /// <summary>A way of syncing's name.</summary>
         public static string ModeName(SyncMode mode)
         {
             switch (mode)
@@ -251,6 +275,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>What a way of syncing does, in a sentence.</summary>
         public static string ModeDescription(SyncMode mode)
         {
             switch (mode)

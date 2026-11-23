@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Opening files, folders and web pages without administrator rights, even when the app has them: the request goes
+// through File Explorer's desktop, which runs as the person, so what opens doesn't get the app's rights.
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -40,12 +42,18 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>"The desktop window", for Explorer's list of open windows.</summary>
         private const int SwcDesktop = 8;
+        /// <summary>Asks for an object that can be called by name (late binding).</summary>
         private const int SwfoNeedDispatch = 1;
+        /// <summary>The desktop's background view, the part of Explorer that can start programs.</summary>
         private const uint SvgioBackground = 0;
+        /// <summary>The service id of Explorer's top-level browser.</summary>
         private static readonly Guid SidTopLevelBrowser = new Guid("4C96BE40-915C-11CF-99D3-00AA004AE837");
+        /// <summary>The id of the interface that lets methods be called by name.</summary>
         private static readonly Guid IidDispatch = new Guid("00020400-0000-0000-C000-000000000046");
 
+        /// <summary>Explorer's list of open windows (a Windows COM class).</summary>
         [ComImport, Guid("9BA05972-F6A8-11CF-A442-00A0C90A8F39")]
         private class ShellWindows { }
 

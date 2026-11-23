@@ -1,3 +1,5 @@
+// Earlier versions: the files kept in a side's history, each one's versions, putting one back, and copying the whole
+// folder as it was at a run into a new folder.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,28 +20,46 @@ namespace Kudusync.Views
     /// </summary>
     public sealed class VersionsWindow : Window
     {
+        /// <summary>The pair.</summary>
         private readonly FolderPair _pair;
+        /// <summary>Both places, as found.</summary>
         private readonly ResolvedLocation _left, _right;
+        /// <summary>The side shown.</summary>
         private Side _side;
+        /// <summary>The versions found.</summary>
         private Versions _versions;
+        /// <summary>Files deleted from the side that have versions.</summary>
         private List<string> _deleted = new List<string>();
 
+        /// <summary>A line about what's kept.</summary>
         private readonly TextBlock _summary = Ui.Subtle(string.Empty, 12.5, true);
+        /// <summary>Finds a file by name.</summary>
         private readonly TextBox _search = new TextBox { MinHeight = 32, VerticalContentAlignment = VerticalAlignment.Center };
+        /// <summary>The files with versions.</summary>
         private readonly ListBox _files = new ListBox { SelectionMode = SelectionMode.Single }.Styled("TableList");
+        /// <summary>The file chosen's versions.</summary>
         private readonly StackPanel _detail = new StackPanel();
+        /// <summary>Which run to copy the folder as it was at.</summary>
         private readonly ComboBox _when = new ComboBox { MinWidth = 300 };
+        /// <summary>The folder to copy into.</summary>
         private readonly TextBlock _target = Ui.Text("No folder chosen", 12.5);
+        /// <summary>Copies the folder as it was.</summary>
         private readonly Button _copy;
+        /// <summary>Stops copying.</summary>
         private readonly Button _stop;
+        /// <summary>How far the copy is.</summary>
         private readonly ProgressBar _bar = new ProgressBar { Maximum = 1, Margin = new Thickness(0, 8, 0, 0), Visibility = Visibility.Collapsed };
+        /// <summary>A note under it.</summary>
         private readonly TextBlock _copyNote = Ui.Subtle(string.Empty, 12, true);
+        /// <summary>The folder to copy into.</summary>
         private string _targetFolder;
+        /// <summary>Stops the copying (null when none is).</summary>
         private CancellationTokenSource _copying;
 
         /// <summary>For the self-test: don't ask before putting a version back.</summary>
         public bool SkipConfirm { get; set; }
 
+        /// <summary>Makes the window and starts reading the history.</summary>
         public VersionsWindow(Window owner, FolderPair pair)
         {
             _pair = pair;
@@ -121,12 +141,18 @@ namespace Kudusync.Views
 
         // ================================================================ for the self-test
 
+        /// <summary>The versions found (for the self-test).</summary>
         public Versions Found => _versions;
+        /// <summary>True while reading.</summary>
         public bool IsLoading { get; private set; } = true;
+        /// <summary>The note under the copy.</summary>
         public string CopyNote => _copyNote.Text;
+        /// <summary>True while copying.</summary>
         public bool IsCopying => _copying != null;
+        /// <summary>The side's folder.</summary>
         public string Root => (_side == Side.Left ? _left : _right).Root;
 
+        /// <summary>Chooses a file.</summary>
         public void SelectFile(string relative)
         {
             _search.Text = string.Empty;
@@ -135,6 +161,7 @@ namespace Kudusync.Views
             if (item != null) _files.SelectedItem = item;
         }
 
+        /// <summary>Chooses the folder to copy into.</summary>
         public void SetTarget(string folder)
         {
             _targetFolder = folder;
@@ -142,6 +169,7 @@ namespace Kudusync.Views
             _target.ToolTip = _target.Text;
         }
 
+        /// <summary>Chooses the run to copy the folder as it was at.</summary>
         public void ChooseRun(DateTime run)
         {
             var item = _when.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Tag is DateTime t && t == run);
@@ -150,9 +178,12 @@ namespace Kudusync.Views
 
         // ================================================================ reading
 
+        /// <summary>The side shown, as found.</summary>
         private ResolvedLocation SideNow => _side == Side.Left ? _left : _right;
+        /// <summary>The side's history folder.</summary>
         private string HistoryFolder => History.BaseFolder(_pair, SideNow.Root, _side);
 
+        /// <summary>Reads the side's history in the background.</summary>
         public async Task Load()
         {
             IsLoading = true;
@@ -195,6 +226,7 @@ namespace Kudusync.Views
             IsLoading = false;
         }
 
+        /// <summary>Fills the files (matching the search).</summary>
         private void FillFiles()
         {
             if (_versions == null) return;
@@ -217,6 +249,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Shows a file's versions, each with a button to put it back.</summary>
         private void ShowVersions(string file)
         {
             _detail.Children.Clear();

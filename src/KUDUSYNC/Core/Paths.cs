@@ -1,3 +1,4 @@
+// Small help for paths: long paths, network paths, joining and splitting the paths kept below a pair's folders.
 using System;
 using System.IO;
 using System.Linq;
@@ -12,15 +13,20 @@ namespace Kudusync.Core
     /// </summary>
     public static class Paths
     {
+        /// <summary>True when running on Windows.</summary>
         public static readonly bool IsWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        /// <summary>Paths are compared without upper and lower case, as Windows does.</summary>
         public static readonly StringComparer Comparer = StringComparer.OrdinalIgnoreCase;
+        /// <summary>The same, for string comparisons.</summary>
         public const StringComparison Comparison = StringComparison.OrdinalIgnoreCase;
 
         /// <summary>The folder at the top of each side that holds replaced and deleted files.</summary>
         public const string HistoryName = "_KUDUSYNC History";
+        /// <summary>The ending of a file being written (it gets its real name when done).</summary>
         public const string TempSuffix = ".kudusync-tmp";
 
+        /// <summary>True for a network path (\\server\share).</summary>
         public static bool IsUnc(string path) => !string.IsNullOrEmpty(path) && (path.StartsWith(@"\\", StringComparison.Ordinal) || path.StartsWith("//", StringComparison.Ordinal)) && !path.StartsWith(@"\\?\", StringComparison.Ordinal);
 
         /// <summary>"\\server\share" for "\\server\share\folder\file", or null.</summary>
@@ -76,6 +82,7 @@ namespace Kudusync.Core
             return f.Length <= r.Length ? string.Empty : f.Substring(r.Length).Replace('/', '\\');
         }
 
+        /// <summary>A path with a backslash at the end.</summary>
         private static string WithSlash(string path) => path.EndsWith("\\") || path.EndsWith("/") ? path : path + (IsWindows || path.Contains('\\') ? "\\" : "/");
 
         /// <summary>The real path of a relative path inside a root, ready for System.IO (long-path safe on Windows).</summary>
@@ -105,18 +112,21 @@ namespace Kudusync.Core
             return path;
         }
 
+        /// <summary>The folder a path is in ("" at the top).</summary>
         public static string Parent(string relative)
         {
             var i = relative.LastIndexOf('\\');
             return i < 0 ? string.Empty : relative.Substring(0, i);
         }
 
+        /// <summary>The last part of a path.</summary>
         public static string Name(string relative)
         {
             var i = relative.LastIndexOf('\\');
             return i < 0 ? relative : relative.Substring(i + 1);
         }
 
+        /// <summary>A folder and a name joined.</summary>
         public static string Join(string parent, string name) => string.IsNullOrEmpty(parent) ? name : parent + "\\" + name;
 
         /// <summary>True when two files hold the same bytes (read side by side, stopping at the first difference).</summary>
@@ -142,6 +152,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reads into the buffer until it's full or the file ends; returns how much was read.</summary>
         private static int ReadFull(Stream s, byte[] buffer)
         {
             var total = 0;
@@ -150,6 +161,7 @@ namespace Kudusync.Core
             return total;
         }
 
+        /// <summary>How deep a path is (how many backslashes).</summary>
         public static int Depth(string relative) => relative.Count(c => c == '\\');
 
         /// <summary>Makes text safe as a file or folder name.</summary>

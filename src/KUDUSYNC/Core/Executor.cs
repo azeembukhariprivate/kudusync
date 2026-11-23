@@ -1,3 +1,5 @@
+// Does a plan: copies, updates, renames and deletes files on each side, keeping replaced and deleted files in the
+// history folder, writing to temporary names first, and checking copies when asked.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +12,17 @@ namespace Kudusync.Core
 {
     public sealed class RunProgress
     {
+        /// <summary>The file being done now.</summary>
         public string Path { get; set; }
+        /// <summary>How many actions are done.</summary>
         public int Done { get; set; }
+        /// <summary>How many there are.</summary>
         public int Total { get; set; }
+        /// <summary>How many bytes are copied.</summary>
         public long BytesDone { get; set; }
+        /// <summary>How many there are to copy.</summary>
         public long BytesTotal { get; set; }
+        /// <summary>How many actions failed.</summary>
         public int Failed { get; set; }
     }
 
@@ -25,21 +33,37 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class Executor
     {
+        /// <summary>How much is copied at a time (1 MB).</summary>
         private const int BufferSize = 1024 * 1024;
+        /// <summary>
+        /// Writes go straight to the drive (not left waiting in memory), so a pulled-out drive loses less.
+        /// </summary>
         private const FileOptions WriteThrough = (FileOptions)unchecked((int)0x80000000);
 
+        /// <summary>The folder pair.</summary>
         private readonly FolderPair _pair;
+        /// <summary>Folder 1 (or the source), as found this time.</summary>
         private readonly string _leftRoot;
+        /// <summary>Folder 2 (or the destination).</summary>
         private readonly string _rightRoot;
+        /// <summary>What's in folder 1.</summary>
         private readonly Tree _left;
+        /// <summary>What's in folder 2.</summary>
         private readonly Tree _right;
+        /// <summary>Keeps replaced and deleted files.</summary>
         private readonly History _history;
+        /// <summary>The buffer for copying.</summary>
         private readonly byte[] _buffer = new byte[BufferSize];
+        /// <summary>Sides found full: copying to them stops.</summary>
         private readonly HashSet<Side> _full = new HashSet<Side>();
+        /// <summary>Source folders a move emptied (removed at the end).</summary>
         private readonly HashSet<string> _emptiedSourceFolders = new HashSet<string>(Paths.Comparer);
+        /// <summary>The progress so far.</summary>
         private RunProgress _progress;
+        /// <summary>When progress was last reported.</summary>
         private DateTime _lastReport;
 
+        /// <summary>Gets ready to do a plan for this pair.</summary>
         public Executor(FolderPair pair, string leftRoot, string rightRoot, Tree left, Tree right, DateTime started)
         {
             _pair = pair;
@@ -50,14 +74,20 @@ namespace Kudusync.Core
             _history = new History(pair, leftRoot, rightRoot, started);
         }
 
+        /// <summary>Progress, a few times a second.</summary>
         public event Action<RunProgress> Progress;
 
+        /// <summary>What was done, a line each.</summary>
         public List<string> Log { get; } = new List<string>();
 
+        /// <summary>Keeps replaced and deleted files.</summary>
         public History History => _history;
 
+        /// <summary>A side's folder.</summary>
         private string Root(Side side) => side == Side.Left ? _leftRoot : _rightRoot;
+        /// <summary>What's in a side.</summary>
         private Tree TreeOf(Side side) => side == Side.Left ? _left : _right;
+        /// <summary>A side's name ("Source", "Folder 1"...).</summary>
         private string SideTitle(Side side) => side == Side.Left ? _pair.LeftTitle : _pair.RightTitle;
 
         /// <summary>Runs the plan's ticked actions. Returns false if it was stopped.</summary>
@@ -107,6 +137,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reports progress (at most a few times a second unless force).</summary>
         private void Report(bool force)
         {
             var now = DateTime.UtcNow;
@@ -115,6 +146,7 @@ namespace Kudusync.Core
             Progress?.Invoke(_progress);
         }
 
+        /// <summary>Removes temporary files left by a run that was stopped.</summary>
         private void RemoveLeftovers()
         {
             foreach (var side in new[] { Side.Left, Side.Right })
@@ -125,6 +157,7 @@ namespace Kudusync.Core
                 }
         }
 
+        /// <summary>Does one action, noting whether it worked.</summary>
         private void Do(SyncAction a, CancellationToken token)
         {
             switch (a.Kind)
@@ -172,6 +205,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Renames a file on one side (as it was renamed on the other).</summary>
         private void Rename(SyncAction a)
         {
             var root = Root(a.Target);
@@ -199,6 +233,10 @@ namespace Kudusync.Core
             tree.Add(moved);
         }
 
+        /// <summary>
+        /// Copies a file: to a temporary name first, the old one kept in history, then put in place with the right
+        /// time.
+        /// </summary>
         private void Copy(SyncAction a, CancellationToken token)
         {
             if (_full.Contains(a.Target)) throw new IOException("Not enough free space in " + SideTitle(a.Target) + ".");
@@ -294,6 +332,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>A file's checksum (to check a copy).</summary>
         private byte[] Checksum(string path, CancellationToken token)
         {
             using (var md5 = MD5.Create())
@@ -310,6 +349,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>The file system's id of an open file (to follow renames next time).</summary>
         private static long FileIdOf(FileStream stream)
         {
             if (!Paths.IsWindows) return 0;
@@ -338,6 +378,7 @@ namespace Kudusync.Core
             if (tree.Get(relative) == null) tree.Add(new Entry { Path = relative, IsDir = true, Attributes = FileAttributes.Directory });
         }
 
+        /// <summary>Notes the source's folders a move took a file out of.</summary>
         private void NoteRemovedFromSource(string relative)
         {
             for (var p = Paths.Parent(relative); p.Length > 0; p = Paths.Parent(p)) _emptiedSourceFolders.Add(p);
@@ -359,12 +400,14 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>True when the error says the drive is full.</summary>
         public static bool IsDiskFull(IOException ex)
         {
             var code = Marshal.GetHRForException(ex) & 0xFFFF;
             return code == Native.ERROR_DISK_FULL || code == Native.ERROR_HANDLE_DISK_FULL || ex.Message.IndexOf("not enough space", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
+        /// <summary>True when the error says the file is in use.</summary>
         public static bool IsInUse(Exception ex)
         {
             if (!(ex is IOException)) return false;
@@ -372,6 +415,7 @@ namespace Kudusync.Core
             return code == Native.ERROR_SHARING_VIOLATION || code == Native.ERROR_LOCK_VIOLATION;
         }
 
+        /// <summary>An error in plain words.</summary>
         private string Explain(Exception ex, SyncAction a)
         {
             if (IsInUse(ex)) return "In use by another program. It'll be tried again next time.";
@@ -382,6 +426,7 @@ namespace Kudusync.Core
             return ex.Message;
         }
 
+        /// <summary>Writes an action in the log.</summary>
         private void WriteLog(SyncAction a)
         {
             string what;

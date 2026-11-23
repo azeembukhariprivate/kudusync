@@ -1,3 +1,5 @@
+// The record of what both sides held after the last run, so the next run can tell what was added, changed, deleted or
+// renamed on each side.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,15 +11,24 @@ namespace Kudusync.Core
     /// <summary>What a file looked like on both sides when they were last in step.</summary>
     public sealed class RecordEntry
     {
+        /// <summary>Its path below the pair's folders.</summary>
         public string Path { get; set; }
+        /// <summary>True for a folder.</summary>
         public bool IsDir { get; set; }
+        /// <summary>Its size.</summary>
         public long Size { get; set; }
+        /// <summary>When it was last changed on folder 1.</summary>
         public long LeftMtime { get; set; }
+        /// <summary>When it was last changed on folder 2.</summary>
         public long RightMtime { get; set; }
+        /// <summary>Its id on folder 1.</summary>
         public long LeftId { get; set; }
+        /// <summary>Its id on folder 2.</summary>
         public long RightId { get; set; }
 
+        /// <summary>When it was last changed on a side.</summary>
         public long Mtime(Side side) => side == Side.Left ? LeftMtime : RightMtime;
+        /// <summary>Its id on a side.</summary>
         public long Id(Side side) => side == Side.Left ? LeftId : RightId;
     }
 
@@ -28,18 +39,24 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class SyncRecord
     {
+        /// <summary>The first bytes of every record file, to know it's one.</summary>
         private const string Magic = "KSR1";
 
+        /// <summary>Every file and folder, by path.</summary>
         public Dictionary<string, RecordEntry> Items { get; } = new Dictionary<string, RecordEntry>(Paths.Comparer);
 
         /// <summary>The two folders this record is for. If either changes, the record no longer applies.</summary>
         public string LeftRoot { get; set; } = string.Empty;
+        /// <summary>Where folder 2 was.</summary>
         public string RightRoot { get; set; } = string.Empty;
 
+        /// <summary>True when there's no record (the first run).</summary>
         public bool IsEmpty => Items.Count == 0;
 
+        /// <summary>The item at this path, or null.</summary>
         public RecordEntry Get(string path) => path != null && Items.TryGetValue(path, out var e) ? e : null;
 
+        /// <summary>Writes the record (to a new file first, then put in place).</summary>
         public void Save(string file)
         {
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(file));

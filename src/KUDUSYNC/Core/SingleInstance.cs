@@ -1,3 +1,5 @@
+// Keeps one main window and one tray part per user (and data folder): later starts hand their command line over through
+// a pipe.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,12 +16,17 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class SingleInstance : IDisposable
     {
+        /// <summary>The name of the lock and the pipe.</summary>
         private readonly string _name;
+        /// <summary>The lock, held by the first copy.</summary>
         private readonly Mutex _mutex;
+        /// <summary>Stops listening.</summary>
         private readonly CancellationTokenSource _stop = new CancellationTokenSource();
 
+        /// <summary>True when this is the first copy.</summary>
         public bool IsFirst { get; }
 
+        /// <summary>Takes the lock for this part ("main" or "tray").</summary>
         public SingleInstance(string role)
         {
             _name = "KUDUSYNC-" + role + "-" + DataStore.StableHash(Environment.UserName + "|" + DataStore.Folder);
@@ -79,6 +86,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Stops listening and lets go of the lock.</summary>
         public void Dispose()
         {
             _stop.Cancel();

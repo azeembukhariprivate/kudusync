@@ -1,3 +1,4 @@
+// Pairs that run by themselves, through a Windows Task Scheduler task made from XML.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,8 +15,10 @@ namespace Kudusync.Core
     /// </summary>
     public static class Schedules
     {
+        /// <summary>The start of every task's name, so KUDUSYNC's own tasks can be found.</summary>
         public const string Prefix = "KUDUSYNC - ";
 
+        /// <summary>The Windows task's name for a pair.</summary>
         public static string TaskName(FolderPair pair) => Prefix + Paths.SafeName(pair.Name).Replace("\\", "_") + " (" + pair.Id.Substring(0, Math.Min(8, pair.Id.Length)) + ")";
 
         /// <summary>The task definition, in Task Scheduler's XML format.</summary>
@@ -68,8 +71,10 @@ namespace Kudusync.Core
         public static string Arguments(FolderPair pair) =>
             "--run-scheduled " + pair.Id + (string.IsNullOrEmpty(DataStore.OverrideFolder) ? string.Empty : " --data " + Args.Quote(DataStore.OverrideFolder));
 
+        /// <summary>Text made safe to put inside XML.</summary>
         private static string Escape(string text) => SecurityElement.Escape(text ?? string.Empty);
 
+        /// <summary>The Windows user's name, as DOMAIN\name.</summary>
         private static string CurrentUser()
         {
             try { return System.Security.Principal.WindowsIdentity.GetCurrent().Name; }
@@ -99,12 +104,14 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Removes a pair's task.</summary>
         public static void Remove(string pairId)
         {
             foreach (var name in TaskNames().Where(n => n.EndsWith("(" + pairId.Substring(0, Math.Min(8, pairId.Length)) + ")", StringComparison.OrdinalIgnoreCase)))
                 SchTasks("/Delete", "/TN", name, "/F");
         }
 
+        /// <summary>Removes the pair's tasks with other names (from before it was renamed).</summary>
         private static void RemoveOthers(FolderPair pair)
         {
             var mine = TaskName(pair);
@@ -119,6 +126,7 @@ namespace Kudusync.Core
             foreach (var name in TaskNames()) SchTasks("/Delete", "/TN", name, "/F");
         }
 
+        /// <summary>True when the pair has a task.</summary>
         public static bool Exists(FolderPair pair) => TaskNames().Any(n => n.Equals(TaskName(pair), StringComparison.OrdinalIgnoreCase));
 
         /// <summary>Starts the pair's task now (as Windows would on schedule).</summary>
@@ -134,6 +142,7 @@ namespace Kudusync.Core
             if (ok) Settings.ScheduledExe = AppInfo.ExePath;
         }
 
+        /// <summary>The names of KUDUSYNC's tasks.</summary>
         public static List<string> TaskNames()
         {
             var (code, output) = SchTasks("/Query", "/FO", "CSV", "/NH");
@@ -150,6 +159,7 @@ namespace Kudusync.Core
             return names;
         }
 
+        /// <summary>Runs Windows' schtasks with these arguments; returns its exit code and output.</summary>
         private static (int Code, string Output) SchTasks(params string[] args)
         {
             if (!Paths.IsWindows) return (1, "Task Scheduler is only on Windows.");

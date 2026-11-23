@@ -1,5 +1,6 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Pictures of the app's windows taken by the self-test, kept as a build download so changes to the look can be seen.
 using System;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,10 @@ namespace Kudusync.Views
     /// </summary>
     public static class Screenshots
     {
+        /// <summary>How many pictures have been taken, for numbering them in order.</summary>
         private static int _count;
 
+        /// <summary>Where the pictures go: a "screenshots" folder next to the app.</summary>
         public static string Folder => Path.Combine(Path.GetDirectoryName(AppInfo.ExePath) ?? ".", "screenshots");
 
         /// <summary>Saves every open window, named after the step.</summary>
@@ -28,6 +31,7 @@ namespace Kudusync.Views
             foreach (var w in Application.Current.Windows.OfType<Window>().Where(w => w.IsVisible).ToList()) One(w, step);
         }
 
+        /// <summary>Saves a picture of one window, named after the step of the self-test.</summary>
         public static void One(Window window, string step)
         {
             try
@@ -54,6 +58,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A step's name made safe to use in a file name.</summary>
         private static string Clean(string text)
         {
             var sb = new StringBuilder();

@@ -1,3 +1,5 @@
+// Reads .NET's binary format (as SyncToy keeps its pairs), as plain objects with named members, without running any of
+// the file's code.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +11,9 @@ namespace Kudusync.Core
     /// <summary>An object read from a .NET binary-serialized file: its class name and its fields.</summary>
     public sealed class NrbfObject
     {
+        /// <summary>The class's name.</summary>
         public string ClassName { get; set; }
+        /// <summary>Its members by name.</summary>
         public Dictionary<string, object> Members { get; } = new Dictionary<string, object>();
 
         /// <summary>A field by name, ignoring case and the usual decorations ("_name", "m_name", "&lt;Name&gt;k__BackingField").</summary>
@@ -20,6 +24,9 @@ namespace Kudusync.Core
             return null;
         }
 
+        /// <summary>
+        /// A member's name without its compiler parts ("&lt;Name&gt;k__BackingField" becomes "Name").
+        /// </summary>
         public static string Plain(string member)
         {
             var m = member ?? string.Empty;
@@ -28,6 +35,7 @@ namespace Kudusync.Core
             return m.TrimStart('_');
         }
 
+        /// <summary>The class's name.</summary>
         public override string ToString() => ClassName;
     }
 
@@ -39,26 +47,36 @@ namespace Kudusync.Core
     {
         private sealed class ClassInfo
         {
+            /// <summary>The class's name.</summary>
             public string Name;
+            /// <summary>Its members' names.</summary>
             public string[] MemberNames;
+            /// <summary>Their kinds.</summary>
             public byte[] BinaryTypes; // null when the members aren't typed
+            /// <summary>More about each kind.</summary>
             public object[] Extra;
         }
 
         private sealed class Ref
         {
+            /// <summary>The object a reference points to.</summary>
             public int Id;
         }
 
         private sealed class NullRun
         {
+            /// <summary>How many nulls in a row.</summary>
             public int Count;
         }
 
+        /// <summary>Reads the file.</summary>
         private readonly BinaryReader _r;
+        /// <summary>The objects read, by id.</summary>
         private readonly Dictionary<int, object> _objects = new Dictionary<int, object>();
+        /// <summary>The classes read, by id.</summary>
         private readonly Dictionary<int, ClassInfo> _classes = new Dictionary<int, ClassInfo>();
 
+        /// <summary>A reader for a stream.</summary>
         private NrbfReader(Stream stream) => _r = new BinaryReader(stream, Encoding.UTF8);
 
         /// <summary>Reads every serialized object in the stream (some programs write several one after another) and returns their roots.</summary>
@@ -73,6 +91,7 @@ namespace Kudusync.Core
             return roots;
         }
 
+        /// <summary>Reads the first object.</summary>
         private object ReadOne()
         {
             var type = _r.ReadByte();
@@ -93,6 +112,7 @@ namespace Kudusync.Core
             return _objects.TryGetValue(rootId, out var root) ? root : null;
         }
 
+        /// <summary>How deep the reading is (a limit stops files made to never end).</summary>
         private int _depth;
 
         /// <summary>
@@ -106,6 +126,7 @@ namespace Kudusync.Core
             finally { _depth--; }
         }
 
+        /// <summary>Reads one record, by its kind.</summary>
         private object ReadRecordCore(out bool end)
         {
             end = false;
@@ -215,6 +236,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reads an array's elements.</summary>
         private object[] ReadElements(int count)
         {
             var items = new object[count];
@@ -233,6 +255,7 @@ namespace Kudusync.Core
             return items;
         }
 
+        /// <summary>Reads a class's name and members.</summary>
         private (int Id, ClassInfo Info) ReadClassInfo()
         {
             var id = _r.ReadInt32();
@@ -245,6 +268,7 @@ namespace Kudusync.Core
             return (id, info);
         }
 
+        /// <summary>Reads a class's members' kinds.</summary>
         private void ReadMemberTypes(ClassInfo info)
         {
             var count = info.MemberNames.Length;
@@ -253,6 +277,7 @@ namespace Kudusync.Core
             for (var i = 0; i < count; i++) info.Extra[i] = ReadExtra(info.BinaryTypes[i]);
         }
 
+        /// <summary>Reads more about a member's kind.</summary>
         private object ReadExtra(byte binaryType)
         {
             switch (binaryType)
@@ -271,6 +296,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reads an object's members.</summary>
         private NrbfObject ReadObject(int id, ClassInfo info)
         {
             var obj = new NrbfObject { ClassName = info.Name };
@@ -290,6 +316,7 @@ namespace Kudusync.Core
             return obj;
         }
 
+        /// <summary>Reads a plain value (a number, true or false, text...).</summary>
         private object ReadPrimitive(byte type)
         {
             switch (type)
@@ -315,6 +342,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reads one UTF-8 character.</summary>
         private char ReadUtf8Char()
         {
             var first = _r.ReadByte();

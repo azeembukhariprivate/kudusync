@@ -1,3 +1,6 @@
+// KUDUSYNC.exe --self-test: real runs on made-up folders, virtual USB and FAT32 drives, a network share, schedules, the
+// tray and SyncToy's file, then the windows, keeping screenshots (run by the build on Windows, with administrator
+// rights).
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,20 +24,30 @@ namespace Kudusync.Views
     /// </summary>
     public static class SelfTest
     {
+        /// <summary>True while the self-test runs (errors are kept instead of shown).</summary>
         public static bool Running { get; private set; }
 
         /// <summary>The self-test shows real lasting notifications only in the step that checks them.</summary>
         public static bool AllowToasts { get; private set; }
+        /// <summary>Errors that weren't expected.</summary>
         public static List<string> Errors { get; } = new List<string>();
 
+        /// <summary>The self-test's log.</summary>
         private static StringBuilder _log;
+        /// <summary>The folder for the test's files.</summary>
         private static string _temp;
+        /// <summary>The virtual drives made (removed at the end).</summary>
         private static readonly List<string> Vhds = new List<string>();
+        /// <summary>The virtual USB drive's letter.</summary>
         private static string _usbLetter;
+        /// <summary>Its file.</summary>
         private static string _usbVhd;
+        /// <summary>The network share made.</summary>
         private static string _share;
+        /// <summary>The pair on the virtual USB drive.</summary>
         private static FolderPair _usbPair;
 
+        /// <summary>Runs every step and returns 0 when all passed.</summary>
         public static int Run()
         {
             Running = true;
@@ -125,6 +138,7 @@ namespace Kudusync.Views
 
         // ================================================================== helpers
 
+        /// <summary>Runs one step, writing to the log whether it passed.</summary>
         private static void Step(string name, Action action)
         {
             var before = Errors.Count;
@@ -144,13 +158,16 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Adds a note to the log under the step.</summary>
         private static void Note(string text) => _log.AppendLine("      " + text);
 
+        /// <summary>Fails the step when the condition isn't true.</summary>
         private static void Expect(bool condition, string what)
         {
             if (!condition) throw new Exception("expected " + what);
         }
 
+        /// <summary>Waits until the condition is true (failing after some seconds).</summary>
         private static void WaitFor(Func<bool> condition, int seconds, string what)
         {
             var until = DateTime.UtcNow.AddSeconds(seconds);
@@ -162,6 +179,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A new empty test folder.</summary>
         private static string Dir(string name)
         {
             var dir = Path.Combine(_temp, name);
@@ -169,6 +187,7 @@ namespace Kudusync.Views
             return dir;
         }
 
+        /// <summary>Bytes in a pattern, different for each seed.</summary>
         private static byte[] Pattern(int length, int seed)
         {
             var data = new byte[length];
@@ -183,6 +202,7 @@ namespace Kudusync.Views
             return data;
         }
 
+        /// <summary>Writes a test file.</summary>
         private static void Put(string root, string relative, byte[] data)
         {
             var path = Paths.Long(Path.Combine(root, relative));
@@ -190,9 +210,11 @@ namespace Kudusync.Views
             File.WriteAllBytes(path, data);
         }
 
+        /// <summary>True when two files have the same bytes.</summary>
         private static bool SameBytes(string a, string b) => File.Exists(Paths.Long(a)) && File.Exists(Paths.Long(b)) &&
                                                              File.ReadAllBytes(Paths.Long(a)).SequenceEqual(File.ReadAllBytes(Paths.Long(b)));
 
+        /// <summary>A pair for the test.</summary>
         private static FolderPair Pair(string name, string left, string right, SyncMode mode) => new FolderPair
         {
             Name = name,
@@ -201,6 +223,7 @@ namespace Kudusync.Views
             Mode = mode
         };
 
+        /// <summary>Runs a pair to the end (check looks at its plan first).</summary>
         private static RunResult Sync(FolderPair pair, Action<Plan> check = null)
         {
             using (var s = SyncSession.Open(pair, Triggers.Manual))
@@ -212,6 +235,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A pair's plan, without running it.</summary>
         private static Plan PlanOf(FolderPair pair)
         {
             using (var s = SyncSession.Open(pair, Triggers.Manual))
@@ -221,6 +245,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Lets the windows handle what's waiting.</summary>
         private static void Pump()
         {
             foreach (Window w in Application.Current.Windows) w.UpdateLayout();
@@ -229,6 +254,7 @@ namespace Kudusync.Views
             Application.Current.Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
         }
 
+        /// <summary>Puts a window where it can't be seen.</summary>
         private static void OffScreen(Window w)
         {
             w.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -239,6 +265,7 @@ namespace Kudusync.Views
             w.ShowInTaskbar = false;
         }
 
+        /// <summary>Shows a window, takes its screenshot and closes it.</summary>
         private static void ShowAndClose(Window w)
         {
             OffScreen(w);
@@ -248,6 +275,7 @@ namespace Kudusync.Views
             w.Close();
         }
 
+        /// <summary>Runs a program and returns its exit code and output.</summary>
         private static (int Code, string Output) Exec(string file, string args, int timeoutMs = 120000)
         {
             var info = new ProcessStartInfo(file, args) { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
@@ -264,6 +292,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Runs Windows' diskpart with these commands.</summary>
         private static void Diskpart(params string[] commands)
         {
             var script = Path.Combine(_temp, "diskpart-" + Guid.NewGuid().ToString("N").Substring(0, 6) + ".txt");
@@ -272,12 +301,14 @@ namespace Kudusync.Views
             if (code != 0) throw new Exception("diskpart failed (" + code + "): " + output);
         }
 
+        /// <summary>A drive letter not in use.</summary>
         private static string FreeLetter(params char[] avoid)
         {
             var used = new HashSet<char>(DriveInfo.GetDrives().Select(d => char.ToUpperInvariant(d.Name[0])).Concat(avoid));
             return "RSTUVWXYZQPONMLKJ".First(c => !used.Contains(c)) + ":";
         }
 
+        /// <summary>Makes a virtual drive with this file system and name.</summary>
         private static string CreateVhd(string name, string fs, string label)
         {
             var letter = FreeLetter();
@@ -291,6 +322,7 @@ namespace Kudusync.Views
 
         // ================================================================== engine on real folders
 
+        /// <summary>Mirror, update and move on real folders.</summary>
         private static void EngineRound()
         {
             var src = Dir("mirror-src");
@@ -333,6 +365,7 @@ namespace Kudusync.Views
             Expect(!Directory.Exists(Path.Combine(card, "DCIM")), "emptied folders removed from the source");
         }
 
+        /// <summary>Two-way sync on real folders.</summary>
         private static void TwoWayRound()
         {
             var a = Dir("tw-a");
@@ -360,6 +393,7 @@ namespace Kudusync.Views
             Expect(PlanOf(pair).IsEmpty, "in step afterwards");
         }
 
+        /// <summary>A rename found by the file's id.</summary>
         private static void RenameById()
         {
             var src = Dir("ren-src");
@@ -380,6 +414,7 @@ namespace Kudusync.Views
             Expect(r.Renamed == 1 && r.Bytes == 0, "nothing copied");
         }
 
+        /// <summary>A locked file fails, and the next run copies it.</summary>
         private static void LockedFile()
         {
             var src = Dir("lock-src");
@@ -397,6 +432,7 @@ namespace Kudusync.Views
             Expect(r.Copied == 1 && SameBytes(Path.Combine(src, "open.pst"), Path.Combine(dst, "open.pst")), "copied once it's free");
         }
 
+        /// <summary>Very long paths.</summary>
         private static void LongPaths()
         {
             var src = Dir("long-src");
@@ -409,6 +445,7 @@ namespace Kudusync.Views
             Expect(SameBytes(Path.Combine(src, deep, "deep file.txt"), Path.Combine(dst, deep, "deep file.txt")), "deep file copied");
         }
 
+        /// <summary>Hidden, read-only and system files.</summary>
         private static void Attributes()
         {
             var src = Dir("attr-src");
@@ -429,6 +466,7 @@ namespace Kudusync.Views
 
         // ================================================================== drives and shares
 
+        /// <summary>A pair on a USB drive still found under another letter.</summary>
         private static void UsbDriveRound()
         {
             _usbLetter = CreateVhd("usb", "ntfs", "KUDUUSB");
@@ -467,6 +505,7 @@ namespace Kudusync.Views
             Diskpart($"select vdisk file=\"{_usbVhd}\"", "detach vdisk");
         }
 
+        /// <summary>Makes a virtual drive mounted at a folder.</summary>
         private static string CreateVhdAt(string name, string fs, string label, string letter)
         {
             var vhd = Path.Combine(_temp, name + ".vhdx");
@@ -477,6 +516,7 @@ namespace Kudusync.Views
             return vhd;
         }
 
+        /// <summary>A FAT32 drive (times rounded, summer time shifts).</summary>
         private static void Fat32Round()
         {
             var letter = CreateVhd("fat32", "fat32", "KUDUFAT");
@@ -498,6 +538,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>A network share with a login.</summary>
         private static void NetworkRound()
         {
             var folder = Dir("share");
@@ -526,6 +567,7 @@ namespace Kudusync.Views
 
         // ================================================================== Task Scheduler
 
+        /// <summary>A schedule's Windows task runs the pair.</summary>
         private static void ScheduleRound()
         {
             var src = Dir("sched-src");
@@ -562,6 +604,7 @@ namespace Kudusync.Views
 
         // ================================================================== tray
 
+        /// <summary>The tray: live sync, a drive plugged in, alerts.</summary>
         private static void TrayRound()
         {
             var src = Dir("live-src");
@@ -623,6 +666,7 @@ namespace Kudusync.Views
 
         // ================================================================== SyncToy
 
+        /// <summary>Bringing in SyncToy's pairs from a real-looking file.</summary>
         private static void SyncToyRound()
         {
             var file = Path.Combine(_temp, "SyncToyDirPairs.bin");
@@ -645,6 +689,7 @@ namespace Kudusync.Views
 
         // ================================================================== the window
 
+        /// <summary>Opens real windows and drives them.</summary>
         private static void UiRound()
         {
             MainWindow main = null;
@@ -872,6 +917,7 @@ namespace Kudusync.Views
             });
         }
 
+        /// <summary>Removes the virtual drives, share and tasks made.</summary>
         private static void Cleanup()
         {
             Schedules.RemoveAll();

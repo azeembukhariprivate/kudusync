@@ -1,3 +1,5 @@
+// The Windows calls KUDUSYNC uses: listing folders quickly, file ids, drives' details, network folders and saved
+// logins.
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,6 +10,10 @@ namespace Kudusync.Core
     /// <summary>The Windows functions KUDUSYNC calls directly.</summary>
     public static class Native
     {
+        /// <summary>
+        /// Windows' constants for opening and listing folders, its error numbers, and kinds of links (as in Windows'
+        /// own headers).
+        /// </summary>
         public const uint FILE_LIST_DIRECTORY = 0x0001;
         public const uint FILE_SHARE_ALL = 0x00000007; // read, write and delete
         public const uint OPEN_EXISTING = 3;
@@ -24,9 +30,11 @@ namespace Kudusync.Core
         public const uint IO_REPARSE_TAG_MOUNT_POINT = 0xA0000003;
         public const uint IO_REPARSE_TAG_SYMLINK = 0xA000000C;
 
+        /// <summary>Opens a file or folder.</summary>
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern SafeFileHandle CreateFile(string name, uint access, uint share, IntPtr security, uint creation, uint flags, IntPtr template);
 
+        /// <summary>Gets details about an open file (used to list folders quickly).</summary>
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetFileInformationByHandleEx(SafeFileHandle handle, int infoClass, byte[] buffer, int size);
@@ -34,6 +42,10 @@ namespace Kudusync.Core
         [StructLayout(LayoutKind.Sequential)]
         public struct BY_HANDLE_FILE_INFORMATION
         {
+            /// <summary>
+            /// The details of an open file, as Windows gives them: attributes, times, the drive's serial number, size,
+            /// links and its id.
+            /// </summary>
             public uint FileAttributes;
             public long CreationTime;
             public long LastAccessTime;
@@ -46,19 +58,23 @@ namespace Kudusync.Core
             public uint FileIndexLow;
         }
 
+        /// <summary>Gets an open file's details (including its id).</summary>
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetFileInformationByHandle(SafeFileHandle handle, out BY_HANDLE_FILE_INFORMATION info);
 
+        /// <summary>A drive's name, serial number and file system.</summary>
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetVolumeInformation(string root, StringBuilder name, int nameSize, out uint serial,
             out uint maxComponent, out uint flags, StringBuilder fileSystem, int fileSystemSize);
 
+        /// <summary>A drive's free room.</summary>
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetDiskFreeSpaceEx(string directory, out ulong freeForUser, out ulong total, out ulong totalFree);
 
+        /// <summary>A path's long form (from a short "PROGRA~1" one).</summary>
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int GetLongPathName(string shortPath, StringBuilder longPath, int size);
 
@@ -67,6 +83,7 @@ namespace Kudusync.Core
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public class NETRESOURCE
         {
+            /// <summary>A network folder to connect to, as Windows wants it.</summary>
             public int dwScope;
             public int dwType = 1; // RESOURCETYPE_DISK
             public int dwDisplayType;
@@ -77,20 +94,24 @@ namespace Kudusync.Core
             public string lpProvider;
         }
 
+        /// <summary>Connects to a network folder with a login.</summary>
         [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
         public static extern int WNetAddConnection2(NETRESOURCE resource, string password, string user, int flags);
 
+        /// <summary>Disconnects from a network folder.</summary>
         [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
         public static extern int WNetCancelConnection2(string name, int flags, [MarshalAs(UnmanagedType.Bool)] bool force);
 
         // ---------------------------------------------------------------- Credential Manager
 
+        /// <summary>Windows' constants for saved logins.</summary>
         public const int CRED_TYPE_GENERIC = 1;
         public const int CRED_PERSIST_LOCAL_MACHINE = 2;
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct CREDENTIAL
         {
+            /// <summary>A saved login, as Windows keeps it in Credential Manager.</summary>
             public int Flags;
             public int Type;
             public string TargetName;
@@ -105,18 +126,22 @@ namespace Kudusync.Core
             public string UserName;
         }
 
+        /// <summary>Saves a login in Credential Manager.</summary>
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CredWrite(ref CREDENTIAL credential, int flags);
 
+        /// <summary>Reads a saved login.</summary>
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CredRead(string target, int type, int flags, out IntPtr credential);
 
+        /// <summary>Removes a saved login.</summary>
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CredDelete(string target, int type, int flags);
 
+        /// <summary>Frees what CredRead gave.</summary>
         [DllImport("advapi32.dll")]
         public static extern void CredFree(IntPtr buffer);
     }

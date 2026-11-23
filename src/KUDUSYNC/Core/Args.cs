@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Putting arguments together for a command line the way Windows programs read them, and showing sizes, speeds and times
+// in plain words.
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +11,13 @@ namespace Kudusync.Core
     /// <summary>Command-line quoting that matches how Windows programs (including robocopy.exe) split arguments.</summary>
     public static class Args
     {
+        /// <summary>The arguments joined into one command line, each quoted when it needs to be.</summary>
         public static string Join(IEnumerable<string> args) => string.Join(" ", args.Select(Quote));
 
+        /// <summary>
+        /// One argument quoted so a Windows program reads it back exactly as it is (spaces, quotes and backslashes
+        /// included).
+        /// </summary>
         public static string Quote(string arg)
         {
             if (string.IsNullOrEmpty(arg)) return "\"\"";
@@ -75,6 +82,7 @@ namespace Kudusync.Core
 
     public static class Format
     {
+        /// <summary>A size in bytes in plain words: "512 B", "3.4 MB", "1.2 GB".</summary>
         public static string Size(long bytes)
         {
             string[] units = { "B", "KB", "MB", "GB", "TB" };
@@ -89,8 +97,12 @@ namespace Kudusync.Core
             return (size >= 100 ? size.ToString("0") : size.ToString("0.#")) + " " + units[unit];
         }
 
+        /// <summary>A speed such as "12 MB/s", or a dash when nothing is moving.</summary>
         public static string Speed(double bytesPerSecond) => bytesPerSecond <= 0 ? "–" : Size((long)bytesPerSecond) + "/s";
 
+        /// <summary>
+        /// How long something takes, in plain words: "less than a second", "45 s", "3 min 20 s", "2 h 5 min".
+        /// </summary>
         public static string Duration(System.TimeSpan t)
         {
             if (t.TotalSeconds < 1) return Lang.T("less than a second");

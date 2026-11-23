@@ -1,3 +1,4 @@
+// Brings in the folder pairs of SyncToy, which kept them in its own binary file.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,16 +10,27 @@ namespace Kudusync.Core
     /// <summary>A folder pair found in SyncToy's settings.</summary>
     public sealed class SyncToyPair
     {
+        /// <summary>The pair's name.</summary>
         public string Name { get; set; }
+        /// <summary>Its first folder.</summary>
         public string Left { get; set; }
+        /// <summary>Its second folder.</summary>
         public string Right { get; set; }
+        /// <summary>SyncToy's way of syncing (Synchronize, Echo, Contribute).</summary>
         public string ModeName { get; set; }
+        /// <summary>The files only kept.</summary>
         public string Include { get; set; }
+        /// <summary>The files left out.</summary>
         public string Exclude { get; set; }
+        /// <summary>The attributes left out (hidden, system...).</summary>
         public int ExcludedAttributes { get; set; }
+        /// <summary>The folders left out.</summary>
         public List<string> ExcludedFolders { get; set; } = new List<string>();
+        /// <summary>Compare the files' contents.</summary>
         public bool CheckContents { get; set; }
+        /// <summary>It was switched on.</summary>
         public bool Active { get; set; } = true;
+        /// <summary>Deleted files went to the Recycle Bin.</summary>
         public bool UsedRecycleBin { get; set; } = true;
 
         public SyncMode Mode
@@ -53,17 +65,21 @@ namespace Kudusync.Core
     /// </summary>
     public static class SyncToyImport
     {
+        /// <summary>Where SyncToy keeps its pairs.</summary>
         public static string DefaultFile =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "SyncToy", "2.0", "SyncToyDirPairs.bin");
 
+        /// <summary>True when SyncToy's file is there.</summary>
         public static bool Available => File.Exists(DefaultFile);
 
+        /// <summary>Reads SyncToy's pairs from a file.</summary>
         public static List<SyncToyPair> Read(string file)
         {
             using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 return Read(stream);
         }
 
+        /// <summary>Reads SyncToy's pairs from a stream.</summary>
         public static List<SyncToyPair> Read(Stream stream)
         {
             var found = new List<SyncToyPair>();
@@ -110,11 +126,15 @@ namespace Kudusync.Core
 
         private sealed class ReferenceEqualityComparer : IEqualityComparer<object>
         {
+            /// <summary>The one comparer.</summary>
             public static readonly ReferenceEqualityComparer Instance = new ReferenceEqualityComparer();
+            /// <summary>True only when both are the very same object.</summary>
             public new bool Equals(object a, object b) => ReferenceEquals(a, b);
+            /// <summary>The object's own hash.</summary>
             public int GetHashCode(object o) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(o);
         }
 
+        /// <summary>A SyncToy pair from its object.</summary>
         private static SyncToyPair FromObject(NrbfObject obj)
         {
             var left = obj.Get("leftDir") as string;
@@ -143,6 +163,7 @@ namespace Kudusync.Core
             return pair;
         }
 
+        /// <summary>Every text inside a value (an array, a list...), each object once.</summary>
         private static IEnumerable<string> Strings(object value, HashSet<object> seen)
         {
             if (value == null) yield break;
@@ -160,6 +181,7 @@ namespace Kudusync.Core
                     foreach (var inner in Strings(member, seen)) yield return inner;
         }
 
+        /// <summary>The number of an enum value.</summary>
         private static int EnumValue(object value)
         {
             if (value is int i) return i;
@@ -167,6 +189,7 @@ namespace Kudusync.Core
             return 0;
         }
 
+        /// <summary>The name of an enum value.</summary>
         private static string EnumText(object value)
         {
             switch (EnumValue(value))

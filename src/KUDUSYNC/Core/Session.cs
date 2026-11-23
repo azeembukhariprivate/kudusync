@@ -1,3 +1,5 @@
+// One run of a pair from start to end: finding both folders, listing them, making the plan, checking it's safe, doing
+// it, and noting the result; and the lock so a pair runs once at a time.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +11,9 @@ namespace Kudusync.Core
     /// <summary>A reason a pair can't run right now, in words for people.</summary>
     public sealed class SyncProblem : Exception
     {
+        /// <summary>
+        /// A problem that stops the run (notConnected: a folder wasn't there, so a scheduled run can wait).
+        /// </summary>
         public SyncProblem(string message, bool notConnected = false) : base(message) => NotConnected = notConnected;
 
         /// <summary>A drive or share isn't there (a scheduled run then just notes it, without a notification).</summary>
@@ -17,6 +22,7 @@ namespace Kudusync.Core
 
     public sealed class SafetyIssue
     {
+        /// <summary>What's wrong, in words.</summary>
         public string Message { get; set; }
         /// <summary>Needs a "yes" before running; scheduled and other unattended runs stop instead.</summary>
         public bool NeedsConfirmation { get; set; }
@@ -28,25 +34,41 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class SyncSession : IDisposable
     {
+        /// <summary>The pair's lock.</summary>
         private readonly IDisposable _lock;
+        /// <summary>Does the plan.</summary>
         private Executor _executor;
 
+        /// <summary>The pair.</summary>
         public FolderPair Pair { get; }
+        /// <summary>What started the run.</summary>
         public string Trigger { get; }
+        /// <summary>Folder 1, as found.</summary>
         public ResolvedLocation Left { get; private set; }
+        /// <summary>Folder 2.</summary>
         public ResolvedLocation Right { get; private set; }
+        /// <summary>What's in folder 1.</summary>
         public Tree LeftTree { get; private set; }
+        /// <summary>What's in folder 2.</summary>
         public Tree RightTree { get; private set; }
+        /// <summary>The record of what was synced last time.</summary>
         public SyncRecord Record { get; private set; }
+        /// <summary>The plan.</summary>
         public Plan Plan { get; private set; }
+        /// <summary>When the run started.</summary>
         public DateTime Started { get; private set; }
+        /// <summary>Notes for the person (a drive found under another letter...).</summary>
         public List<string> Notes { get; } = new List<string>();
 
+        /// <summary>
+        /// How far apart two files' times may be and still count as the same (2 seconds, for FAT drives).
+        /// </summary>
         public long Tolerance { get; set; } = TimeSpan.FromSeconds(2).Ticks;
 
         /// <summary>A side is a FAT or exFAT drive: a file time exactly an hour off (the clocks changed) still counts as the same.</summary>
         public bool HourShift => (Left?.Volume?.StoresLocalTime ?? false) || (Right?.Volume?.StoresLocalTime ?? false);
 
+        /// <summary>A run of this pair (made by the static method that takes its lock).</summary>
         private SyncSession(FolderPair pair, string trigger, IDisposable runLock)
         {
             Pair = pair;
@@ -54,7 +76,9 @@ namespace Kudusync.Core
             _lock = runLock;
         }
 
+        /// <summary>Folder 1's path.</summary>
         public string LeftRoot => Left?.Root;
+        /// <summary>Folder 2's path.</summary>
         public string RightRoot => Right?.Root;
 
         /// <summary>Gets a pair ready to run. Throws <see cref="SyncProblem"/> when it can't run now.</summary>
@@ -75,6 +99,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Finds both folders (connecting to network folders, retrying a few times).</summary>
         private void Find(CancellationToken token, int networkAttempts)
         {
             Left = Locate(Pair.Left, Pair.LeftTitle, token, networkAttempts);
@@ -101,6 +126,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Finds one folder.</summary>
         private static ResolvedLocation Locate(Location location, string title, CancellationToken token, int networkAttempts)
         {
             var resolved = Locations.Resolve(location);
@@ -126,6 +152,7 @@ namespace Kudusync.Core
             RightTree = ScanSide(Right, Side.Right, n => progress?.Invoke(leftCount + n), token);
         }
 
+        /// <summary>Stops the listing.</summary>
         private CancellationToken _scanToken;
 
         /// <summary>Compares a file's two copies byte by byte (for <see cref="FolderPair.CompareContents"/>).</summary>
@@ -143,6 +170,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Lists one side.</summary>
         private Tree ScanSide(ResolvedLocation location, Side side, Action<int> progress, CancellationToken token)
         {
             if (!Directory.Exists(Paths.Long(location.Root))) return new Tree();
@@ -157,6 +185,9 @@ namespace Kudusync.Core
             return Scanner.Scan(location.Root, filter, progress, token, stable);
         }
 
+        /// <summary>
+        /// Makes the plan, and the checks that keep it safe (too much deleted, a side empty, too little room).
+        /// </summary>
         public Plan BuildPlan(DateTime? now = null)
         {
             Plan = Planner.Build(LeftTree, RightTree, Record, new PlanOptions
@@ -223,6 +254,7 @@ namespace Kudusync.Core
             return issues;
         }
 
+        /// <summary>The nearest folder that's there, going up from this one.</summary>
         private static string ExistingParent(string folder)
         {
             var path = folder;
@@ -269,6 +301,7 @@ namespace Kudusync.Core
             return result;
         }
 
+        /// <summary>Copies the plan's counts into a run's result.</summary>
         public static void Fill(RunResult result, Plan plan)
         {
             var done = plan.Actions.Where(a => a.State == ActionState.Done).ToList();
@@ -315,6 +348,7 @@ namespace Kudusync.Core
             return record;
         }
 
+        /// <summary>Lets go of the pair's lock.</summary>
         public void Dispose() => _lock?.Dispose();
     }
 
@@ -324,6 +358,7 @@ namespace Kudusync.Core
     /// </summary>
     public static class PairLock
     {
+        /// <summary>Takes a pair's lock, or null when it's already running.</summary>
         public static IDisposable TryTake(string pairId)
         {
             var folder = Path.Combine(DataStore.Folder, "Locks");
@@ -342,6 +377,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>True when a pair is running.</summary>
         public static bool IsRunning(string pairId)
         {
             using (var taken = TryTake(pairId)) return taken == null;

@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Helpers that build the windows in code (there's no XAML for the screens): text, buttons, cards, chips, banners, rows
+// and columns, all using the theme's resource keys so light and dark both work.
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,35 +12,57 @@ using Kudusync.Core;
 
 namespace Kudusync.Controls
 {
+    /// <summary>
+    /// The colour family of a chip or note: the accent colour, plain grey, or green / orange / red for good, careful
+    /// and bad.
+    /// </summary>
     public enum Tone { Accent, Neutral, Ok, Warn, Bad }
 
     /// <summary>Small helpers that build the app's look in code, using the theme's resource keys.</summary>
     public static partial class Ui
     {
+        /// <summary>
+        /// Sets a property to a theme resource (a colour or style by its key), so it changes when the theme does.
+        /// Returns the element, so calls can be chained.
+        /// </summary>
         public static T Res<T>(this T element, DependencyProperty property, string key) where T : FrameworkElement
         {
             element.SetResourceReference(property, key);
             return element;
         }
 
+        /// <summary>
+        /// Gives an element one of the theme's named styles (such as "PrimaryButton"). Returns the element for
+        /// chaining.
+        /// </summary>
         public static T Styled<T>(this T element, string styleKey) where T : FrameworkElement
         {
             element.SetResourceReference(FrameworkElement.StyleProperty, styleKey);
             return element;
         }
 
+        /// <summary>
+        /// Sets the space around an element (left, top, right, bottom). Returns the element for chaining.
+        /// </summary>
         public static T Margin<T>(this T element, double left, double top, double right, double bottom) where T : FrameworkElement
         {
             element.Margin = new Thickness(left, top, right, bottom);
             return element;
         }
 
+        /// <summary>
+        /// Sets the little note shown when the mouse rests on an element. Returns the element for chaining.
+        /// </summary>
         public static T Tip<T>(this T element, string tip) where T : FrameworkElement
         {
             element.ToolTip = tip;
             return element;
         }
 
+        /// <summary>
+        /// Places an element in a grid's row and column (and how many columns it spans). Returns the element for
+        /// chaining.
+        /// </summary>
         public static T At<T>(this T element, int row, int column = 0, int columnSpan = 1) where T : UIElement
         {
             Grid.SetRow(element, row);
@@ -47,6 +71,10 @@ namespace Kudusync.Controls
             return element;
         }
 
+        /// <summary>
+        /// A piece of text in the theme's text colour (or another colour key), at the size given, optionally bold or
+        /// wrapping.
+        /// </summary>
         public static TextBlock Text(string text, double size = 13, string brush = "Text", bool bold = false, bool wrap = false)
         {
             var t = new TextBlock
@@ -61,10 +89,13 @@ namespace Kudusync.Controls
             return t.Res(TextBlock.ForegroundProperty, brush);
         }
 
+        /// <summary>Quieter text, in the theme's subtle grey: for notes and explanations.</summary>
         public static TextBlock Subtle(string text, double size = 12, bool wrap = true) => Text(text, size, "SubtleText", wrap: wrap);
 
+        /// <summary>A bold heading.</summary>
         public static TextBlock Heading(string text, double size = 15) => Text(text, size, bold: true);
 
+        /// <summary>Text in a fixed-width font, for paths, commands and numbers that should line up.</summary>
         public static TextBlock Mono(string text, double size = 12, string brush = "Text")
         {
             var t = Text(text, size, brush);
@@ -72,6 +103,7 @@ namespace Kudusync.Controls
             return t;
         }
 
+        /// <summary>An icon from the theme by its key (such as "IconFolder"), at the size given.</summary>
         public static Glyph Icon(string key, double size = 16)
         {
             var g = new Glyph { Width = size, Height = size, VerticalAlignment = VerticalAlignment.Center };
@@ -79,6 +111,7 @@ namespace Kudusync.Controls
             return g;
         }
 
+        /// <summary>What a button shows: an icon followed by its text, or just the text when there's no icon.</summary>
         public static object Label(string icon, string text, double iconSize = 16)
         {
             if (icon == null) return text;
@@ -89,6 +122,10 @@ namespace Kudusync.Controls
             return panel;
         }
 
+        /// <summary>
+        /// A button with text, an optional icon and a style (SecondaryButton unless another is given), doing `click`
+        /// when pressed.
+        /// </summary>
         public static Button Button(string text, string icon = null, string style = "SecondaryButton", RoutedEventHandler click = null)
         {
             var b = new Button { Content = Label(icon, text) }.Styled(style);
@@ -107,6 +144,7 @@ namespace Kudusync.Controls
             return b;
         }
 
+        /// <summary>Makes a button smaller (for toolbars and rows).</summary>
         public static Button Small(Button b)
         {
             b.MinHeight = 30;
@@ -115,6 +153,7 @@ namespace Kudusync.Controls
             return b;
         }
 
+        /// <summary>A button that looks like a link in a web page.</summary>
         public static Button Link(string text, RoutedEventHandler click)
         {
             var b = new Button { Content = text, FontSize = 12, VerticalAlignment = VerticalAlignment.Center }.Styled("LinkButton");
@@ -122,6 +161,7 @@ namespace Kudusync.Controls
             return b;
         }
 
+        /// <summary>A card: a raised box with rounded corners around some content.</summary>
         public static Border Card(UIElement child, double padding = 18)
         {
             var border = new Border { Child = child, Padding = new Thickness(padding) }.Styled("Card");
@@ -129,6 +169,10 @@ namespace Kudusync.Controls
             return border;
         }
 
+        /// <summary>
+        /// A small rounded label (a "chip") in one of the tones, with an optional icon: for states like "Running" or
+        /// "Done".
+        /// </summary>
         public static Border Chip(string text, Tone tone = Tone.Accent, string icon = null)
         {
             string bg, fg;
@@ -158,9 +202,14 @@ namespace Kudusync.Controls
             return chip;
         }
 
+        /// <summary>A small coloured dot, for example a green one beside something that's working.</summary>
         public static Ellipse Dot(string brush = "OkText", double size = 8) =>
             new Ellipse { Width = size, Height = size, VerticalAlignment = VerticalAlignment.Center }.Res(Shape.FillProperty, brush);
 
+        /// <summary>
+        /// A banner across a window: an icon beside some content on a coloured background, for notes that need to be
+        /// seen.
+        /// </summary>
         public static Border Banner(string icon, UIElement content, string background = "BannerBg", string iconBrush = "Text")
         {
             var grid = new Grid();
@@ -175,6 +224,7 @@ namespace Kudusync.Controls
                 .Res(Border.BackgroundProperty, background);
         }
 
+        /// <summary>Puts elements side by side, left to right.</summary>
         public static StackPanel Row(params UIElement[] children)
         {
             var p = new StackPanel { Orientation = Orientation.Horizontal };
@@ -182,6 +232,7 @@ namespace Kudusync.Controls
             return p;
         }
 
+        /// <summary>Puts elements one under another.</summary>
         public static StackPanel Column(params UIElement[] children)
         {
             var p = new StackPanel();
@@ -189,6 +240,7 @@ namespace Kudusync.Controls
             return p;
         }
 
+        /// <summary>A grid with columns of the widths given (see Px, Star and Auto).</summary>
         public static Grid Columns(params GridLength[] widths)
         {
             var g = new Grid();
@@ -196,10 +248,14 @@ namespace Kudusync.Controls
             return g;
         }
 
+        /// <summary>A column or row width in pixels.</summary>
         public static GridLength Px(double v) => new GridLength(v);
+        /// <summary>A column or row that shares the space left over (twice as much for 2, and so on).</summary>
         public static GridLength Star(double v = 1) => new GridLength(v, GridUnitType.Star);
+        /// <summary>A column or row just as wide or tall as what's in it.</summary>
         public static GridLength Auto => GridLength.Auto;
 
+        /// <summary>A thin line between parts of a window, across or (when `vertical`) up and down.</summary>
         public static Border Divider(bool vertical = false)
         {
             var b = vertical
@@ -208,6 +264,7 @@ namespace Kudusync.Controls
             return b.Res(Border.BackgroundProperty, "BorderBrush");
         }
 
+        /// <summary>A text box in a fixed-width font, wrapping or not, for things like commands and logs.</summary>
         public static TextBox MonoBox(bool wrap)
         {
             var box = new TextBox().Styled("MonoBox");
@@ -224,12 +281,16 @@ namespace Kudusync.Controls
             return p;
         }
 
+        /// <summary>
+        /// Puts text on the clipboard; does nothing if another program is holding the clipboard just then.
+        /// </summary>
         public static void Copy(string text)
         {
             try { Clipboard.SetText(text ?? string.Empty); }
             catch { /* clipboard busy */ }
         }
 
+        /// <summary>A colour from the theme by its key, or grey when there's no such colour.</summary>
         public static Brush Brush(string key) => Application.Current.TryFindResource(key) as Brush ?? Brushes.Gray;
     }
 }

@@ -1,3 +1,5 @@
+// Where KUDUSYNC keeps its files (the data folder, next to the app when portable), reading and writing JSON, and a lock
+// shared between KUDUSYNC's own parts.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,8 +17,10 @@ namespace Kudusync.Core
     /// </summary>
     public static class DataStore
     {
+        /// <summary>A file next to the app that makes it keep its data there (portable).</summary>
         public const string PortableMarker = "KUDUSYNC.portable";
 
+        /// <summary>The data folder, once worked out.</summary>
         private static string _folder;
 
         /// <summary>Used by the tests and the self-test to work in a scratch folder.</summary>
@@ -36,15 +40,22 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>True when the app keeps its data next to itself.</summary>
         public static bool IsPortable => string.IsNullOrEmpty(OverrideFolder) && File.Exists(Path.Combine(Path.GetDirectoryName(AppInfo.ExePath) ?? string.Empty, PortableMarker));
 
+        /// <summary>The folder pairs.</summary>
         public static string PairsFile => Path.Combine(Folder, "pairs.json");
+        /// <summary>The runs.</summary>
         public static string RunsFile => Path.Combine(Folder, "runs.json");
+        /// <summary>The folder of each pair's record of what was synced last time.</summary>
         public static string RecordsFolder => Path.Combine(Folder, "Pairs");
+        /// <summary>The folder of the run logs.</summary>
         public static string LogsFolder => Path.Combine(Folder, "Logs");
 
+        /// <summary>A pair's record file.</summary>
         public static string RecordFile(string pairId) => Path.Combine(RecordsFolder, Paths.SafeName(pairId) + ".db");
 
+        /// <summary>Reads the folder pairs.</summary>
         public static List<FolderPair> LoadPairs()
         {
             using (Lock("pairs"))
@@ -54,11 +65,13 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Keeps the folder pairs.</summary>
         public static void SavePairs(IEnumerable<FolderPair> pairs)
         {
             using (Lock("pairs")) WriteJson(PairsFile, pairs.ToList());
         }
 
+        /// <summary>Removes a pair's record.</summary>
         public static void DeleteRecord(string pairId)
         {
             try { File.Delete(RecordFile(pairId)); }
@@ -81,6 +94,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Reads a value from JSON, or null when the file is missing or can't be read.</summary>
         public static T ReadJson<T>(string file) where T : class
         {
             if (!File.Exists(file)) return null;
@@ -98,6 +112,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Writes a value as JSON (to a new file first, then put in place).</summary>
         public static void WriteJson<T>(string file, T value)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(file));
@@ -112,14 +127,18 @@ namespace Kudusync.Core
             else File.Move(temp, file);
         }
 
+        /// <summary>A JSON reader and writer for a type (dates as text).</summary>
         private static DataContractJsonSerializer Serializer<T>() =>
             new DataContractJsonSerializer(typeof(T), new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("o"), UseSimpleDictionaryFormat = true });
 
         private sealed class NamedLock : IDisposable
         {
+            /// <summary>The lock itself (shared by every KUDUSYNC part of this user).</summary>
             private readonly Mutex _mutex;
+            /// <summary>True when this one holds it.</summary>
             private readonly bool _owned;
 
+            /// <summary>Takes the lock, waiting up to timeoutMs.</summary>
             public NamedLock(string name, int timeoutMs)
             {
                 try
@@ -134,6 +153,7 @@ namespace Kudusync.Core
                 }
             }
 
+            /// <summary>Lets go of the lock.</summary>
             public void Dispose()
             {
                 if (_mutex == null) return;

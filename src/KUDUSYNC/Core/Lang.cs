@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// Puts the app's texts into the chosen language. The apps' code stays in English; each text is looked up in the app's
+// Lang/<code>.txt (English, a tab, the translation), including texts with numbers or names filled in ("{0} files").
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,27 +27,47 @@ namespace Kudusync.Core
             ("en", "English"), ("ml", "മലയാളം"), ("hi", "हिन्दी"), ("es", "Español"), ("fr", "Français"), ("ar", "العربية")
         };
 
+        /// <summary>
+        /// A translated text with places to fill in ("{0} of {1} files"), turned into a search that finds those words
+        /// with anything in the places.
+        /// </summary>
         private sealed class Pattern
         {
+            /// <summary>
+            /// Finds the English text, with each {0}, {1}... caught so it can be put into the translation.
+            /// </summary>
             public Regex Match;
+            /// <summary>The translation, with {0}, {1}... where what was caught goes.</summary>
             public string To;
             public bool ValuesOnly; // little fixed text: only when what's filled in is a number, so a name isn't mistaken for it
+            /// <summary>
+            /// How much fixed text the pattern has: when several fit, the one with the most fixed text wins.
+            /// </summary>
             public int Weight;
         }
 
+        /// <summary>Translations of whole texts, by their English.</summary>
         private static Dictionary<string, string> _exact = new Dictionary<string, string>(StringComparer.Ordinal);
+        /// <summary>Translations of texts with places filled in, as patterns to match.</summary>
         private static List<Pattern> _patterns = new List<Pattern>();
+        /// <summary>
+        /// Texts already looked up, so a window being looked through again doesn't search again (cleared when it grows
+        /// big).
+        /// </summary>
         private static readonly Dictionary<string, string> _seen = new Dictionary<string, string>(StringComparer.Ordinal);
+        /// <summary>Guards the tables above, as texts can be looked up from more than one thread.</summary>
         private static readonly object _sync = new object();
 
         /// <summary>The language in use ("en" when none was loaded).</summary>
         public static string Current { get; private set; } = "en";
 
+        /// <summary>True when the texts are in English (nothing to translate).</summary>
         public static bool IsEnglish => Current == "en";
 
         /// <summary>Arabic is written from right to left: windows are mirrored.</summary>
         public static bool RightToLeft => Current == "ar";
 
+        /// <summary>True when the language is one of those on offer.</summary>
         public static bool Has(string code) => All.Any(l => l.Code == code);
 
         /// <summary>The language to use: the one chosen, else Windows' own when it's on offer, else English.</summary>
@@ -96,6 +118,10 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>
+        /// Adds one line of a language file: a whole text, and when it has places to fill in, a pattern that finds it
+        /// with anything in those places.
+        /// </summary>
         private static void Add(string english, string other, Dictionary<string, string> exact, List<Pattern> patterns)
         {
             if (english.Length == 0 || other.Length == 0) return;
@@ -132,6 +158,9 @@ namespace Kudusync.Core
             });
         }
 
+        /// <summary>
+        /// Turns the "\n", "\t" and "\\" written in language files back into a new line, a tab and a backslash.
+        /// </summary>
         public static string Unescape(string s)
         {
             if (s.IndexOf('\\') < 0) return s;
@@ -145,6 +174,9 @@ namespace Kudusync.Core
             return sb.ToString();
         }
 
+        /// <summary>
+        /// True for text that is only a number, a time or a size ("12", "3:05", "45%"), which needs no translating.
+        /// </summary>
         private static bool IsValue(string s)
         {
             foreach (var c in s)
@@ -174,6 +206,10 @@ namespace Kudusync.Core
             return result;
         }
 
+        /// <summary>
+        /// Finds the translation of a text: exactly, then without spaces or a colon around it, then by the patterns
+        /// with places to fill in.
+        /// </summary>
         private static string Find(string english, Dictionary<string, string> exact, List<Pattern> patterns)
         {
             if (exact.TryGetValue(english, out var direct)) return direct;

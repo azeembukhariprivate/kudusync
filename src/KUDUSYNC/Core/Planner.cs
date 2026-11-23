@@ -1,18 +1,24 @@
+// Works out what a run will do: compares both sides with each other and with the record of last time, by the pair's way
+// of syncing, finding new, changed, deleted and renamed files and clashes.
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Kudusync.Core
 {
+    /// <summary>Which side: folder 1 (left) or folder 2 (right).</summary>
     public enum Side { Left, Right }
 
+    /// <summary>What an action does.</summary>
     public enum ActionKind { Copy, Update, Delete, Rename, CreateFolder, DeleteFolder }
 
+    /// <summary>Where an action is up to.</summary>
     public enum ActionState { Pending, Done, Failed, Skipped }
 
     /// <summary>One thing a sync will do.</summary>
     public sealed class SyncAction
     {
+        /// <summary>What it does.</summary>
         public ActionKind Kind { get; set; }
         /// <summary>The side that changes.</summary>
         public Side Target { get; set; }
@@ -20,7 +26,9 @@ namespace Kudusync.Core
         public string Path { get; set; }
         /// <summary>Rename: the old path on the target side. Copy/Update: the path on the other side, when it differs.</summary>
         public string From { get; set; }
+        /// <summary>The file's size.</summary>
         public long Size { get; set; }
+        /// <summary>Why, in words.</summary>
         public string Reason { get; set; }
         /// <summary>Part of keeping both copies of a file that changed on both sides.</summary>
         public bool Conflict { get; set; }
@@ -31,19 +39,27 @@ namespace Kudusync.Core
         /// <summary>Unticked in the preview: skipped this time.</summary>
         public bool Enabled { get; set; } = true;
 
+        /// <summary>Where it's up to.</summary>
         public ActionState State { get; set; }
+        /// <summary>Why it failed.</summary>
         public string Error { get; set; }
 
+        /// <summary>The side it copies from.</summary>
         public Side SourceSide => Target == Side.Left ? Side.Right : Side.Left;
+        /// <summary>The path it copies from.</summary>
         public string SourcePath => From ?? Path;
+        /// <summary>True when it copies a file.</summary>
         public bool IsCopy => Kind == ActionKind.Copy || Kind == ActionKind.Update;
 
+        /// <summary>A short description for the tests.</summary>
         public override string ToString() => $"{Kind} {Target} {(From != null ? From + " -> " : string.Empty)}{Path}";
     }
 
     public sealed class PlanOptions
     {
+        /// <summary>The way of syncing.</summary>
         public SyncMode Mode { get; set; }
+        /// <summary>Notice renamed files and rename them on the other side too (instead of copying again).</summary>
         public bool DetectRenames { get; set; } = true;
         /// <summary>How far apart two modified times may be and still count as the same (FAT drives store them to 2 seconds).</summary>
         public long Tolerance { get; set; } = TimeSpan.FromSeconds(2).Ticks;
@@ -57,6 +73,7 @@ namespace Kudusync.Core
         /// returns true when the two copies differ.
         /// </summary>
         public Func<string, bool> ContentsDiffer { get; set; }
+        /// <summary>The time now (set in the tests).</summary>
         public DateTime Now { get; set; } = DateTime.Now;
 
         /// <summary>The same size and time, and (when contents are compared) the same contents too.</summary>
@@ -66,40 +83,59 @@ namespace Kudusync.Core
 
     public sealed class Plan
     {
+        /// <summary>The way of syncing.</summary>
         public SyncMode Mode { get; set; }
+        /// <summary>Every action.</summary>
         public List<SyncAction> Actions { get; } = new List<SyncAction>();
+        /// <summary>Files changed on both sides since last time.</summary>
         public List<string> Clashes { get; } = new List<string>();
         /// <summary>Move mode: remove source folders that end up empty.</summary>
         public bool CleanSourceFolders { get; set; }
 
+        /// <summary>The actions that will be done (not switched off).</summary>
         public IEnumerable<SyncAction> Active => Actions.Where(a => a.Enabled);
 
+        /// <summary>True when there's nothing to do.</summary>
         public bool IsEmpty => !Active.Any();
 
+        /// <summary>How many actions of this kind (only clashes, or none, when asked).</summary>
         public int Count(ActionKind kind, bool? conflict = null) =>
             Active.Count(a => a.Kind == kind && (conflict == null || a.Conflict == conflict.Value));
 
+        /// <summary>How many new files will be copied.</summary>
         public int NewFiles => Active.Count(a => a.Kind == ActionKind.Copy && !a.Conflict);
+        /// <summary>How many changed files will be updated.</summary>
         public int ChangedFiles => Count(ActionKind.Update);
+        /// <summary>How many files will be deleted.</summary>
         public int DeletedFiles => Active.Count(a => a.Kind == ActionKind.Delete && !a.Permanent);
+        /// <summary>How many files are taken out of the source (move).</summary>
         public int RemovedFromSource => Active.Count(a => a.Kind == ActionKind.Delete && a.Permanent) + Active.Count(a => a.RemoveSource);
+        /// <summary>How many files will be renamed.</summary>
         public int Renamed => Active.Count(a => a.Kind == ActionKind.Rename && !a.Conflict);
+        /// <summary>How many clashes (kept with a new name).</summary>
         public int Conflicts => Active.Count(a => a.Kind == ActionKind.Rename && a.Conflict);
+        /// <summary>How many folders will be made.</summary>
         public int FoldersCreated => Count(ActionKind.CreateFolder);
+        /// <summary>How many folders will be removed.</summary>
         public int FoldersDeleted => Count(ActionKind.DeleteFolder);
+        /// <summary>How many bytes will be copied.</summary>
         public long BytesToCopy => Active.Where(a => a.IsCopy).Sum(a => a.Size);
+        /// <summary>How many bytes will be copied to a side.</summary>
         public long BytesTo(Side side) => Active.Where(a => a.IsCopy && a.Target == side).Sum(a => a.Size);
+        /// <summary>How many files will be deleted on a side.</summary>
         public int DeletesOn(Side side) => Active.Count(a => a.Kind == ActionKind.Delete && a.Target == side && !a.Permanent);
     }
 
     /// <summary>Works out what a sync has to do by comparing both sides (and the record of the last sync).</summary>
     public static class Planner
     {
+        /// <summary>What happened to a file since last time.</summary>
         private enum Change { None, New, Unchanged, Changed, Deleted }
 
         /// <summary>Files smaller than this are only treated as renamed when the file system's ID proves it.</summary>
         public const long MinGuessedRenameSize = 1024;
 
+        /// <summary>Makes the plan for two sides and the record of last time.</summary>
         public static Plan Build(Tree left, Tree right, SyncRecord record, PlanOptions options)
         {
             record = record ?? new SyncRecord();
@@ -136,6 +172,10 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>
+        /// True when two files are the same (size, and times within tolerance; an hour apart counts too when hourShift,
+        /// for FAT drives and summer time).
+        /// </summary>
         public static bool Same(Entry a, Entry b, long tolerance, bool hourShift = false)
         {
             if (a == null || b == null || a.IsDir != b.IsDir) return false;
@@ -143,6 +183,7 @@ namespace Kudusync.Core
             return a.Size == b.Size && TimesMatch(a.Mtime, b.Mtime, tolerance, hourShift);
         }
 
+        /// <summary>True when a file is as the record says.</summary>
         public static bool SameAsRecord(Entry e, RecordEntry r, Side side, long tolerance, bool hourShift = false)
         {
             if (e == null || r == null || e.IsDir != r.IsDir) return false;
@@ -157,10 +198,16 @@ namespace Kudusync.Core
             return apart <= tolerance || (hourShift && Math.Abs(apart - TimeSpan.TicksPerHour) <= tolerance);
         }
 
+        /// <summary>
+        /// True when a path is in a folder that couldn't be read on either side (it's never deleted).
+        /// </summary>
         private static bool Protected(string path, Tree left, Tree right) => left.IsUnderUnreadable(path) || right.IsUnderUnreadable(path);
 
         // ------------------------------------------------------------------ Mirror and Update
 
+        /// <summary>
+        /// The one-way plan: copy what's new or changed, and (for a mirror) delete what's gone from the source.
+        /// </summary>
         private static void OneWay(Plan plan, Tree left, Tree right, SyncRecord record, PlanOptions o)
         {
             var mirror = o.Mode == SyncMode.Mirror;
@@ -287,6 +334,7 @@ namespace Kudusync.Core
 
         // ------------------------------------------------------------------ Move
 
+        /// <summary>The move plan: copy, then take the files out of the source.</summary>
         private static void Move(Plan plan, Tree left, Tree right, PlanOptions o)
         {
             plan.CleanSourceFolders = true;
@@ -313,6 +361,9 @@ namespace Kudusync.Core
 
         // ------------------------------------------------------------------ Two-way
 
+        /// <summary>
+        /// The two-way plan: each side's changes go to the other; a file changed on both sides is a clash (both kept).
+        /// </summary>
         private static void TwoWay(Plan plan, Tree left, Tree right, SyncRecord record, PlanOptions o)
         {
             var paths = new SortedSet<string>(left.Items.Keys.Concat(right.Items.Keys), Paths.Comparer);
@@ -410,6 +461,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Turns a deleted file and a new one with the same id (or size and time) into a rename.</summary>
         private static void ApplyRenames(Plan plan, List<Entry> newFiles, List<SyncAction> otherDeletes, Tree sourceTree, Tree otherTree,
             SyncRecord record, Side sourceSide, Side otherSide, PlanOptions o)
         {
@@ -422,6 +474,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>What happened to a file since last time, on one side.</summary>
         private static Change ChangeOf(Entry e, RecordEntry b, Side side, PlanOptions o)
         {
             if (e == null) return b != null ? Change.Deleted : Change.None;
@@ -429,6 +482,7 @@ namespace Kudusync.Core
             return SameAsRecord(e, b, side, o.Tolerance, o.HourShift) ? Change.Unchanged : Change.Changed;
         }
 
+        /// <summary>A side's name.</summary>
         public static string SideName(Side side) => side == Side.Left ? "Folder 1" : "Folder 2";
 
         /// <summary>"Report (conflict 2026-10-24).docx", with a number added if that's taken too.</summary>

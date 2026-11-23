@@ -1,3 +1,5 @@
+// Backups that need looking at: a scheduled run that failed or had problems, or a pair that hasn't backed up for two
+// scheduled times; and what was already seen or notified.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,8 +22,11 @@ namespace Kudusync.Core
     /// <summary>Something about a scheduled backup that needs looking at.</summary>
     public sealed class Alert
     {
+        /// <summary>The pair's id.</summary>
         public string PairId { get; set; }
+        /// <summary>The pair's name.</summary>
         public string PairName { get; set; }
+        /// <summary>How serious it is.</summary>
         public AlertLevel Level { get; set; }
         /// <summary>When it happened: the run's end, or the scheduled time that was missed.</summary>
         public DateTime When { get; set; }
@@ -29,8 +34,10 @@ namespace Kudusync.Core
         public RunResult Run { get; set; }
         /// <summary>The last time the pair really backed up (missed backups), if ever.</summary>
         public DateTime? LastDone { get; set; }
+        /// <summary>When the pair is meant to run, in words.</summary>
         public string ScheduleText { get; set; }
 
+        /// <summary>True for a red alert (failed, paused or missed), not only problems.</summary>
         public bool IsRed => Level != AlertLevel.Problems;
 
         /// <summary>The same alert always has the same key, so it's only notified once.</summary>
@@ -70,6 +77,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Why a run counts as failed, in words.</summary>
         private static string Reason(RunResult run)
         {
             if (run == null || string.IsNullOrWhiteSpace(run.Message)) return Lang.T("see its history for what went wrong.");
@@ -92,6 +100,7 @@ namespace Kudusync.Core
         /// <summary>Alerts already notified, by key.</summary>
         [DataMember] public List<string> Notified { get; set; } = new List<string>();
 
+        /// <summary>Fills in what's missing after reading an older file.</summary>
         [OnDeserialized]
         private void Fix(StreamingContext c)
         {
@@ -112,8 +121,10 @@ namespace Kudusync.Core
         /// <summary>A little time for a backup to start and finish before its time counts as missed.</summary>
         public static readonly TimeSpan Grace = TimeSpan.FromMinutes(30);
 
+        /// <summary>Where what was seen and notified is kept.</summary>
         public static string StateFile => Path.Combine(DataStore.Folder, "alerts.json");
 
+        /// <summary>The pairs that need looking at, from their schedules and runs, at this time.</summary>
         public static List<Alert> Find(IEnumerable<FolderPair> pairs, IList<RunResult> runs, DateTime now, AlertState state)
         {
             var alerts = new List<Alert>();
@@ -175,6 +186,7 @@ namespace Kudusync.Core
 
         // ------------------------------------------------------------------ remembering
 
+        /// <summary>Reads what was seen and notified (empty when there's nothing yet).</summary>
         public static AlertState Load()
         {
             try
@@ -189,6 +201,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Keeps what was seen and notified.</summary>
         public static void Save(AlertState state)
         {
             try

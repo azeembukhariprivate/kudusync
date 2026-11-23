@@ -1,3 +1,5 @@
+// The history folder on each side ("_KUDUSYNC History\<run time>\<path>"): where replaced and deleted files are kept,
+// and removing old ones.
 using System;
 using System.Globalization;
 using System.IO;
@@ -12,12 +14,18 @@ namespace Kudusync.Core
     /// </summary>
     public sealed class History
     {
+        /// <summary>How a run's time is written in its folder's name.</summary>
         public const string StampFormat = "yyyy-MM-dd HHmmss";
 
+        /// <summary>The folder pair.</summary>
         private readonly FolderPair _pair;
+        /// <summary>Folder 1, as found this time.</summary>
         private readonly string _leftRoot;
+        /// <summary>Folder 2.</summary>
         private readonly string _rightRoot;
+        /// <summary>This run's time, as written.</summary>
         private readonly string _stamp;
+        /// <summary>Keep files even when the pair keeps no history.</summary>
         private readonly bool _always;
 
         /// <param name="always">Keep files even when the pair keeps no history (used when putting an earlier version back).</param>
@@ -30,6 +38,7 @@ namespace Kudusync.Core
             _stamp = started.ToString(StampFormat, CultureInfo.InvariantCulture);
         }
 
+        /// <summary>True when files are kept.</summary>
         public bool Enabled => _always || _pair.KeepDays >= 0;
 
         /// <summary>The folder holding all of a side's runs.</summary>
@@ -40,6 +49,7 @@ namespace Kudusync.Core
             return pair.Mode == SyncMode.TwoWay ? Path.Combine(folder, side == Side.Left ? "Folder 1" : "Folder 2") : folder;
         }
 
+        /// <summary>This run's folder in a side's history.</summary>
         public string RunFolder(Side side) => Path.Combine(BaseFolder(_pair, side == Side.Left ? _leftRoot : _rightRoot, side), _stamp);
 
         /// <summary>Moves a file into this run's history folder (or deletes it, if the pair keeps no history).</summary>
@@ -65,6 +75,7 @@ namespace Kudusync.Core
             File.Move(source, target);
         }
 
+        /// <summary>A name not taken yet, by adding a number.</summary>
         private static string FreeName(string path)
         {
             var dir = Path.GetDirectoryName(path);
@@ -77,6 +88,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>Removes a file (even when it's read-only).</summary>
         public static void DeleteFile(string path)
         {
             var attributes = File.GetAttributes(path);
@@ -108,6 +120,7 @@ namespace Kudusync.Core
             return removed;
         }
 
+        /// <summary>Removes a folder and everything in it (even read-only files).</summary>
         public static void DeleteTree(string folder)
         {
             foreach (var file in Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories).ToList())

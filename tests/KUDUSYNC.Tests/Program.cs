@@ -1,3 +1,5 @@
+// The tests for the parts that don't need Windows: alerts, every way of syncing on real folders, renames, safety
+// checks, history and earlier versions, records, schedules and bringing in SyncToy's pairs. Run with "dotnet run".
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,10 +13,14 @@ namespace Kudusync.Tests
 {
     public static class Program
     {
+        /// <summary>How many checks failed.</summary>
         private static int _failed;
+        /// <summary>How many checks passed.</summary>
         private static int _passed;
+        /// <summary>A folder for the test files, removed at the end.</summary>
         private static string _root;
 
+        /// <summary>Runs every test and returns 1 when any check failed.</summary>
         public static int Main()
         {
             _root = Path.Combine(Path.GetTempPath(), "kudusync-tests-" + Guid.NewGuid().ToString("N").Substring(0, 8));
@@ -48,13 +54,16 @@ namespace Kudusync.Tests
 
         // ================================================================== alerts about scheduled backups
 
+        /// <summary>A pair that runs daily.</summary>
         private static FolderPair Daily(string id, string time = "21:00") =>
             new FolderPair { Id = id, Name = "Photos " + id, Schedule = new Schedule { Kind = ScheduleKind.Daily, Time = time } };
 
+        /// <summary>A made-up run.</summary>
         private static RunResult Ran(string pairId, DateTime finished, RunStatus status, string trigger = Triggers.Scheduled, string message = null, int failed = 0) =>
             new RunResult { PairId = pairId, PairName = "Photos " + pairId, Trigger = trigger, Started = finished.AddMinutes(-2), Finished = finished, Status = status, Message = message, Failed = failed,
                             Problems = failed > 0 ? new List<string> { "IMG_0001.JPG: it's open in another program" } : new List<string>() };
 
+        /// <summary>A scheduled run that failed, was paused or had problems is an alert.</summary>
         private static void TestAlertsForFailedAndProblemBackups()
         {
             var now = new DateTime(2026, 11, 18, 9, 0, 0);
@@ -86,6 +95,7 @@ namespace Kudusync.Tests
             Equal(Alerts.Find(pairs, runs, now, state)[0].Key, Alerts.Find(pairs, runs, now, state)[0].Key, "the same alert keeps its key");
         }
 
+        /// <summary>A pair that missed two scheduled times is an alert.</summary>
         private static void TestAlertsForMissedBackups()
         {
             var watched = new DateTime(2026, 11, 1, 12, 0, 0);
@@ -132,6 +142,7 @@ namespace Kudusync.Tests
             Check(Alerts.MissedSince(new Schedule { Kind = ScheduleKind.AtLogon }, monday, monday.AddDays(30)) == null, "at sign-in can't be missed by the clock");
         }
 
+        /// <summary>What was seen and notified is remembered.</summary>
         private static void TestAlertsAreRemembered()
         {
             var pair = Daily("r");
@@ -153,18 +164,22 @@ namespace Kudusync.Tests
 
         // ================================================================== helpers
 
+        /// <summary>Counts a check, writing what failed.</summary>
         private static void Check(bool condition, string what)
         {
             if (!condition) throw new Exception("Check failed: " + what);
         }
 
+        /// <summary>Checks two values are equal, writing both when they aren't.</summary>
         private static void Equal<T>(T expected, T actual, string what)
         {
             if (!EqualityComparer<T>.Default.Equals(expected, actual)) throw new Exception($"{what}: expected {expected}, got {actual}");
         }
 
+        /// <summary>The time test files are given.</summary>
         private static readonly DateTime Base = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Utc);
 
+        /// <summary>A new empty test folder.</summary>
         private static string NewDir(string name)
         {
             var dir = Path.Combine(_root, name + "-" + Guid.NewGuid().ToString("N").Substring(0, 6));
@@ -172,6 +187,7 @@ namespace Kudusync.Tests
             return dir;
         }
 
+        /// <summary>Writes a test file, minutes after the base time.</summary>
         private static void Put(string root, string relative, string content, int minutes = 0)
         {
             var path = Path.Combine(root, relative.Replace('\\', Path.DirectorySeparatorChar));
@@ -180,15 +196,19 @@ namespace Kudusync.Tests
             File.SetLastWriteTimeUtc(path, Base.AddMinutes(minutes));
         }
 
+        /// <summary>A test file's text.</summary>
         private static string Read(string root, string relative)
         {
             var path = Path.Combine(root, relative.Replace('\\', Path.DirectorySeparatorChar));
             return File.Exists(path) ? File.ReadAllText(path) : null;
         }
 
+        /// <summary>True when a file is there.</summary>
         private static bool Has(string root, string relative) => File.Exists(Path.Combine(root, relative.Replace('\\', Path.DirectorySeparatorChar)));
+        /// <summary>True when a folder is there.</summary>
         private static bool HasDir(string root, string relative) => Directory.Exists(Path.Combine(root, relative.Replace('\\', Path.DirectorySeparatorChar)));
 
+        /// <summary>A pair for the test.</summary>
         private static FolderPair Pair(string left, string right, SyncMode mode, string name = null) => new FolderPair
         {
             Name = name ?? "Test " + mode,
@@ -197,6 +217,7 @@ namespace Kudusync.Tests
             Mode = mode
         };
 
+        /// <summary>Runs a pair to the end (check looks at its plan first).</summary>
         private static RunResult Run(FolderPair pair, Action<Plan> check = null)
         {
             using (var s = SyncSession.Open(pair, Triggers.Manual))
@@ -208,6 +229,7 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>A pair's plan, without running it.</summary>
         private static Plan PlanOnly(FolderPair pair)
         {
             using (var s = SyncSession.Open(pair, Triggers.Manual))
@@ -217,6 +239,7 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>The files in a side's history.</summary>
         private static List<string> HistoryFiles(string root) =>
             Directory.Exists(Path.Combine(root, Paths.HistoryName))
                 ? Directory.GetFiles(Path.Combine(root, Paths.HistoryName), "*", SearchOption.AllDirectories).Select(Path.GetFileName).OrderBy(n => n).ToList()
@@ -224,9 +247,11 @@ namespace Kudusync.Tests
 
         // ================================================================== Mirror, Update, Move
 
+        /// <summary>The language tests.</summary>
         private static void TestOtherLanguages() => LangTests.Run();
 
 
+        /// <summary>A mirror copies, updates and deletes.</summary>
         private static void TestMirrorCopiesUpdatesAndDeletes()
         {
             var l = NewDir("l");
@@ -260,6 +285,7 @@ namespace Kudusync.Tests
             Check(again.IsEmpty, "second run has nothing to do: " + string.Join("; ", again.Actions));
         }
 
+        /// <summary>Update never deletes.</summary>
         private static void TestUpdateNeverDeletes()
         {
             var l = NewDir("l");
@@ -272,6 +298,7 @@ namespace Kudusync.Tests
             Check(Has(r, "keep.txt") && Has(r, "a.txt"), "both there");
         }
 
+        /// <summary>Move empties the source.</summary>
         private static void TestMoveEmptiesSource()
         {
             var l = NewDir("l");
@@ -291,6 +318,7 @@ namespace Kudusync.Tests
             Check(!File.Exists(DataStore.RecordFile(Pair(l, r, SyncMode.Move).Id)), "no record for Move");
         }
 
+        /// <summary>Files left out by the filters are left alone.</summary>
         private static void TestFiltersAreLeftAlone()
         {
             var l = NewDir("l");
@@ -314,6 +342,7 @@ namespace Kudusync.Tests
             Check(plan.Actions.Where(a => a.IsCopy).Select(a => Paths.Name(a.Path)).OrderBy(n => n).SequenceEqual(new[] { "a.cs", "doc.txt" }), "include patterns");
         }
 
+        /// <summary>A rename is found in a mirror.</summary>
         private static void TestRenameDetectedInMirror()
         {
             var l = NewDir("l");
@@ -338,6 +367,7 @@ namespace Kudusync.Tests
             Equal(0, HistoryFiles(r).Count, "nothing went to history");
         }
 
+        /// <summary>A rename isn't guessed when two files could be it.</summary>
         private static void TestRenameIgnoredWhenAmbiguous()
         {
             var l = NewDir("l");
@@ -362,6 +392,7 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>A rename that only changes upper and lower case.</summary>
         private static void TestCaseOnlyRename()
         {
             var left = new Tree();
@@ -374,6 +405,7 @@ namespace Kudusync.Tests
             Equal("photo.jpg", plan.Actions[0].From, "from");
         }
 
+        /// <summary>FAT drives' rounded times and summer time shifts don't count as changes.</summary>
         private static void TestClockChangeOnFatDrives()
         {
             var hour = TimeSpan.TicksPerHour;
@@ -405,6 +437,7 @@ namespace Kudusync.Tests
             Equal(0, twoWay.Actions.Count(a => a.Path.StartsWith("photo")), "two-way leaves shifted files alone");
         }
 
+        /// <summary>Comparing contents finds a change with the same size and time.</summary>
         private static void TestCompareContents()
         {
             var l = NewDir("l");
@@ -438,6 +471,7 @@ namespace Kudusync.Tests
             Check(!Paths.SameContents(Path.Combine(l, "same.txt"), Path.Combine(l, "sneaky.txt")), "different sizes");
         }
 
+        /// <summary>A tree with every time moved.</summary>
         private static Tree Shift(Tree tree, long by)
         {
             var copy = new Tree();
@@ -445,6 +479,7 @@ namespace Kudusync.Tests
             return copy;
         }
 
+        /// <summary>A record of the photos test.</summary>
         private static SyncRecord RecordOfPhotos(Tree left, long hour)
         {
             // A record of the photos as both sides were at the last sync (the right side an hour ahead, as above).
@@ -456,6 +491,7 @@ namespace Kudusync.Tests
 
         // ================================================================== Two-way
 
+        /// <summary>Two-way's first run puts both sides together.</summary>
         private static void TestTwoWayFirstRunMerges()
         {
             var l = NewDir("l");
@@ -474,6 +510,7 @@ namespace Kudusync.Tests
             Equal("left version", Read(r, conflict), "older kept on the right");
         }
 
+        /// <summary>Two-way carries changes and deletes both ways.</summary>
         private static void TestTwoWayPropagatesChangesAndDeletes()
         {
             var l = NewDir("l");
@@ -506,6 +543,7 @@ namespace Kudusync.Tests
             Check(PlanOnly(pair).IsEmpty, "in step afterwards");
         }
 
+        /// <summary>In two-way, a change beats a delete.</summary>
         private static void TestTwoWayChangeBeatsDelete()
         {
             var l = NewDir("l");
@@ -519,6 +557,7 @@ namespace Kudusync.Tests
             Equal("v2 longer", Read(r, "doc.txt"), "the changed file comes back");
         }
 
+        /// <summary>In two-way, a rename on the right is followed.</summary>
         private static void TestTwoWayRenameOnRight()
         {
             var l = NewDir("l");
@@ -532,6 +571,7 @@ namespace Kudusync.Tests
             Equal(0, result.Copied, "nothing copied");
         }
 
+        /// <summary>In two-way, a missing folder is refused.</summary>
         private static void TestTwoWayMissingFolderIsRefused()
         {
             var l = NewDir("l");
@@ -554,6 +594,7 @@ namespace Kudusync.Tests
 
         // ================================================================== safety and plumbing
 
+        /// <summary>An empty source needs the person to say yes.</summary>
         private static void TestEmptySourceNeedsConfirmation()
         {
             var l = NewDir("l");
@@ -572,6 +613,7 @@ namespace Kudusync.Tests
             Equal(5, Directory.GetFiles(r).Length, "nothing deleted");
         }
 
+        /// <summary>Deleting a lot pauses the run.</summary>
         private static void TestMassDeletePaused()
         {
             var l = NewDir("l");
@@ -589,6 +631,7 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>Folders inside each other are refused.</summary>
         private static void TestOverlappingFoldersRefused()
         {
             var l = NewDir("l");
@@ -605,6 +648,7 @@ namespace Kudusync.Tests
             }
         }
 
+        /// <summary>A pair runs once at a time.</summary>
         private static void TestOnlyOneRunAtATime()
         {
             var pair = Pair(NewDir("l"), NewDir("r"), SyncMode.Mirror);
@@ -623,6 +667,7 @@ namespace Kudusync.Tests
             SyncSession.Open(pair, Triggers.Manual).Dispose();
         }
 
+        /// <summary>Nothing below an unreadable folder is deleted.</summary>
         private static void TestUnreadableFolderIsProtected()
         {
             var left = new Tree();
@@ -637,6 +682,7 @@ namespace Kudusync.Tests
             Check(plan.Actions.Any(a => a.Path == "other.txt" && a.Kind == ActionKind.Delete), "the rest still syncs");
         }
 
+        /// <summary>An action left out runs next time.</summary>
         private static void TestUntickedActionIsRetried()
         {
             var l = NewDir("l");
@@ -656,6 +702,7 @@ namespace Kudusync.Tests
             Check(again.Actions.Any(a => a.Path == "b.txt" && a.Kind == ActionKind.Copy), "unticked step comes back next time (not a delete)");
         }
 
+        /// <summary>Leftover temporary files are removed, and copies are checked.</summary>
         private static void TestLeftoverTempRemovedAndVerify()
         {
             var l = NewDir("l");
@@ -670,6 +717,7 @@ namespace Kudusync.Tests
             Check(!Has(r, "big.bin" + Paths.TempSuffix), "leftover removed");
         }
 
+        /// <summary>Keeping no history means files are really deleted.</summary>
         private static void TestNoHistoryMeansDelete()
         {
             var l = NewDir("l");
@@ -682,6 +730,7 @@ namespace Kudusync.Tests
             Check(!Has(r, "old.txt") && !HasDir(r, Paths.HistoryName), "deleted permanently");
         }
 
+        /// <summary>A history folder of one's own, and removing old versions.</summary>
         private static void TestCustomHistoryFolderAndCleanup()
         {
             var l = NewDir("l");
@@ -723,6 +772,7 @@ namespace Kudusync.Tests
             return (r, h);
         }
 
+        /// <summary>Earlier versions are read from the history.</summary>
         private static void TestEarlierVersionsAreRead()
         {
             var (r, h) = VersionedBackup();
@@ -739,6 +789,7 @@ namespace Kudusync.Tests
             Check(now.OrderBy(x => x).SequenceEqual(new[] { "added-later.txt", "Docs\\report.txt", "photo.jpg" }.OrderBy(x => x)), "files now, without history or unfinished copies: " + string.Join(", ", now));
         }
 
+        /// <summary>The folder as it was at a run.</summary>
         private static void TestTheFolderAsItWas()
         {
             var (r, h) = VersionedBackup();
@@ -773,6 +824,7 @@ namespace Kudusync.Tests
             Check(Versions.CheckTarget("", r, h) != null, "a folder must be chosen");
         }
 
+        /// <summary>Putting a version back keeps the current file first.</summary>
         private static void TestPuttingAVersionBack()
         {
             var (r, h) = VersionedBackup();
@@ -801,6 +853,7 @@ namespace Kudusync.Tests
             Check(!Directory.EnumerateFiles(r, "*" + Paths.TempSuffix, SearchOption.AllDirectories).Any(f => !f.EndsWith("half" + Paths.TempSuffix)), "no unfinished copies left");
         }
 
+        /// <summary>Versions come from real syncs.</summary>
         private static void TestVersionsComeFromRealSyncs()
         {
             var l = NewDir("l");
@@ -815,6 +868,7 @@ namespace Kudusync.Tests
             Equal("x", File.ReadAllText(v.Of("extra.txt").Single().FullPath), "so is the deleted one");
         }
 
+        /// <summary>A record is written and read back the same.</summary>
         private static void TestRecordRoundTrip()
         {
             var record = new SyncRecord { LeftRoot = "L", RightRoot = "R" };
@@ -830,6 +884,7 @@ namespace Kudusync.Tests
             Check(SyncRecord.Load(file).IsEmpty, "damaged record is ignored");
         }
 
+        /// <summary>Pairs are saved and read back.</summary>
         private static void TestPairsSaveAndLoad()
         {
             var pair = Pair(@"C:\a", @"\\nas\share\b", SyncMode.TwoWay, "Photos");
@@ -850,6 +905,7 @@ namespace Kudusync.Tests
             DataStore.SavePairs(new FolderPair[0]);
         }
 
+        /// <summary>Runs are kept.</summary>
         private static void TestRunLog()
         {
             var l = NewDir("l");
@@ -863,6 +919,7 @@ namespace Kudusync.Tests
             Equal("1 copied · 1 B", latest.Summary, "summary");
         }
 
+        /// <summary>Paths are joined and split right.</summary>
         private static void TestPaths()
         {
             Equal(@"\\nas\photos", Paths.ShareRoot(@"\\nas\photos\2026\jan"), "share root");
@@ -877,6 +934,7 @@ namespace Kudusync.Tests
             Equal("Makefile (conflict 2026-10-24)", Planner.ConflictName("Makefile", new DateTime(2026, 10, 24), new HashSet<string>()), "no extension");
         }
 
+        /// <summary>Wildcards match the right files.</summary>
         private static void TestWildcards()
         {
             var f = new FileFilter(new Filters { Include = "*.jpg; IMG_????.png", Exclude = "~$*", SkipHidden = true });
@@ -888,6 +946,7 @@ namespace Kudusync.Tests
             Check(f.IncludeFolder(@"x\" + Paths.HistoryName, Paths.HistoryName, FileAttributes.Directory), "only at the top");
         }
 
+        /// <summary>Schedules' tasks are made right.</summary>
         private static void TestSchedules()
         {
             var pair = Pair(@"C:\a", @"D:\b", SyncMode.Mirror, "Nightly");
@@ -904,6 +963,7 @@ namespace Kudusync.Tests
             Check(Schedules.TaskXml(pair, "k.exe", "u", DateTime.Today).Contains("<Interval>PT4H</Interval>"), "repetition");
         }
 
+        /// <summary>SyncToy's pairs are brought in from a real-looking file.</summary>
         private static void TestSyncToyImport()
         {
             var a = new SyncToy.SyncEngineConfig("Photos", @"C:\Pictures", @"E:\Backup\Pictures", "Echo", "*.jpg", "*.tmp", FileAttributes.Hidden, true);

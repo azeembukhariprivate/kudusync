@@ -1,3 +1,5 @@
+// Finding a pair's folders: a drive by its own serial number (so a USB drive still matches with another letter), a
+// network folder, or a plain path.
 using System;
 using System.IO;
 using System.Linq;
@@ -7,10 +9,15 @@ namespace Kudusync.Core
 {
     public sealed class VolumeInfo
     {
+        /// <summary>The drive's top folder, like "E:\".</summary>
         public string Root { get; set; }        // "E:\"
+        /// <summary>The drive's serial number, like "1A2B-3C4D".</summary>
         public string Serial { get; set; }      // "1A2B-3C4D"
+        /// <summary>The drive's name.</summary>
         public string Label { get; set; }
+        /// <summary>Its file system, like "NTFS" or "exFAT".</summary>
         public string FileSystem { get; set; }  // "NTFS", "exFAT", …
+        /// <summary>What kind of drive (fixed, removable, network...).</summary>
         public DriveType Type { get; set; }
 
         /// <summary>NTFS and ReFS keep a file's ID when it's renamed, so renames can be recognised exactly.</summary>
@@ -20,6 +27,7 @@ namespace Kudusync.Core
         public bool StoresLocalTime => FileSystem != null &&
             (FileSystem.StartsWith("FAT", StringComparison.OrdinalIgnoreCase) || FileSystem.Equals("exFAT", StringComparison.OrdinalIgnoreCase));
 
+        /// <summary>The drive in words: its name (or kind) and letter, like "Backup (E:)".</summary>
         public string Describe()
         {
             var name = string.IsNullOrEmpty(Label) ? KindName : Label;
@@ -40,6 +48,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>The drive a path is on, or null.</summary>
         public static VolumeInfo Of(string path)
         {
             var drive = Paths.DriveOf(path);
@@ -69,16 +78,20 @@ namespace Kudusync.Core
     /// <summary>Where a location is right now.</summary>
     public sealed class ResolvedLocation
     {
+        /// <summary>The place as kept in the pair.</summary>
         public Location Location { get; set; }
         /// <summary>The folder's current path, e.g. "F:\Backup" when the drive that was E: is now F:.</summary>
         public string Root { get; set; }
+        /// <summary>The drive it was found on.</summary>
         public VolumeInfo Volume { get; set; }
         /// <summary>Why it can't be used right now, or null.</summary>
         public string Problem { get; set; }
         /// <summary>The drive (or share) isn't there at all, as opposed to a folder that's missing or can't be opened.</summary>
         public bool NotConnected { get; set; }
 
+        /// <summary>True when it was found.</summary>
         public bool Ok => Problem == null;
+        /// <summary>True when it was found and its folder is there.</summary>
         public bool Exists => Ok && Directory.Exists(Paths.Long(Root));
     }
 
@@ -156,6 +169,7 @@ namespace Kudusync.Core
             return result;
         }
 
+        /// <summary>The drives that can be listed.</summary>
         private static string[] SafeDrives()
         {
             try { return DriveInfo.GetDrives().Where(d => d.DriveType != DriveType.Network && d.DriveType != DriveType.CDRom).Select(d => d.Name).ToArray(); }

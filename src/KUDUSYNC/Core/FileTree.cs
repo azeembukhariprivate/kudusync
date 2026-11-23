@@ -1,3 +1,5 @@
+// What's in a folder: each file and folder with its size, time and id, the filters that leave things out, and the quick
+// scan that lists it.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,60 +16,83 @@ namespace Kudusync.Core
     {
         /// <summary>Relative path with its real capitalisation, "\"-separated.</summary>
         public string Path { get; set; }
+        /// <summary>True for a folder.</summary>
         public bool IsDir { get; set; }
+        /// <summary>Its size in bytes.</summary>
         public long Size { get; set; }
         /// <summary>Last modified, UTC ticks.</summary>
         public long Mtime { get; set; }
         /// <summary>Created, UTC ticks.</summary>
         public long Ctime { get; set; }
+        /// <summary>Its attributes (hidden, system...).</summary>
         public FileAttributes Attributes { get; set; }
         /// <summary>The file system's ID for the file (0 if unknown). On NTFS it stays the same through renames and moves.</summary>
         public long FileId { get; set; }
         /// <summary>For reparse points (links, cloud files): what kind it is.</summary>
         public uint ReparseTag { get; set; }
 
+        /// <summary>A copy of it.</summary>
         public Entry Clone() => (Entry)MemberwiseClone();
 
+        /// <summary>A short description for the tests.</summary>
         public override string ToString() => Path + (IsDir ? "\\" : $" ({Size} bytes)");
     }
 
     /// <summary>Everything found on one side of a pair.</summary>
     public sealed class Tree
     {
+        /// <summary>Every file and folder, by its path below the top folder.</summary>
         public Dictionary<string, Entry> Items { get; } = new Dictionary<string, Entry>(Paths.Comparer);
 
         /// <summary>Folders that couldn't be read. Nothing inside them is touched, on either side.</summary>
         public List<string> Unreadable { get; } = new List<string>();
+        /// <summary>Folders that couldn't be read (nothing below them is deleted).</summary>
         public List<string> Problems { get; } = new List<string>();
+        /// <summary>How many links to other folders were left (not followed).</summary>
         public int SkippedLinks { get; set; }
         /// <summary>Unfinished copies left over from an interrupted run; removed at the start of the next one.</summary>
         public List<string> LeftoverTemps { get; } = new List<string>();
+        /// <summary>True when the file system keeps file ids steady (so renames can be told by them).</summary>
         public bool StableFileIds { get; set; }
 
+        /// <summary>The item at this path, or null.</summary>
         public Entry Get(string path) => path != null && Items.TryGetValue(path, out var e) ? e : null;
 
+        /// <summary>How many files there are.</summary>
         public int FileCount => Items.Values.Count(e => !e.IsDir);
+        /// <summary>How many bytes they hold.</summary>
         public long TotalBytes => Items.Values.Where(e => !e.IsDir).Sum(e => e.Size);
 
+        /// <summary>True when the path is in a folder that couldn't be read.</summary>
         public bool IsUnderUnreadable(string path) =>
             Unreadable.Any(u => u.Length == 0 || path.Equals(u, Paths.Comparison) || path.StartsWith(u + "\\", Paths.Comparison));
 
+        /// <summary>Adds an item.</summary>
         public void Add(Entry entry) => Items[entry.Path] = entry;
 
+        /// <summary>Takes an item away.</summary>
         public void Remove(string path) => Items.Remove(path);
     }
 
     /// <summary>Decides which files and folders a pair includes.</summary>
     public sealed class FileFilter
     {
+        /// <summary>Only files matching these are kept (none: all are).</summary>
         private readonly Regex[] _include;
+        /// <summary>Files matching these are left out.</summary>
         private readonly Regex[] _exclude;
+        /// <summary>Folders with these names are left out.</summary>
         private readonly Regex[] _excludeFolderNames;
+        /// <summary>Folders at these paths are left out.</summary>
         private readonly string[] _excludeFolderPaths;
+        /// <summary>Leave out hidden files and folders.</summary>
         private readonly bool _skipHidden;
+        /// <summary>Leave out system files and folders.</summary>
         private readonly bool _skipSystem;
+        /// <summary>Folders always left out (like KUDUSYNC's own history folder).</summary>
         private readonly HashSet<string> _alwaysSkip = new HashSet<string>(Paths.Comparer);
 
+        /// <summary>A filter from the pair's settings.</summary>
         public FileFilter(Filters filters, IEnumerable<string> alwaysSkipFolders = null)
         {
             filters = filters ?? new Filters();
@@ -86,6 +111,7 @@ namespace Kudusync.Core
                 foreach (var f in alwaysSkipFolders) _alwaysSkip.Add(f);
         }
 
+        /// <summary>True when a folder is kept.</summary>
         public bool IncludeFolder(string path, string name, FileAttributes attributes)
         {
             if (_alwaysSkip.Contains(path)) return false;
@@ -96,6 +122,7 @@ namespace Kudusync.Core
             return true;
         }
 
+        /// <summary>True when a file is kept.</summary>
         public bool IncludeFile(string path, string name, FileAttributes attributes)
         {
             if (name.EndsWith(Paths.TempSuffix, Paths.Comparison)) return false;
@@ -106,13 +133,16 @@ namespace Kudusync.Core
             return true;
         }
 
+        /// <summary>True when the pattern matches the path or the name.</summary>
         private static bool Matches(Regex pattern, string path, string name) =>
             pattern.ToString().Contains(@"\\") ? pattern.IsMatch(path) : pattern.IsMatch(name);
 
+        /// <summary>Patterns typed in a box (split at ; and lines), each once.</summary>
         public static List<string> Split(string text) =>
             (text ?? string.Empty).Split(new[] { ';', ',', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim().Trim('"')).Where(s => s.Length > 0).ToList();
 
+        /// <summary>Patterns as tests (* and ? work).</summary>
         private static Regex[] Patterns(string text) => Split(text).Select(p => Wildcard(p.Replace('/', '\\'))).ToArray();
 
         /// <summary>"*.jpg" style pattern, ignoring case. "*" matches anything, "?" one character.</summary>
@@ -124,6 +154,7 @@ namespace Kudusync.Core
     /// <summary>Lists everything in a folder, recursively.</summary>
     public static class Scanner
     {
+        /// <summary>Lists everything below a folder that the filter keeps (progress is told how many so far).</summary>
         public static Tree Scan(string root, FileFilter filter, Action<int> progress = null, CancellationToken token = default, bool stableIds = false)
         {
             var tree = new Tree { StableFileIds = stableIds };
@@ -189,6 +220,7 @@ namespace Kudusync.Core
         // like OneDrive's online-only files, are ordinary files as far as syncing goes.
         private static bool IsLink(Entry e) => e.ReparseTag == Native.IO_REPARSE_TAG_SYMLINK || e.ReparseTag == Native.IO_REPARSE_TAG_MOUNT_POINT;
 
+        /// <summary>Lists a folder the ordinary .NET way (when the quick way isn't there).</summary>
         private static List<Entry> ListManaged(string root, string folder)
         {
             var list = new List<Entry>();
@@ -277,6 +309,7 @@ namespace Kudusync.Core
             }
         }
 
+        /// <summary>A Windows file time as .NET ticks.</summary>
         private static long FromFileTime(long fileTime)
         {
             try { return DateTime.FromFileTimeUtc(fileTime).Ticks; }

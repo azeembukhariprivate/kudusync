@@ -1,3 +1,5 @@
+// Where KUDUSYNC starts: the main window, the tray part, a scheduled or right-click run, the self-test, and handing
+// over to a copy already running.
 using System;
 using System.Linq;
 using System.Windows;
@@ -65,8 +67,10 @@ namespace Kudusync
 
     public sealed class App : Application
     {
+        /// <summary>The running app.</summary>
         public static App Instance => (App)Current;
 
+        /// <summary>Starts the main window (or hands the command to the one already open).</summary>
         public int RunMain(string[] args)
         {
             using (var single = new SingleInstance("main"))
@@ -110,6 +114,7 @@ namespace Kudusync
             return result.Status == RunStatus.Ok || result.Status == RunStatus.Warnings || result.Status == RunStatus.Skipped ? 0 : 1;
         }
 
+        /// <summary>Starts the tray part (only one per user).</summary>
         public int RunTray()
         {
             using (var single = new SingleInstance("tray"))
@@ -130,6 +135,7 @@ namespace Kudusync
             }
         }
 
+        /// <summary>Runs the self-test instead of the app, and returns its result as the exit code.</summary>
         public int RunSelfTest()
         {
             var code = 1;
@@ -144,6 +150,7 @@ namespace Kudusync
             return code;
         }
 
+        /// <summary>What every way of starting needs: the theme, the language and the error handler.</summary>
         internal void Init()
         {
             ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -154,6 +161,9 @@ namespace Kudusync
             ThemeManager.WatchSystem();
         }
 
+        /// <summary>
+        /// Shows an error that wasn't expected instead of closing the app (the self-test keeps it as a failure).
+        /// </summary>
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             if (SelfTest.Running)

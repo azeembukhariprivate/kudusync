@@ -1,3 +1,4 @@
+// The KUDUSYNC logo, drawn in code: the mark on its own, and the app tile.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,6 +11,7 @@ namespace Kudusync.Controls
     /// <summary>The KUDUSYNC mark: two arrows chasing each other in a circle. Uses the text colour.</summary>
     public class LogoMark : Viewbox
     {
+        /// <summary>The mark, size pixels wide.</summary>
         public LogoMark(double size = 40)
         {
             Width = size;
@@ -41,6 +43,7 @@ namespace Kudusync.Controls
             Child = canvas;
         }
 
+        /// <summary>Gives the shape the theme's text colour, following theme changes.</summary>
         private void Bind(Shape shape, DependencyProperty property) =>
             shape.SetBinding(property, new Binding { Path = new PropertyPath(TextElement.ForegroundProperty), Source = this });
     }
@@ -48,6 +51,7 @@ namespace Kudusync.Controls
     /// <summary>The app tile: the mark in white on a teal rounded square.</summary>
     public static class LogoTile
     {
+        /// <summary>The app tile, size pixels wide.</summary>
         public static Border Create(double size)
         {
             var mark = new LogoMark(size * 0.86) { Margin = new Thickness(size * 0.07) };

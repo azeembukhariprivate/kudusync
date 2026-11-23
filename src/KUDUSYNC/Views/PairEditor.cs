@@ -1,3 +1,5 @@
+// The window for adding or changing a folder pair: its name, both places, the way it syncs, filters, history, schedule
+// and options; and the place picker.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,51 +16,86 @@ namespace Kudusync.Views
     /// <summary>Creating or changing a folder pair.</summary>
     public sealed class PairEditor : Window
     {
+        /// <summary>How long replaced and deleted files can be kept.</summary>
         private static readonly (int Days, string Text)[] KeepChoices =
         {
             (7, "Keep for 7 days"), (30, "Keep for 30 days"), (90, "Keep for 90 days"), (365, "Keep for a year"), (0, "Keep forever"), (-1, "Don't keep them (delete permanently)")
         };
+        /// <summary>When the pair can run by itself.</summary>
         private static readonly (ScheduleKind Kind, string Text)[] ScheduleChoices =
         {
             (ScheduleKind.None, "Only when I run it"), (ScheduleKind.Daily, "Every day"), (ScheduleKind.Weekly, "On certain days"),
             (ScheduleKind.EveryHours, "Every few hours"), (ScheduleKind.AtLogon, "When I sign in to Windows")
         };
+        /// <summary>Every how many hours it can run.</summary>
         private static readonly int[] HourChoices = { 1, 2, 3, 4, 6, 8, 12 };
+        /// <summary>How long live sync waits after a change.</summary>
         private static readonly int[] DelayChoices = { 10, 30, 60, 300 };
 
+        /// <summary>The pair changed (a copy until saved).</summary>
         private readonly FolderPair _pair;
+        /// <summary>The other pairs (to warn about overlapping folders).</summary>
         private readonly List<FolderPair> _others;
+        /// <summary>True for a new pair.</summary>
         private readonly bool _isNew;
 
+        /// <summary>The pair's name.</summary>
         private readonly TextBox _name = new TextBox { MinHeight = 34 };
+        /// <summary>The first place.</summary>
         private readonly LocationPicker _left;
+        /// <summary>The second place.</summary>
         private readonly LocationPicker _right;
+        /// <summary>The ways of syncing.</summary>
         private readonly Dictionary<SyncMode, RadioButton> _modes = new Dictionary<SyncMode, RadioButton>();
+        /// <summary>Only files matching these.</summary>
         private readonly TextBox _include = new TextBox { MinHeight = 32 };
+        /// <summary>Files left out.</summary>
         private readonly TextBox _exclude = new TextBox { MinHeight = 32 };
+        /// <summary>Folders left out.</summary>
         private readonly TextBox _excludeFolders = new TextBox { MinHeight = 32 };
+        /// <summary>Leave out hidden files.</summary>
         private readonly CheckBox _skipHidden = new CheckBox { Content = "Skip hidden files and folders" };
+        /// <summary>Leave out Windows' system files.</summary>
         private readonly CheckBox _skipSystem = new CheckBox { Content = "Skip Windows system files", Margin = new Thickness(0, 6, 0, 0) };
+        /// <summary>How long to keep replaced and deleted files.</summary>
         private readonly ComboBox _keep = new ComboBox { MinWidth = 260, HorizontalAlignment = HorizontalAlignment.Left };
+        /// <summary>Keep them in a folder of one's own.</summary>
         private readonly CheckBox _customHistory = new CheckBox { Content = "Keep them in a folder of my choice", Margin = new Thickness(0, 8, 0, 0) };
+        /// <summary>That folder.</summary>
         private readonly TextBox _historyFolder = new TextBox { MinHeight = 32 };
+        /// <summary>Check every copy.</summary>
         private readonly CheckBox _verify = new CheckBox { Content = "Check every copy against the original (slower, catches failing drives)" };
+        /// <summary>Compare files' contents (slower).</summary>
         private readonly CheckBox _contents = new CheckBox { Content = "Compare file contents too, to catch changes that keep the same size and date (slower: reads the files on both sides)", Margin = new Thickness(0, 6, 0, 0) };
+        /// <summary>Follow renamed files.</summary>
         private readonly CheckBox _renames = new CheckBox { Content = "When a file is renamed or moved, rename it on the other side instead of copying it again", Margin = new Thickness(0, 6, 0, 0) };
+        /// <summary>When it runs by itself.</summary>
         private readonly ComboBox _schedule = new ComboBox { MinWidth = 220 };
+        /// <summary>At what time.</summary>
         private readonly TextBox _time = new TextBox { MinHeight = 32, Width = 70, HorizontalContentAlignment = HorizontalAlignment.Center };
+        /// <summary>Every how many hours.</summary>
         private readonly ComboBox _hours = new ComboBox { MinWidth = 120 };
+        /// <summary>On which days.</summary>
         private readonly ToggleButton[] _days = new ToggleButton[7];
+        /// <summary>The row with the time.</summary>
         private readonly StackPanel _timeRow;
+        /// <summary>The row with the days.</summary>
         private readonly StackPanel _dayRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 8, 0, 0) };
+        /// <summary>Live sync: run soon after files change.</summary>
         private readonly CheckBox _live = new CheckBox { Content = "Live sync: sync a short while after files change" };
+        /// <summary>How long to wait after a change.</summary>
         private readonly ComboBox _delay = new ComboBox { MinWidth = 130, Margin = new Thickness(10, 0, 0, 0) };
+        /// <summary>Show a notification when it runs.</summary>
         private readonly CheckBox _notify = new CheckBox { Content = "Show a notification when the drive is plugged in", Margin = new Thickness(0, 8, 0, 0) };
+        /// <summary>Include in "Run all".</summary>
         private readonly CheckBox _inRunAll = new CheckBox { Content = "Include in \"Sync all\"", Margin = new Thickness(0, 8, 0, 0) };
+        /// <summary>A note when the tray part is needed but off.</summary>
         private readonly ContentControl _trayHint = new ContentControl { Focusable = false };
 
+        /// <summary>The pair saved (null when not saved).</summary>
         public FolderPair Result { get; private set; }
 
+        /// <summary>Makes the window for a pair.</summary>
         public PairEditor(Window owner, FolderPair pair, List<FolderPair> all, bool isNew)
         {
             _pair = pair;
@@ -237,12 +274,16 @@ namespace Kudusync.Views
             };
         }
 
+        /// <summary>A label above a control.</summary>
         private static TextBlock Label(string text) => Ui.Text(text, 12.5, "SubtleText").Margin(0, 12, 0, 5);
 
+        /// <summary>A section's heading.</summary>
         private static UIElement Section(string text) => Ui.Heading(text, 15).Margin(0, 26, 0, 8);
 
+        /// <summary>The way of syncing chosen.</summary>
         private SyncMode Mode => _modes.First(m => m.Value.IsChecked == true).Key;
 
+        /// <summary>The days to keep chosen (-1: keep nothing).</summary>
         private int KeepDays()
         {
             var text = _keep.SelectedItem as string;
@@ -250,6 +291,7 @@ namespace Kudusync.Views
             return choice.Text != null ? choice.Days : _pair.KeepDays;
         }
 
+        /// <summary>Names the sides by the way of syncing ("Source" or "Folder 1"...).</summary>
         private void UpdateTitles()
         {
             var oneWay = Mode != SyncMode.TwoWay;
@@ -259,6 +301,7 @@ namespace Kudusync.Views
             _right.Hint = Mode == SyncMode.Mirror ? "Made into an exact copy of the source." : Mode == SyncMode.Update ? "Gets new and changed files. Nothing here is deleted." : Mode == SyncMode.Move ? "Files are moved to here." : null;
         }
 
+        /// <summary>Shows the time, hours and days for the schedule chosen.</summary>
         private void UpdateSchedule()
         {
             var kind = ScheduleChoices[Math.Max(0, _schedule.SelectedIndex)].Kind;
@@ -269,6 +312,7 @@ namespace Kudusync.Views
             _dayRow.Visibility = kind == ScheduleKind.Weekly ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>True when a side is on its own drive (USB...), so "when plugged in" can be offered.</summary>
         private bool HasOwnDrive()
         {
             var system = Paths.DriveOf(Environment.GetFolderPath(Environment.SpecialFolder.Windows));
@@ -276,12 +320,14 @@ namespace Kudusync.Views
                                                                 !string.Equals(Paths.DriveOf(p), system, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>Shows the drive options when a side is on its own drive.</summary>
         private void UpdateDriveOptions()
         {
             _notify.Visibility = HasOwnDrive() ? Visibility.Visible : Visibility.Collapsed;
             UpdateTrayHint();
         }
 
+        /// <summary>Says when the tray part is needed (live sync, drives plugged in) but is off.</summary>
         private void UpdateTrayHint()
         {
             var needs = _live.IsChecked == true || (_notify.IsChecked == true && _notify.Visibility == Visibility.Visible);
@@ -302,6 +348,7 @@ namespace Kudusync.Views
                 turnOn.Margin(0, 4, 0, 0))).Margin(0, 10, 0, 0);
         }
 
+        /// <summary>Checks the choices and saves the pair.</summary>
         private void Save()
         {
             var name = _name.Text.Trim();
@@ -406,6 +453,7 @@ namespace Kudusync.Views
             catch (InvalidOperationException) { Close(); } // shown without ShowDialog (the self-test)
         }
 
+        /// <summary>True when a place is this folder.</summary>
         private static bool SameFolder(Location location, string path) => string.Equals(Paths.Normalize(location.Path), path, StringComparison.OrdinalIgnoreCase) && location.Path != null;
 
         /// <summary>For the self-test: fill in the editor without clicking.</summary>
@@ -417,21 +465,30 @@ namespace Kudusync.Views
             _modes[mode].IsChecked = true;
         }
 
+        /// <summary>Saves without clicking (for the self-test).</summary>
         public void SaveForTest() => Save();
     }
 
     /// <summary>A folder box with Browse… and a line saying which drive or share it's on.</summary>
     public sealed class LocationPicker : StackPanel
     {
+        /// <summary>The window it's in.</summary>
         private readonly Window _owner;
+        /// <summary>The side's name.</summary>
         private readonly TextBlock _title = Ui.Text(string.Empty, 12.5, "SubtleText", bold: true);
+        /// <summary>A hint under the box.</summary>
         private readonly TextBlock _hint = Ui.Subtle(string.Empty, 12, false);
+        /// <summary>The folder.</summary>
         private readonly TextBox _box = new TextBox { MinHeight = 34 };
+        /// <summary>Whether it's there now, and on which drive.</summary>
         private readonly TextBlock _status = Ui.Subtle(string.Empty, 12);
+        /// <summary>Signs in to a network folder.</summary>
         private readonly Button _signIn;
 
+        /// <summary>The place was changed.</summary>
         public event Action Changed;
 
+        /// <summary>Makes the picker for a place.</summary>
         public LocationPicker(Window owner, Location location)
         {
             _owner = owner;
@@ -477,6 +534,9 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>
+        /// Shows whether the place is there now, on which drive, and the sign-in button for network folders.
+        /// </summary>
         private void Refresh()
         {
             var path = Paths.Normalize(_box.Text);

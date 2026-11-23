@@ -1,5 +1,7 @@
 // Shared KUDU code: this file comes from kudu-common (https://github.com/azeembukhariprivate/kudu-common).
 // Change it there and run its sync script; the build fails when this copy differs from kudu-common.
+// The app's dialogs: messages, questions, choosing files and folders, and windows of its own built the same way every
+// time.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,15 +18,22 @@ namespace Kudusync.Views
 {
     public static class Dialogs
     {
+        /// <summary>A message with an OK button.</summary>
         public static void Info(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Information);
 
+        /// <summary>A warning with an OK button.</summary>
         public static void Error(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
 
+        /// <summary>A yes / no question. True when the answer is yes.</summary>
         public static bool Confirm(Window owner, string message, string title = AppInfo.Name) =>
             Show(owner, message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
 
+        /// <summary>
+        /// Shows a message box over the window, in the chosen language (during the self-test, it's only written to the
+        /// log).
+        /// </summary>
         private static MessageBoxResult Show(Window owner, string message, string title, MessageBoxButton buttons, MessageBoxImage image)
         {
             if (SelfTest.Running)
@@ -41,6 +50,7 @@ namespace Kudusync.Views
                 : MessageBox.Show(message, title, buttons, image, MessageBoxResult.None, options);
         }
 
+        /// <summary>Asks for a folder. Returns its path, or null when nothing was chosen.</summary>
         public static string PickFolder(Window owner, string description, string start = null)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog
@@ -54,18 +64,21 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>Asks for one or more files. Returns their paths (empty when nothing was chosen).</summary>
         public static List<string> PickFiles(Window owner, string title)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Title = Lang.T(title), Filter = Filter("All files|*.*"), Multiselect = true };
             return Show(dialog, owner) ? dialog.FileNames.ToList() : new List<string>();
         }
 
+        /// <summary>Asks for one file, of the kinds in `filter`. Returns its path, or null.</summary>
         public static string PickFile(Window owner, string title, string filter)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog { Title = Lang.T(title), Filter = Filter(filter), CheckFileExists = true };
             return Show(dialog, owner) ? dialog.FileName : null;
         }
 
+        /// <summary>Asks where to save a file. Returns the path, or null.</summary>
         public static string SaveFile(Window owner, string title, string fileName, string filter)
         {
             var dialog = new Microsoft.Win32.SaveFileDialog
@@ -88,9 +101,13 @@ namespace Kudusync.Views
             return string.Join("|", parts);
         }
 
+        /// <summary>
+        /// Shows a file dialog over the window when it's open, on its own otherwise. True when something was chosen.
+        /// </summary>
         private static bool Show(Microsoft.Win32.CommonDialog dialog, Window owner) =>
             (owner != null && owner.IsVisible ? dialog.ShowDialog(owner) : dialog.ShowDialog()) == true;
 
+        /// <summary>The app's icon, read once.</summary>
         private static ImageSource _icon;
 
         public static ImageSource AppIcon
@@ -114,6 +131,7 @@ namespace Kudusync.Views
             }
         }
 
+        /// <summary>The app's icon file, as it is kept inside the app.</summary>
         public static Stream AppIconStream() =>
             Assembly.GetExecutingAssembly().GetManifestResourceStream("Kudusync.Assets." + AppInfo.Name + ".ico");
 
@@ -192,21 +210,30 @@ namespace Kudusync.Views
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         private struct Bounds
         {
+            /// <summary>
+            /// A rectangle on the screen, as Windows gives it (left, top, right and bottom edges in pixels).
+            /// </summary>
             public int Left, Top, Right, Bottom;
         }
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         private struct MonitorInfo
         {
+            /// <summary>The size of this structure, which Windows needs filled in.</summary>
             public int Size;
+            /// <summary>The whole screen.</summary>
             public Bounds Monitor;
+            /// <summary>The part of the screen not covered by the taskbar.</summary>
             public Bounds Work;
+            /// <summary>Whether this is the main screen.</summary>
             public int Flags;
         }
 
+        /// <summary>Windows' call that finds the screen a window is on.</summary>
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
 
+        /// <summary>Windows' call that gives a screen's size and the part not covered by the taskbar.</summary>
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfo info);
 
