@@ -2,14 +2,14 @@ Error: {0}	പിശക്: {0}
 Something went wrong:\n\n{0}	എന്തോ പിശക് സംഭവിച്ചു:\n\n{0}
 "{0}" didn't back up	"{0}" ബാക്കപ്പ് ചെയ്തില്ല
 "{0}" hasn't backed up for a while	"{0}" കുറച്ചുനാളായി ബാക്കപ്പ് ചെയ്തിട്ടില്ല
-"{0}" backed up, with problems	"{0}" ബാക്കപ്പ് ചെയ്തു, പ്രശ്നങ്ങളോടെ
-The scheduled backup on {0} didn't work: {1}	{0}-നുള്ള ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നില്ല: {1}
+"{0}" backed up, with problems	"{0}" പ്രശ്നങ്ങളോടെ ബാക്കപ്പ് ചെയ്തു
+The scheduled backup on {0} didn't work: {1}	{0}-ലെ ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നില്ല: {1}
 Last backed up {0}. It should run: {1}.	അവസാനം ബാക്കപ്പ് ചെയ്തത് {0}. ഇത് നടക്കേണ്ടത്: {1}.
 It hasn't backed up since it was scheduled. It should run: {0}.	ഷെഡ്യൂൾ ചെയ്തതിനുശേഷം ഇത് ബാക്കപ്പ് ചെയ്തിട്ടില്ല. ഇത് നടക്കേണ്ടത്: {0}.
-The scheduled backup on {0} ran, but {1} couldn't be copied.	{0}-നുള്ള ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നു, പക്ഷേ {1} പകർത്താനായില്ല.
+The scheduled backup on {0} ran, but {1} couldn't be copied.	{0}-ലെ ഷെഡ്യൂൾ ചെയ്ത ബാക്കപ്പ് നടന്നു, പക്ഷേ {1} പകർത്താനായില്ല.
 For example: {0}	ഉദാഹരണത്തിന്: {0}
 see its history for what went wrong.	എന്താണ് പറ്റിയതെന്ന് അതിന്റെ ചരിത്രത്തിൽ നോക്കുക.
-Its last try said: {0}	അതിന്റെ അവസാന ശ്രമം പറഞ്ഞത്: {0}
+Its last try said: {0}	അവസാന ശ്രമത്തിൽ കിട്ടിയ സന്ദേശം: {0}
 {0}.tmp	{0}.tmp
 Azeem Bukhari	Azeem Bukhari
 less than a second	ഒരു സെക്കൻഡിൽ താഴെ
@@ -225,7 +225,7 @@ Back up now	ഇപ്പോൾ ബാക്കപ്പ് ചെയ്യുക
 Run it again	വീണ്ടും നടത്തുക
 What happened	എന്താണ് സംഭവിച്ചത്
 Put away	മാറ്റിവെക്കുക
-…and {0} more backups to look at.	…കൂടാതെ നോക്കേണ്ട {0} ബാക്കപ്പുകൾ കൂടി.
+…and {0} more backups to look at.	…കൂടാതെ ശ്രദ്ധിക്കേണ്ട {0} ബാക്കപ്പുകൾ കൂടിയുണ്ട്.
 KUDUSYNC {0} is available	KUDUSYNC {0} ലഭ്യമാണ്
 New pair	പുതിയ ജോഡി
  · next scheduled: {0}, {1}	 · അടുത്ത ഷെഡ്യൂൾ: {0}, {1}
@@ -472,7 +472,7 @@ KUDUSYNC tray	KUDUSYNC tray
 Alerts: {0} waiting ({1}), {2} new	Alerts: {0} waiting ({1}), {2} new
 Alerts: {0}	Alerts: {0}
 KUDUSYNC · {0}	KUDUSYNC · {0}
-KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} ബാക്കപ്പുകൾ നോക്കേണ്ടതുണ്ട്
+KUDUSYNC · {0} backups need looking at	KUDUSYNC · {0} ബാക്കപ്പുകൾ ശ്രദ്ധിക്കേണ്ടതുണ്ട്
 Resume live sync	ലൈവ് സിങ്ക് തുടരുക
 KUDUSYNC · live sync paused	KUDUSYNC · ലൈവ് സിങ്ക് നിർത്തിവച്ചു
 KUDUSYNC · live sync on for {0}	KUDUSYNC · {0}-ന് ലൈവ് സിങ്ക് ഓൺ
